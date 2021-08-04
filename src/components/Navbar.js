@@ -1,12 +1,22 @@
 import React from "react";
 import "antd/dist/antd.css";
-import { Layout, Menu, Image, Button, Badge } from "antd";
+import {
+  Layout,
+  Menu,
+  Image,
+  // Button,
+  Badge,
+} from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import logo from "./logo.png";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+const { Header } = Layout;
 
-class Header extends React.Component {
-  redirectLoginHome = () => {
+class Navbar extends React.Component {
+  state = { count: 0 };
+  redirectLoginHome = (e) => {
+    // e.preventDefault();
     const { history } = this.props;
     if (history) history.push("/loginhome");
   };
@@ -14,9 +24,20 @@ class Header extends React.Component {
     const { history } = this.props;
     if (history) history.push("/");
   };
-  redirectToCart = () => {
-    const { history } = this.props;
-    if (history) history.push(`/loginhome/cart`);
+  handleIncrease = (e) => {
+    e.preventDefault();
+
+    this.setState({ count: this.state.count + 1 });
+  };
+  handleDecrease = (e) => {
+    e.preventDefault();
+
+    this.setState({ count: this.state.count - 1 });
+  };
+  handleRemove = (product, e) => {
+    e.preventDefault();
+
+    this.setState({ product: [] });
   };
 
   render() {
@@ -34,22 +55,14 @@ class Header extends React.Component {
               <Menu.Item key="1" onClick={this.redirectLoginHome}>
                 Home
               </Menu.Item>
-              <Menu.Item key="3" style={{ float: "right" }}>
-                <Button
-                  type="primary"
-                  onClick={this.redirectToCart}
-                  icon={<ShoppingCartOutlined />}
-                >
-                  <Badge count={1} className="head-example">
-                    Cart{" "}
-                  </Badge>
-                </Button>
+              <Menu.Item key="2">
+                <ShoppingCartOutlined />
+                <Badge
+                  count={this.state.count}
+                  className="head-example"
+                ></Badge>
               </Menu.Item>
-              <Menu.Item
-                key="2"
-                onClick={this.redirectLogout}
-                style={{ float: "right" }}
-              >
+              <Menu.Item key="3" onClick={this.redirectLogout}>
                 Log out
               </Menu.Item>
             </Menu>
@@ -59,5 +72,9 @@ class Header extends React.Component {
     );
   }
 }
-
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    count: state.count,
+  };
+};
+export default withRouter(connect(mapStateToProps)(Navbar));

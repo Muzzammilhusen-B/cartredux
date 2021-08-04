@@ -1,14 +1,27 @@
 import React from "react";
 import "antd/dist/antd.css";
-import { Layout, Menu, Image, Card, Button, Badge, Descriptions } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  // Menu,
+  Image,
+  Card,
+  Button,
+  // Badge,
+  Descriptions,
+} from "antd";
+// import { ShoppingCartOutlined } from "@ant-design/icons";
 import { addToCart } from "../actions/index";
-import logo from "./logo.png";
+// import logo from "./logo.png";
 import { connect } from "react-redux";
+import Navbar from "./Navbar";
 // import { saveToLocalStorage } from "../localStorage";
 // import { withRouter } from "react-router-dom";
 
-const { Header, Content, Footer } = Layout;
+const {
+  //  Header,
+  Content,
+  Footer,
+} = Layout;
 const { Meta } = Card;
 
 class LoginHome extends React.Component {
@@ -17,7 +30,7 @@ class LoginHome extends React.Component {
     console.log("this porps mounted items", this.props.items);
   }
   redirectLoginHome = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const { history } = this.props;
     if (history) history.push("/loginhome");
@@ -29,6 +42,7 @@ class LoginHome extends React.Component {
 
   redirectToCartDisplay = (items, e) => () => {
     // e.preventDefault();
+    this.setState({ count: this.state.product.amount + 1 });
     console.log("for cart id", items);
     const { id } = items;
     this.props.addToCart(id);
@@ -37,11 +51,11 @@ class LoginHome extends React.Component {
     if (history) history.push(`/loginhome/cart/:${id}`);
   };
   redirectToCart = (items, e) => () => {
-    e.preventDefault();
+    // e.preventDefault();
     const { id } = items;
 
     const { history } = this.props;
-    if (history) history.push(`/loginhome/cart/:${id}`);
+    if (history) history.push(`/loginhome/cart/:${id} `);
   };
 
   render() {
@@ -50,7 +64,7 @@ class LoginHome extends React.Component {
 
     return (
       <div>
-        <Layout className="layout">
+        {/* <Layout className="layout">
           <Header
             className="header"
             style={{ position: "fixed", zIndex: 1, width: "100%" }}
@@ -65,7 +79,7 @@ class LoginHome extends React.Component {
               <Menu.Item key="2" style={{ float: "right" }}>
                 <Button
                   type="primary"
-                  onClick={this.redirectToCart}
+                  onClick={this.redirectToCartDisplay}
                   icon={<ShoppingCartOutlined />}
                 >
                   <Badge count={this.state.count} className="head-example">
@@ -82,8 +96,8 @@ class LoginHome extends React.Component {
               </Menu.Item>
             </Menu>
           </Header>
-        </Layout>
-
+        </Layout> */}
+        <Navbar />
         <hr />
 
         <Layout className="content">

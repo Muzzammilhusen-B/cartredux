@@ -1,6 +1,6 @@
 import { ADD_TO_CART } from "../actions/types";
 // import { product } from "../localStorage";
-import { loadFromLocalStorage } from "../localStorage";
+// import { loadFromLocalStorage } from "../localStorage";
 // import store, { saveToLocalStorage } from "../localStorage";
 
 const initialState = {
