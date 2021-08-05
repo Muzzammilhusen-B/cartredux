@@ -17,7 +17,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 // import logo from "./logo.png";
-import { addToCart } from "../actions";
+import { addQuantity, addToCart, subQuantity, remove } from "../actions";
 
 // import { withRouter } from "react-router-dom";
 
@@ -33,31 +33,42 @@ class CartDetails extends React.Component {
     count: 0,
     amount: 0,
   };
-  componentDidMount() {
+  componentDidMount(e) {
+    if (e) e.preventDefault();
     const product = this.props.items;
     console.log(" mounted added items", product);
   }
   redirectLoginHome = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     const { history } = this.props;
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
+    console.log(
+      "logout state",
+      localStorage.setItem("cartState", JSON.stringify(this.props))
+    );
     const { history } = this.props;
     if (history) history.push("/");
   };
   handleIncrease = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
+    const { id } = this.props.items;
+    this.props.addQuantity(id);
 
     this.setState({ count: this.state.count + 1 });
   };
-  handleDecrease = (e) => {
-    e.preventDefault();
+  handleDecrease = (e, items) => {
+    // e.preventDefault();
+    const { id } = items;
+    this.props.subQuantity(id);
 
     this.setState({ count: this.state.count - 1 });
   };
-  handleRemove = (product, e) => {
-    e.preventDefault();
+  handleRemove = (items, e) => {
+    const { id } = items;
+    // e.preventDefault();
+    this.props.remove(id);
 
     this.setState({ product: [] });
   };
@@ -66,7 +77,14 @@ class CartDetails extends React.Component {
     let product = this.props.items.length ? (
       this.props.items.map((item) => {
         return (
-          <div key={item.id}>
+          <div
+            key={item.id}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+            }}
+          >
             {/* <Navbar /> */}
 
             {/* <Layout className="layout">
@@ -105,7 +123,7 @@ class CartDetails extends React.Component {
                     style={{ textAlign: "center" }}
                   >
                     <Descriptions
-                      title={`${item.company} ${item.name}`}
+                      title={`${item.quantity} nos. of ${item.company} ${item.name}`}
                       layout="vertical"
                     >
                       <Descriptions.Item>
@@ -123,30 +141,37 @@ class CartDetails extends React.Component {
                             height={"250px"}
                             src={item.image}
                           />
+                          <span>
+                            <p>Price: {item.price} ₹.</p>
+                            <p>Quantity: {item.quantity}</p>
+                          </span>{" "}
                           {/* {item.description} */}
                         </div>
                       </Descriptions.Item>
                     </Descriptions>
                     <Button
                       type="primary"
-                      onClick={this.handleIncrease}
+                      // onClick={this.handleIncrease}
                       icon={<PlusCircleOutlined />}
                     >
                       Increase
                     </Button>{" "}
                     <Button
                       type="primary"
-                      value={this.props.count}
-                      disabled={this.props.count === 0 ? true : ""}
-                      onClick={this.handleDecrease}
+                      value={item.quantity}
+                      disabled={item.quantity === 1 ? true : ""}
+                      // onClick={this.handleDecrease}
                       icon={<MinusCircleOutlined />}
+                      onClick={(e) =>
+                        console.log("decrease button clicked", e.target.value)
+                      }
                     >
                       Decrease
                     </Button>{" "}
                     <Button
                       type="primary"
                       value={this.props.product}
-                      onClick={this.handleRemove}
+                      // onClick={this.handleRemove}
                       icon={<DeleteOutlined />}
                     >
                       Remove
@@ -155,22 +180,33 @@ class CartDetails extends React.Component {
                 </li>
               </Content>
             </Layout>
-            <Layout>
-              <Footer style={{ textAlign: "center" }}>
-                User Form Design ©2021.
-              </Footer>
-            </Layout>
           </div>
         );
       })
     ) : (
       <p>Nothing..</p>
     );
+    let total = this.props.total;
+
+    console.log("All total", total);
     return (
       <div>
         <Navbar />
-        <h1 style={{ marginTop: "200px" }}>You have ordered</h1>
-        <ul>{product}</ul>
+        <Layout>
+          <Content>
+            <h1 style={{ marginTop: "200px" }}>You have ordered</h1>
+            <ul>{product}</ul>
+            <p>
+              <strong>Total amount:</strong> {total} ₹.
+            </p>{" "}
+          </Content>
+        </Layout>
+
+        <Layout>
+          <Footer style={{ textAlign: "center" }}>
+            User Form Design ©2021.
+          </Footer>
+        </Layout>
       </div>
     );
   }
@@ -178,12 +214,26 @@ class CartDetails extends React.Component {
 
 const mapStateToProps = (state) => {
   console.log("cartdetails connect function items state", state);
-  return { items: state.addedItems, count: state.count };
+  return {
+    state: state,
+    items: state.addedItems,
+    count: state.count,
+    total: state.total,
+  };
 };
 const mapStateToDispatch = (dispatch) => {
   return {
     addToCart: (id) => {
       dispatch(addToCart(id));
+    },
+    addQuantity: (id) => {
+      dispatch(addQuantity(id));
+    },
+    subQuantity: (id) => {
+      dispatch(subQuantity(id));
+    },
+    remove: (id) => {
+      dispatch(remove(id));
     },
   };
 };

@@ -1,4 +1,4 @@
-import { loadFromLocalStorage } from "./localStorage";
+import { loadFromLocalStorage, saveToLocalStorage } from "./localStorage";
 import { createStore, applyMiddleware, compose } from "redux";
 import reduxThunk from "redux-thunk";
 import reducer from "./reduceres/reducer";
@@ -12,3 +12,12 @@ export const store = createStore(
   persistedState,
   composeEnhancers(applyMiddleware(reduxThunk))
 );
+export const setStoreState = () =>
+  store.subscribe(() => {
+    saveToLocalStorage({
+      items: store.getState().items,
+      addedItmes: store.getState().addedItmes,
+      count: store.getState().count,
+      total: store.getState().total,
+    });
+  });

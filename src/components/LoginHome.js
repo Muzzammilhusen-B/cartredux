@@ -2,33 +2,34 @@ import React from "react";
 import "antd/dist/antd.css";
 import {
   Layout,
-  // Menu,
+  Menu,
   Image,
   Card,
   Button,
-  // Badge,
+  Badge,
+  InputNumber,
   Descriptions,
 } from "antd";
-// import { ShoppingCartOutlined } from "@ant-design/icons";
-import { addToCart } from "../actions/index";
-// import logo from "./logo.png";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { addToCart, addQuantity } from "../actions/index";
+import logo from "./logo.png";
 import { connect } from "react-redux";
-import Navbar from "./Navbar";
+// import Navbar from "./Navbar";
+import { loadFromLocalStorage, saveToLocalStorage } from "../localStorage";
 // import { saveToLocalStorage } from "../localStorage";
 // import { withRouter } from "react-router-dom";
 
-const {
-  //  Header,
-  Content,
-  Footer,
-} = Layout;
+const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
 
 class LoginHome extends React.Component {
   state = { count: 0, product: [] };
+
   componentDidMount() {
+    // saveToLocalStorage();
     console.log("this porps mounted items", this.props.items);
   }
+
   redirectLoginHome = (e) => {
     // e.preventDefault();
 
@@ -36,35 +37,47 @@ class LoginHome extends React.Component {
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
+    console.log(
+      "logout state",
+      localStorage.setItem("cartState", JSON.stringify(this.props))
+    );
     const { history } = this.props;
     if (history) history.push("/");
   };
 
   redirectToCartDisplay = (items, e) => () => {
     // e.preventDefault();
-    this.setState({ count: this.state.product.amount + 1 });
     console.log("for cart id", items);
     const { id } = items;
+    this.setState({ count: this.state.count + 1 });
     this.props.addToCart(id);
 
-    const { history } = this.props;
-    if (history) history.push(`/loginhome/cart/:${id}`);
+    // const { history } = this.props;
+    // if (history) history.push(`/loginhome/cart/`);
   };
-  redirectToCart = (items, e) => () => {
+  redirectToCart = () => {
     // e.preventDefault();
-    const { id } = items;
+    // const { id } = items;
 
     const { history } = this.props;
-    if (history) history.push(`/loginhome/cart/:${id} `);
+    if (history) history.push(`/loginhome/cart/`);
   };
+  //
+  onChange = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  onQuantityChange = () => {};
 
   render() {
+    if (saveToLocalStorage()) return <div>Loading..</div>;
+
     // console.log("this porps renderd items", this.props.items);
     const product = this.props.items;
 
     return (
       <div>
-        {/* <Layout className="layout">
+        <Layout className="layout">
           <Header
             className="header"
             style={{ position: "fixed", zIndex: 1, width: "100%" }}
@@ -79,10 +92,12 @@ class LoginHome extends React.Component {
               <Menu.Item key="2" style={{ float: "right" }}>
                 <Button
                   type="primary"
-                  onClick={this.redirectToCartDisplay}
+                  onClick={this.redirectToCart}
                   icon={<ShoppingCartOutlined />}
+                  onChange={this.onChange}
+                  // disabled={this.state.count >= 5 ? true : ""}
                 >
-                  <Badge count={this.state.count} className="head-example">
+                  <Badge count={this.props.count} className="head-example">
                     Cart{" "}
                   </Badge>
                 </Button>
@@ -96,8 +111,8 @@ class LoginHome extends React.Component {
               </Menu.Item>
             </Menu>
           </Header>
-        </Layout> */}
-        <Navbar />
+        </Layout>
+        {/* <Navbar /> */}
         <hr />
 
         <Layout className="content">
@@ -139,19 +154,33 @@ class LoginHome extends React.Component {
                       <Meta
                         id={item.id}
                         title={item.company}
-                        description={`Price :${item.price} Rs.`}
+                        description={`Price :${item.price} ₹.`}
                       />
                     </Card>
                     <Descriptions.Item>{item.description}</Descriptions.Item>
                   </li>{" "}
-                  <Button
-                    key={item.id}
-                    value={item}
-                    type="primary"
-                    onClick={this.redirectToCartDisplay(item)}
-                  >
-                    Add {item.name} to Cart
-                  </Button>
+                  <span>
+                    <Button
+                      key={item.id}
+                      value={item}
+                      type="primary"
+                      onClick={this.redirectToCartDisplay(item)}
+                      disabled={this.state.count >= 5 ? true : ""}
+                    >
+                      Add {item.name} to Cart
+                    </Button>
+                    <h3 style={{ marginTop: "10px" }}>
+                      Quantity:
+                      <InputNumber
+                        // style={{ marginLeft: "10px" }}
+                        // value={this.state.count}
+                        min={0}
+                        max={5}
+                        defaultValue={0}
+                        onChange={this.onQuantityChange}
+                      />{" "}
+                    </h3>
+                  </span>
                 </ul>
               );
             })}
@@ -169,12 +198,15 @@ class LoginHome extends React.Component {
 
 const mapStateToProps = (state) => {
   console.log("loginhome redux store state", state);
-  return { items: state.items };
+  return { items: state.items, count: state.count };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (id) => {
       dispatch(addToCart(id));
+    },
+    addQuantity: (id) => {
+      dispatch(addQuantity(id));
     },
   };
 };

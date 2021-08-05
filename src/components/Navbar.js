@@ -11,18 +11,37 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import logo from "./logo.png";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+// import { addQuantity, subQuantity, remove, addToCart } from "../actions";
+
 const { Header } = Layout;
 
 class Navbar extends React.Component {
   state = { count: 0 };
+  componentDidMount() {
+    console.log("count for cart", this.props.count);
+    // this.props.addQuantity();
+    // this.props.subQuantity();
+    // this.props.remove();
+    // this.props.addToCart();
+  }
   redirectLoginHome = (e) => {
     // e.preventDefault();
     const { history } = this.props;
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
+    console.log(
+      "logout state",
+      localStorage.setItem("cartState", JSON.stringify(this.props))
+    );
+    localStorage.setItem("cartState", JSON.stringify(this.props));
+
     const { history } = this.props;
     if (history) history.push("/");
+  };
+  redirectToCart = () => {
+    const { history } = this.props;
+    if (history) history.push(`/loginhome/cart`);
   };
   handleIncrease = (e) => {
     e.preventDefault();
@@ -56,9 +75,9 @@ class Navbar extends React.Component {
                 Home
               </Menu.Item>
               <Menu.Item key="2">
-                <ShoppingCartOutlined />
+                <ShoppingCartOutlined onClick={this.redirectToCart} />
                 <Badge
-                  count={this.state.count}
+                  count={this.props.count}
                   className="head-example"
                 ></Badge>
               </Menu.Item>
@@ -73,8 +92,12 @@ class Navbar extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
+  console.log("navbar console state", state);
   return {
     count: state.count,
   };
 };
-export default withRouter(connect(mapStateToProps)(Navbar));
+const mapDispatchToProps = () => {
+  return {};
+};
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

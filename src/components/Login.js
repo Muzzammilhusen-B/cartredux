@@ -85,12 +85,12 @@ class Login extends Component {
     // console.log(this.state);
 
     if (remember && this.handleValidation(this.state.errors)) {
-      console.log("Form submitted with stored data", this.state);
+      // console.log("Form submitted with stored data", this.state);
       this.redirectLoginHome();
       localStorage.setItem("logindata", JSON.stringify(this.state));
       saveToLocalStorage();
     } else if (this.handleValidation(this.state.errors)) {
-      console.log("Form submitted without stored data", this.state);
+      // console.log("Form submitted without stored data", this.state);
       this.redirectLoginHome();
       saveToLocalStorage();
     } else if (!this.handleValidation()) {

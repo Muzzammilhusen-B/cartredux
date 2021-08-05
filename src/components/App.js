@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/forgotpwd" exact component={Forgotpwd} />
           <Route path="/loginhome" exact component={LoginHome} />
           <Route path="/registered" exact component={Registered} />
-          <Route path="/loginhome/cart/:id" exact component={CartDetails} />
+          <Route path="/loginhome/cart" exact component={CartDetails} />
           {/* <Route path="/loginhome/cart" exact component={Cart} /> */}
         </Switch>
       </BrowserRouter>
