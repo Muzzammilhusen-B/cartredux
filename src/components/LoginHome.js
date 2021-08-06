@@ -10,12 +10,20 @@ import {
   InputNumber,
   Descriptions,
 } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import { addToCart, addQuantity } from "../actions/index";
+import {
+  ShoppingCartOutlined,
+  PlusCircleOutlined,
+  CaretDownOutlined,
+  CaretUpOutlined,
+} from "@ant-design/icons";
+import { addToCart, addQuantity, subQuantity } from "../actions/index";
 import logo from "./logo.png";
 import { connect } from "react-redux";
 // import Navbar from "./Navbar";
-import { loadFromLocalStorage, saveToLocalStorage } from "../localStorage";
+import {
+  //  loadFromLocalStorage,
+  saveToLocalStorage,
+} from "../localStorage";
 // import { saveToLocalStorage } from "../localStorage";
 // import { withRouter } from "react-router-dom";
 
@@ -37,19 +45,15 @@ class LoginHome extends React.Component {
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
-    console.log(
-      "logout state",
-      localStorage.setItem("cartState", JSON.stringify(this.props))
-    );
     const { history } = this.props;
     if (history) history.push("/");
   };
 
-  redirectToCartDisplay = (items, e) => () => {
+  redirectToCartDisplay = (id, e) => () => {
     // e.preventDefault();
-    console.log("for cart id", items);
-    const { id } = items;
-    this.setState({ count: this.state.count + 1 });
+    // console.log("for cart id", items);
+    // const { id } = items;
+    this.setState({ count: this.props.count + 1 });
     this.props.addToCart(id);
 
     // const { history } = this.props;
@@ -67,7 +71,13 @@ class LoginHome extends React.Component {
     this.setState({ count: this.state.count + 1 });
   };
 
-  onQuantityChange = () => {};
+  // handleAddQunatity = (id) => {
+  //   this.props.addQuantity(id);
+  // };
+  handleSubtractQunatity = (id) => {
+    this.props.subQuantity(id);
+    this.setState({ count: this.props.items.quantity - 1 });
+  };
 
   render() {
     if (saveToLocalStorage()) return <div>Loading..</div>;
@@ -94,10 +104,13 @@ class LoginHome extends React.Component {
                   type="primary"
                   onClick={this.redirectToCart}
                   icon={<ShoppingCartOutlined />}
-                  onChange={this.onChange}
+                  // onChange={this.onChange}
                   // disabled={this.state.count >= 5 ? true : ""}
                 >
-                  <Badge count={this.props.count} className="head-example">
+                  <Badge
+                    count={this.props.count === 0 ? 0 : this.props.count}
+                    className="head-example"
+                  >
                     Cart{" "}
                   </Badge>
                 </Button>
@@ -160,26 +173,33 @@ class LoginHome extends React.Component {
                     <Descriptions.Item>{item.description}</Descriptions.Item>
                   </li>{" "}
                   <span>
+                    <h3 style={{ marginTop: "10px" }}>
+                      Quantity:
+                      {/* <CaretUpOutlined
+                        disabled={item.quantity >= 5 ? true : ""}
+                        onClick={() => {
+                          this.handleAddQunatity(item.id);
+                        }}
+                      /> */}
+                      {` ${
+                        item.quantity === undefined ? 0 : `${item.quantity}`
+                      }`}
+                      <CaretDownOutlined
+                        onClick={() => {
+                          this.handleSubtractQunatity(item.id);
+                        }}
+                      />
+                    </h3>
                     <Button
                       key={item.id}
-                      value={item}
+                      icon={<PlusCircleOutlined />}
+                      value={item.quantity}
                       type="primary"
-                      onClick={this.redirectToCartDisplay(item)}
-                      disabled={this.state.count >= 5 ? true : ""}
+                      onClick={this.redirectToCartDisplay(item.id)}
+                      disabled={item.quantity >= 5 ? true : ""}
                     >
                       Add {item.name} to Cart
                     </Button>
-                    <h3 style={{ marginTop: "10px" }}>
-                      Quantity:
-                      <InputNumber
-                        // style={{ marginLeft: "10px" }}
-                        // value={this.state.count}
-                        min={0}
-                        max={5}
-                        defaultValue={0}
-                        onChange={this.onQuantityChange}
-                      />{" "}
-                    </h3>
                   </span>
                 </ul>
               );
@@ -207,6 +227,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addQuantity: (id) => {
       dispatch(addQuantity(id));
+    },
+    subQuantity: (id) => {
+      dispatch(subQuantity(id));
     },
   };
 };

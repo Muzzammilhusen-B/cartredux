@@ -65,12 +65,12 @@ class CartDetails extends React.Component {
 
     this.setState({ count: this.state.count - 1 });
   };
-  handleRemove = (items, e) => {
-    const { id } = items;
+  handleRemove = (id) => {
+    // const { id } = this.props.state.addedItems;
+    // console.log("Selected remove item", this.props.state.addedItems);
     // e.preventDefault();
     this.props.remove(id);
-
-    this.setState({ product: [] });
+    // this.setState({ product: [] });
   };
 
   render() {
@@ -85,33 +85,6 @@ class CartDetails extends React.Component {
               flexWrap: "wrap",
             }}
           >
-            {/* <Navbar /> */}
-
-            {/* <Layout className="layout">
-              <Header
-                className="header"
-                style={{ position: "fixed", zIndex: 1, width: "100%" }}
-              >
-                <div className="logo">
-                  <Image src={logo} width={"250px"} />
-                </div>
-                <Menu theme="light" mode="horizontal">
-                  <Menu.Item key="1" onClick={this.redirectLoginHome}>
-                    Home
-                  </Menu.Item>
-                  <Menu.Item key="2">
-                    <ShoppingCartOutlined />
-                    <Badge
-                      count={this.props.count}
-                      className="head-example"
-                    ></Badge>
-                  </Menu.Item>
-                  <Menu.Item key="3" onClick={this.redirectLogout}>
-                    Log out
-                  </Menu.Item>
-                </Menu>
-              </Header>
-            </Layout> */}
             <Layout className="content">
               <Content
                 className="site-layout-background"
@@ -125,6 +98,7 @@ class CartDetails extends React.Component {
                     <Descriptions
                       title={`${item.quantity} nos. of ${item.company} ${item.name}`}
                       layout="vertical"
+                      style={{ marginTop: "10px" }}
                     >
                       <Descriptions.Item>
                         <div
@@ -149,29 +123,31 @@ class CartDetails extends React.Component {
                         </div>
                       </Descriptions.Item>
                     </Descriptions>
-                    <Button
+                    {/* <Button
                       type="primary"
                       // onClick={this.handleIncrease}
                       icon={<PlusCircleOutlined />}
                     >
                       Increase
-                    </Button>{" "}
-                    <Button
+                    </Button>{" "} */}
+                    {/* <Button
                       type="primary"
                       value={item.quantity}
                       disabled={item.quantity === 1 ? true : ""}
                       // onClick={this.handleDecrease}
                       icon={<MinusCircleOutlined />}
-                      onClick={(e) =>
-                        console.log("decrease button clicked", e.target.value)
-                      }
+                      // onClick={(e) =>
+                      //   console.log("decrease button clicked", e.target.value)
+                      // }
                     >
                       Decrease
-                    </Button>{" "}
+                    </Button>{" "} */}
                     <Button
                       type="primary"
                       value={this.props.product}
-                      // onClick={this.handleRemove}
+                      onClick={() => {
+                        this.handleRemove(item.id);
+                      }}
                       icon={<DeleteOutlined />}
                     >
                       Remove
@@ -184,7 +160,7 @@ class CartDetails extends React.Component {
         );
       })
     ) : (
-      <p>Nothing..</p>
+      <p>Nothing...! :(</p>
     );
     let total = this.props.total;
 
@@ -196,9 +172,13 @@ class CartDetails extends React.Component {
           <Content>
             <h1 style={{ marginTop: "200px" }}>You have ordered</h1>
             <ul>{product}</ul>
-            <p>
-              <strong>Total amount:</strong> {total} ₹.
-            </p>{" "}
+            {total === 0 ? (
+              ""
+            ) : (
+              <p>
+                <strong>Total amount:</strong> {total} ₹.
+              </p>
+            )}
           </Content>
         </Layout>
 
@@ -215,7 +195,7 @@ class CartDetails extends React.Component {
 const mapStateToProps = (state) => {
   console.log("cartdetails connect function items state", state);
   return {
-    state: state,
+    // state: state,
     items: state.addedItems,
     count: state.count,
     total: state.total,
