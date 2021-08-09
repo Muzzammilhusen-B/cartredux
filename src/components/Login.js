@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./login.css";
 import { Link, withRouter } from "react-router-dom";
 import { saveToLocalStorage } from "../localStorage";
+import { Input } from "antd";
 
 class Login extends Component {
   state = {
@@ -52,9 +53,9 @@ class Login extends Component {
         break;
       case "password":
         errors.password = !value.match(
-          "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,10}$"
+          "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,1000}$"
         )
-          ? "*Password should contain one smallcase, uppercase, symbol & number each and between 6-10 length"
+          ? "*Password should contain one smallcase, uppercase, symbol & number each and minimum 6 in length"
           : "";
         break;
       default:
@@ -73,8 +74,14 @@ class Login extends Component {
   //form(fields) validation
   handleValidation = () => {
     let formIsValid = true;
-
-    return formIsValid;
+    if (
+      this.state.errors.password === "" &&
+      this.state.errors.username === ""
+    ) {
+      return formIsValid;
+    } else {
+      return false;
+    }
   };
 
   //form submit handler
@@ -106,7 +113,7 @@ class Login extends Component {
           <h1 style={{ color: "blue" }}>Login Form</h1>
           <label>
             Username :{""}
-            <input
+            <Input
               type="text"
               name="username"
               value={this.state.username}
@@ -121,7 +128,7 @@ class Login extends Component {
           <br />
           <label>
             Password : {""}
-            <input
+            <Input.Password
               type="password"
               width={"100%"}
               value={this.state.password}
