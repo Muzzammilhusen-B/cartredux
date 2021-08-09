@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./login.css";
 import { Link, withRouter } from "react-router-dom";
 import { saveToLocalStorage } from "../localStorage";
-import { Input } from "antd";
+import { Button, Input, Form } from "antd";
 
 class Login extends Component {
   state = {
@@ -109,7 +109,7 @@ class Login extends Component {
     const { errors } = this.state;
     return (
       <div>
-        <form className="login-form" onSubmit={this.handleSubmit}>
+        <Form className="login-form">
           <h1 style={{ color: "blue" }}>Login Form</h1>
           <label>
             Username :{""}
@@ -119,7 +119,7 @@ class Login extends Component {
               value={this.state.username}
               onChange={this.handleChange}
               placeholder="Username"
-              style={{ marginLeft: "8px" }}
+              style={{ marginTop: "10px", marginLeft: "8px" }}
               required
             />
           </label>
@@ -157,20 +157,21 @@ class Login extends Component {
           <Link className="login-form-forgot" to="/forgotpwd">
             Forgot passwod
           </Link>
-          <button
+          <Button
             className="login-form-button"
-            type="submit"
-            style={{
-              color: "white",
-              backgroundColor: "blue",
-              marginRight: "8px",
-              marginTop: "10px",
-            }}
+            type="primary"
+            onClick={this.handleSubmit}
+            // style={{
+            //   color: "white",
+            //   backgroundColor: "blue",
+            //   marginRight: "8px",
+            //   marginTop: "10px",
+            // }}
           >
             Log in
-          </button>
+          </Button>
           or <Link to="/registration">Register Now</Link>
-        </form>
+        </Form>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import "./cartDetails.css";
 import "antd/dist/antd.css";
 import Navbar from "./Navbar";
 import {
@@ -88,49 +89,53 @@ class CartDetails extends React.Component {
             <Layout className="content">
               <Content
                 className="site-layout-background"
-                style={{ marginTop: ``, justifyContent: "center" }}
+                style={{
+                  marginTop: ``,
+                  justifyContent: "center",
+                  background: "#E1FCEC",
+                }}
               >
-                <li key={item.id}>
-                  <div
-                    className="site-layout-background"
-                    style={{ textAlign: "center" }}
+                {/* <li key={item.id}> */}
+                <div
+                  className="site-layout-background"
+                  style={{ textAlign: "center" }}
+                >
+                  <Descriptions
+                    title={`${item.quantity} nos. of ${item.company} ${item.name}`}
+                    layout="vertical"
+                    style={{ marginTop: "10px" }}
                   >
-                    <Descriptions
-                      title={`${item.quantity} nos. of ${item.company} ${item.name}`}
-                      layout="vertical"
-                      style={{ marginTop: "10px" }}
-                    >
-                      <Descriptions.Item>
-                        <div
-                          style={{
-                            display: "block",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            width: "30%",
-                          }}
-                        >
-                          <Image
-                            alt={item.name}
-                            width={"250px"}
-                            height={"250px"}
-                            src={item.image}
-                          />
-                          <span>
-                            <p>Price: {item.price} ₹.</p>
-                            <p>Quantity: {item.quantity}</p>
-                          </span>{" "}
-                          {/* {item.description} */}
-                        </div>
-                      </Descriptions.Item>
-                    </Descriptions>
-                    {/* <Button
+                    <Descriptions.Item>
+                      <div
+                        style={{
+                          display: "block",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                          width: "30%",
+                        }}
+                      >
+                        <Image
+                          alt={item.name}
+                          width={"250px"}
+                          height={"250px"}
+                          src={item.image}
+                        />
+                        <span>
+                          <p>Price: {item.price} ₹.</p>
+                          <p>Quantity: {item.quantity}</p>
+                        </span>{" "}
+                        {/* {item.description} */}
+                      </div>
+                    </Descriptions.Item>
+                  </Descriptions>
+                  {/* <Button
                       type="primary"
                       // onClick={this.handleIncrease}
                       icon={<PlusCircleOutlined />}
                     >
                       Increase
                     </Button>{" "} */}
-                    {/* <Button
+                  {/* <Button
                       type="primary"
                       value={item.quantity}
                       disabled={item.quantity === 1 ? true : ""}
@@ -142,18 +147,18 @@ class CartDetails extends React.Component {
                     >
                       Decrease
                     </Button>{" "} */}
-                    <Button
-                      type="primary"
-                      value={this.props.product}
-                      onClick={() => {
-                        this.handleRemove(item.id);
-                      }}
-                      icon={<DeleteOutlined />}
-                    >
-                      Remove
-                    </Button>{" "}
-                  </div>
-                </li>
+                  <Button
+                    type="primary"
+                    value={this.props.product}
+                    onClick={() => {
+                      this.handleRemove(item.id);
+                    }}
+                    icon={<DeleteOutlined />}
+                  >
+                    Remove
+                  </Button>{" "}
+                </div>
+                {/* </li> */}
               </Content>
             </Layout>
           </div>
@@ -168,7 +173,11 @@ class CartDetails extends React.Component {
     return (
       <div>
         <Navbar />
-        <Layout>
+        <Layout
+          style={{
+            background: "#E1FCEC",
+          }}
+        >
           <Content>
             <h1 style={{ marginTop: "200px" }}>You have ordered</h1>
             <ul>{product}</ul>
@@ -180,10 +189,10 @@ class CartDetails extends React.Component {
               </p>
             )}
           </Content>
-        </Layout>
+          {/* </Layout> */}
 
-        <Layout>
-          <Footer style={{ textAlign: "center" }}>
+          {/* <Layout> */}
+          <Footer style={{ textAlign: "center", alignContent: "end" }}>
             User Form Design ©2021.
           </Footer>
         </Layout>

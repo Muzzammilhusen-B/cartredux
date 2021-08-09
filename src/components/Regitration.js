@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./login.css";
+import { Button, Form, Input } from "antd";
 
 class Registration extends React.Component {
   state = {
@@ -108,8 +109,20 @@ class Registration extends React.Component {
   //form validation handle
   handleValidation = () => {
     let formIsValid = true;
-
-    return formIsValid;
+    const { firstname, lastname, username, password, confirm_password, email } =
+      this.state.errors;
+    if (
+      password === "" &&
+      username === "" &&
+      firstname === "" &&
+      lastname === "" &&
+      email === "" &&
+      confirm_password === ""
+    ) {
+      return formIsValid;
+    } else {
+      return false;
+    }
   };
 
   //form submit handler
@@ -144,11 +157,13 @@ class Registration extends React.Component {
           <h1>User Registration</h1>
           <h5 style={{ color: "red" }}>* Fields are mandatory</h5>
         </span>
-        <form onSubmit={this.handleRegister}>
-          <div style={{ marginTop: "8px" }}>
+        <Form>
+          <div
+          // style={{ marginTop: "8px" }}
+          >
             <label>
               First name*:
-              <input
+              <Input
                 type="text"
                 name="firstname"
                 defaultValue={firstname}
@@ -165,7 +180,7 @@ class Registration extends React.Component {
           <div style={{ marginTop: "8px" }}>
             <label>
               Last name*:
-              <input
+              <Input
                 type="text"
                 name="lastname"
                 defaultValue={lastname}
@@ -182,7 +197,7 @@ class Registration extends React.Component {
           <div>
             <label>
               Username*:
-              <input
+              <Input
                 type="text"
                 name="username"
                 defaultalue={username}
@@ -199,7 +214,7 @@ class Registration extends React.Component {
           <div>
             <label>
               Email*:
-              <input
+              <Input
                 type="text"
                 name="email"
                 defaultValue={email}
@@ -216,7 +231,7 @@ class Registration extends React.Component {
           <div>
             <label>
               Password*:
-              <input
+              <Input.Password
                 type="password"
                 name="password"
                 defaultValue={password}
@@ -233,7 +248,7 @@ class Registration extends React.Component {
           <div>
             <label>
               Confirm_Password*:
-              <input
+              <Input.Password
                 type="password"
                 name="confirm_password"
                 defaultValue={confirm_password}
@@ -262,15 +277,19 @@ class Registration extends React.Component {
               I agree terms and condition*
             </label>
           </div>
-          <button type="submit" style={{ marginTop: "8px" }}>
+          <Button
+            onClick={this.handleRegister}
+            type="primary"
+            style={{ marginTop: "8px" }}
+          >
             Register
-          </button>
+          </Button>
           <div>
             <Link to="/" style={{ marginTop: "8px" }}>
               Log in
             </Link>
           </div>
-        </form>
+        </Form>
       </div>
     );
   }

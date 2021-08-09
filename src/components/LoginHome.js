@@ -9,6 +9,7 @@ import {
   Badge,
   // InputNumber,
   Descriptions,
+  Carousel,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -96,12 +97,21 @@ class LoginHome extends React.Component {
         <Layout className="layout">
           <Header
             className="header"
-            style={{ position: "fixed", zIndex: 1, width: "100%" }}
+            style={{
+              position: "fixed",
+              zIndex: 1,
+              width: "100%",
+              // background: "black",
+            }}
           >
             <div className="logo">
               <Image src={logo} width={"250px"} />
             </div>
-            <Menu theme="light" mode="horizontal">
+            <Menu
+              theme="light"
+              mode="horizontal"
+              style={{ background: "#7BFEDB" }}
+            >
               <Menu.Item key="1" onClick={this.redirectLoginHome}>
                 Home
               </Menu.Item>
@@ -130,98 +140,108 @@ class LoginHome extends React.Component {
               </Menu.Item>
             </Menu>
           </Header>
-        </Layout>
-        {/* <Navbar /> */}
-        <hr />
+          {/* </Layout> */}
+          {/* <Navbar /> */}
+          <hr />
 
-        <Layout className="content">
-          <Content
-            className="site-layout-background"
+          <Layout
+            className="content"
             style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
+              background: "#E1FCEC",
             }}
           >
-            {product.map((item) => {
-              // console.log(item);
-              return (
-                <ul key={item.id}>
-                  <li value={item}>
-                    <Card
-                      value={item}
-                      id={item.id}
-                      hoverable
-                      alt={item.name}
-                      style={{
-                        marginTop: "120px",
-                        width: "300px",
-                        alignContent: "inherit",
-                        display: "block",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                      }}
-                      cover={
-                        <Image
-                          id={item.id}
-                          alt={item.name}
-                          src={item.image}
-                          value={item}
-                        />
-                      }
-                    >
-                      <Meta
+            <Content
+              className="site-layout-background"
+              style={{
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+              }}
+            >
+              <Carousel autoplay>
+                {product.map((item) => {
+                  // console.log(item);
+                  return (
+                    // <ul key={item.id}>
+                    <div key={item.id}>
+                      {/* <li value={item}> */}
+                      <Card
+                        value={item}
                         id={item.id}
-                        title={item.company}
-                        description={`Price :${item.price} ₹.`}
-                      />
-                    </Card>
-                    <Descriptions.Item>{item.description}</Descriptions.Item>
-                  </li>{" "}
-                  <span>
-                    <h3 style={{ marginTop: "10px" }}>
-                      Quantity:
-                      {/* <CaretUpOutlined
+                        hoverable
+                        alt={item.name}
+                        style={{
+                          marginTop: "120px",
+                          width: "300px",
+                          alignContent: "inherit",
+                          display: "block",
+                          marginLeft: "auto",
+                          marginRight: "auto",
+                        }}
+                        cover={
+                          <Image
+                            id={item.id}
+                            alt={item.name}
+                            src={item.image}
+                            value={item}
+                          />
+                        }
+                      >
+                        <Meta
+                          id={item.id}
+                          title={item.company}
+                          description={`Price :${item.price} ₹.`}
+                          style={{ justifyContent: "center" }}
+                        />
+                      </Card>
+                      <Descriptions.Item>{item.description}</Descriptions.Item>
+                      {/* </li> */}
+                      <span>
+                        <h3 style={{ marginTop: "10px" }}>
+                          Quantity:
+                          {/* <CaretUpOutlined
                         disabled={item.quantity >= 5 ? true : ""}
                         onClick={() => {
                           this.handleAddQunatity(item.id);
                         }}
                       /> */}
-                      {/* {item.quantity} */}
-                      {` ${
-                        this.props.count === 0 || item.quantity === undefined
-                          ? 0
-                          : `${item.quantity}`
-                      }`}
-                      <Button
-                        onClick={() => {
-                          this.handleSubtractQunatity(item.id);
-                        }}
-                        icon={<CaretDownOutlined disabled />}
-                        disabled={this.props.count <= 0 ? true : ""}
-                      >
-                        Decreasec qty.
-                      </Button>
-                    </h3>
-                    <Button
-                      key={item.id}
-                      icon={<PlusCircleOutlined />}
-                      value={item.quantity}
-                      type="primary"
-                      onClick={this.redirectToCartDisplay(item.id)}
-                      disabled={item.quantity >= 5 ? true : ""}
-                    >
-                      Add {item.name} to Cart
-                    </Button>
-                  </span>
-                </ul>
-              );
-            })}
-            <strong>Total: </strong>
-            {this.props.total}
-          </Content>
-        </Layout>
-        <Layout>
+                          {/* {item.quantity} */}
+                          {` ${
+                            this.props.count === 0 ||
+                            item.quantity === undefined
+                              ? 0
+                              : `${item.quantity}`
+                          }`}
+                          <Button
+                            onClick={() => {
+                              this.handleSubtractQunatity(item.id);
+                            }}
+                            icon={<CaretDownOutlined disabled />}
+                            disabled={this.props.count <= 0 ? true : ""}
+                          >
+                            Decreasec qty.
+                          </Button>
+                        </h3>
+                        <Button
+                          key={item.id}
+                          icon={<PlusCircleOutlined />}
+                          value={item.quantity}
+                          type="primary"
+                          onClick={this.redirectToCartDisplay(item.id)}
+                          disabled={item.quantity >= 5 ? true : ""}
+                        >
+                          Add {item.name} to Cart
+                        </Button>
+                      </span>
+                    </div>
+                  );
+                })}
+              </Carousel>
+              <strong>Total: </strong>
+              {this.props.total}
+            </Content>
+          </Layout>
+          {/* <Layout> */}
           <Footer style={{ textAlign: "center" }}>
             User Form Design ©2021.
           </Footer>

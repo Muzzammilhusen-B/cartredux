@@ -70,7 +70,11 @@ class Navbar extends React.Component {
             <div className="logo">
               <Image src={logo} width={"250px"} />
             </div>
-            <Menu theme="light" mode="horizontal">
+            <Menu
+              theme="light"
+              mode="horizontal"
+              style={{ background: "#7BFEDB" }}
+            >
               <Menu.Item key="1" onClick={this.redirectLoginHome}>
                 Home
               </Menu.Item>
