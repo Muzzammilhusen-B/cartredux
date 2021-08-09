@@ -1,4 +1,21 @@
-import { ADD_QUANTITY, ADD_TO_CART, REMOVE_ITEM, SUB_QUANTITY } from "./types";
+import {
+  ADD_QUANTITY,
+  ADD_TO_CART,
+  REMOVE_ITEM,
+  SUB_QUANTITY,
+  FETCH_DATA,
+} from "./types";
+// import { loadFromLocalStorage } from "../localStorage";
+
+// const data = loadFromLocalStorage();
+
+//fetch data
+export const fetchData = (data) => {
+  return {
+    type: FETCH_DATA,
+    data,
+  };
+};
 
 //add to cart
 export const addToCart = (id) => {

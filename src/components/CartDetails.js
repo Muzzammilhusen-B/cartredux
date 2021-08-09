@@ -12,8 +12,8 @@ import {
 } from "antd";
 import {
   // ShoppingCartOutlined,
-  PlusCircleOutlined,
-  MinusCircleOutlined,
+  // PlusCircleOutlined,
+  // MinusCircleOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 // import logo from "./logo.png";
@@ -172,7 +172,7 @@ class CartDetails extends React.Component {
           <Content>
             <h1 style={{ marginTop: "200px" }}>You have ordered</h1>
             <ul>{product}</ul>
-            {total === 0 ? (
+            {this.props.items.quantity === 0 || total === 0 ? (
               ""
             ) : (
               <p>

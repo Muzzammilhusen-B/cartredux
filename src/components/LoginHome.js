@@ -7,16 +7,21 @@ import {
   Card,
   Button,
   Badge,
-  InputNumber,
+  // InputNumber,
   Descriptions,
 } from "antd";
 import {
   ShoppingCartOutlined,
   PlusCircleOutlined,
   CaretDownOutlined,
-  CaretUpOutlined,
+  // CaretUpOutlined,
 } from "@ant-design/icons";
-import { addToCart, addQuantity, subQuantity } from "../actions/index";
+import {
+  addToCart,
+  addQuantity,
+  subQuantity,
+  fetchData,
+} from "../actions/index";
 import logo from "./logo.png";
 import { connect } from "react-redux";
 // import Navbar from "./Navbar";
@@ -35,6 +40,7 @@ class LoginHome extends React.Component {
 
   componentDidMount() {
     // saveToLocalStorage();
+    this.props.fetchData(saveToLocalStorage());
     console.log("this porps mounted items", this.props.items);
   }
 
@@ -108,7 +114,7 @@ class LoginHome extends React.Component {
                   // disabled={this.state.count >= 5 ? true : ""}
                 >
                   <Badge
-                    count={this.props.count === 0 ? 0 : this.props.count}
+                    count={this.props.count > 0 ? this.props.count : ""}
                     className="head-example"
                   >
                     Cart{" "}
@@ -181,14 +187,21 @@ class LoginHome extends React.Component {
                           this.handleAddQunatity(item.id);
                         }}
                       /> */}
+                      {/* {item.quantity} */}
                       {` ${
-                        item.quantity === undefined ? 0 : `${item.quantity}`
+                        this.props.count === 0 || item.quantity === undefined
+                          ? 0
+                          : `${item.quantity}`
                       }`}
-                      <CaretDownOutlined
+                      <Button
                         onClick={() => {
                           this.handleSubtractQunatity(item.id);
                         }}
-                      />
+                        icon={<CaretDownOutlined disabled />}
+                        disabled={this.props.count <= 0 ? true : ""}
+                      >
+                        Decreasec qty.
+                      </Button>
                     </h3>
                     <Button
                       key={item.id}
@@ -204,6 +217,8 @@ class LoginHome extends React.Component {
                 </ul>
               );
             })}
+            <strong>Total: </strong>
+            {this.props.total}
           </Content>
         </Layout>
         <Layout>
@@ -218,10 +233,18 @@ class LoginHome extends React.Component {
 
 const mapStateToProps = (state) => {
   console.log("loginhome redux store state", state);
-  return { items: state.items, count: state.count };
+  return {
+    items: state.items,
+    count: state.count,
+    total: state.total,
+    addedItems: state.addedItems,
+  };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchData: (data) => {
+      dispatch(fetchData(data));
+    },
     addToCart: (id) => {
       dispatch(addToCart(id));
     },
