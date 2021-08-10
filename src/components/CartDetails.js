@@ -10,6 +10,7 @@ import {
   Descriptions,
   Button,
   message,
+  Empty,
   // Badge
 } from "antd";
 import {
@@ -177,7 +178,10 @@ class CartDetails extends React.Component {
         );
       })
     ) : (
-      <p>Nothing...! :(</p>
+      <>
+        <p>Nothing...! :(</p>
+        <Empty description={<span>Empty Cart! Add item from Home</span>} />
+      </>
     );
     let total = this.props.total;
 
