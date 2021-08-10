@@ -89,7 +89,7 @@ const reducer = (state = initialState, action) => {
     let addedItem = state.items.find((item) => item.id === action.id);
 
     //if quantity=0 then it should e removed
-    if (addedItem.quantity === 1) {
+    if (addedItem.quantity === 0) {
       let new_items = state.addedItems.filter((item) => item.id !== action.id);
       let newTotal = state.total - addedItem.price;
       let new_count = state.count - addedItem.amount;

@@ -9,12 +9,14 @@ import {
   Image,
   Descriptions,
   Button,
+  message,
   // Badge
 } from "antd";
 import {
   // ShoppingCartOutlined,
   // PlusCircleOutlined,
   // MinusCircleOutlined,
+  HeartFilled,
   DeleteOutlined,
 } from "@ant-design/icons";
 // import logo from "./logo.png";
@@ -71,6 +73,10 @@ class CartDetails extends React.Component {
     // console.log("Selected remove item", this.props.state.addedItems);
     // e.preventDefault();
     this.props.remove(id);
+    const success = () => {
+      message.success("Item removed from cart");
+    };
+    success();
     // this.setState({ product: [] });
   };
 
@@ -86,13 +92,19 @@ class CartDetails extends React.Component {
               flexWrap: "wrap",
             }}
           >
-            <Layout className="content">
+            <Layout
+              className="content"
+              style={{
+                background: "#c1e0f7",
+              }}
+            >
               <Content
                 className="site-layout-background"
                 style={{
                   marginTop: ``,
                   justifyContent: "center",
-                  background: "#E1FCEC",
+                  // background: "#acdee7",
+                  // background: "#E1FCEC",
                 }}
               >
                 {/* <li key={item.id}> */}
@@ -175,12 +187,14 @@ class CartDetails extends React.Component {
         <Navbar />
         <Layout
           style={{
-            background: "#E1FCEC",
+            background: "#c1e0f7",
+            // background: "#acdee7",
+            // background: "#E1FCEC",
           }}
         >
-          <Content>
-            <h1 style={{ marginTop: "200px" }}>You have ordered</h1>
-            <ul>{product}</ul>
+          <Content style={{ minHeight: "730px" }}>
+            <h1 style={{ marginTop: "60px" }}>You have ordered</h1>
+            {product}
             {this.props.items.quantity === 0 || total === 0 ? (
               ""
             ) : (
@@ -193,6 +207,7 @@ class CartDetails extends React.Component {
 
           {/* <Layout> */}
           <Footer style={{ textAlign: "center", alignContent: "end" }}>
+            <HeartFilled />
             User Form Design ©2021.
           </Footer>
         </Layout>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import {
   Layout,
@@ -10,11 +11,16 @@ import {
   // InputNumber,
   Descriptions,
   Carousel,
+  message,
 } from "antd";
 import {
   ShoppingCartOutlined,
   PlusCircleOutlined,
   CaretDownOutlined,
+  HomeFilled,
+  // HeartTwoTone,
+  HeartFilled,
+  LogoutOutlined,
   // CaretUpOutlined,
 } from "@ant-design/icons";
 import {
@@ -52,6 +58,10 @@ class LoginHome extends React.Component {
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
+    const success = () => {
+      message.success("Log out successfully");
+    };
+    success();
     const { history } = this.props;
     if (history) history.push("/");
   };
@@ -62,7 +72,10 @@ class LoginHome extends React.Component {
     // const { id } = items;
     this.setState({ count: this.props.count + 1 });
     this.props.addToCart(id);
-
+    const success = () => {
+      message.success("Added to cart");
+    };
+    success();
     // const { history } = this.props;
     // if (history) history.push(`/loginhome/cart/`);
   };
@@ -91,7 +104,8 @@ class LoginHome extends React.Component {
 
     // console.log("this porps renderd items", this.props.items);
     const product = this.props.items;
-
+    const addedItems = this.props.addedItems.length;
+    console.log("added item length", addedItems);
     return (
       <div>
         <Layout className="layout">
@@ -101,40 +115,56 @@ class LoginHome extends React.Component {
               position: "fixed",
               zIndex: 1,
               width: "100%",
-              // background: "black",
+              background: "white",
+              // background: "linear-gradient(180deg, #FFC0CB 50%, #00FFFF 50%)",
             }}
           >
-            <div className="logo">
-              <Image src={logo} width={"250px"} />
-            </div>
-            <Menu
-              theme="light"
-              mode="horizontal"
-              style={{ background: "#7BFEDB" }}
+            <div
+              className="logo"
+              style={{
+                float: "left",
+                marginTop: "10px",
+                display: "inline-block",
+              }}
             >
-              <Menu.Item key="1" onClick={this.redirectLoginHome}>
+              <Link to="/loginhome">
+                <Image preview={false} src={logo} width={"150px"} />
+              </Link>
+            </div>
+            <Menu theme="light" mode="horizontal" style={{ float: "right" }}>
+              <Menu.Item
+                key="1"
+                onClick={this.redirectLoginHome}
+                icon={<HomeFilled />}
+              >
                 Home
               </Menu.Item>
-              <Menu.Item key="2" style={{ float: "right" }}>
-                <Button
+              <Menu.Item
+                key="2"
+                onClick={this.redirectToCart}
+                icon={<ShoppingCartOutlined />}
+                style={{ float: "right" }}
+              >
+                {/* <Button
                   type="primary"
                   onClick={this.redirectToCart}
                   icon={<ShoppingCartOutlined />}
                   // onChange={this.onChange}
                   // disabled={this.state.count >= 5 ? true : ""}
+                > */}
+                <Badge
+                  count={this.props.count > 0 ? addedItems : ""}
+                  className="head-example"
                 >
-                  <Badge
-                    count={this.props.count > 0 ? this.props.count : ""}
-                    className="head-example"
-                  >
-                    Cart{" "}
-                  </Badge>
-                </Button>
+                  Cart{" "}
+                </Badge>
+                {/* </Button> */}
               </Menu.Item>
               <Menu.Item
                 key="3"
                 onClick={this.redirectLogout}
                 style={{ float: "right" }}
+                icon={<LogoutOutlined />}
               >
                 Log out
               </Menu.Item>
@@ -147,20 +177,26 @@ class LoginHome extends React.Component {
           <Layout
             className="content"
             style={{
-              background: "#E1FCEC",
+              background: "#c1e0f7",
             }}
           >
             <Content
               className="site-layout-background"
               style={{
+                justifyContent: "center",
                 padding: 24,
                 margin: 0,
-                minHeight: 280,
+                minHeight: 710,
               }}
             >
-              <Carousel autoplay>
+              <Carousel
+                style={{ marginTop: "30px" }}
+                autoplay
+                dotPosition="top"
+              >
                 {product.map((item) => {
-                  // console.log(item);
+                  const addedItems = this.props.addedItems;
+                  console.log("Added item for quantity update", addedItems);
                   return (
                     // <ul key={item.id}>
                     <div key={item.id}>
@@ -171,7 +207,7 @@ class LoginHome extends React.Component {
                         hoverable
                         alt={item.name}
                         style={{
-                          marginTop: "120px",
+                          marginTop: "50px",
                           width: "300px",
                           alignContent: "inherit",
                           display: "block",
@@ -207,8 +243,7 @@ class LoginHome extends React.Component {
                       /> */}
                           {/* {item.quantity} */}
                           {` ${
-                            this.props.count === 0 ||
-                            item.quantity === undefined
+                            addedItems === 0 || item.quantity === undefined
                               ? 0
                               : `${item.quantity}`
                           }`}
@@ -218,6 +253,8 @@ class LoginHome extends React.Component {
                             }}
                             icon={<CaretDownOutlined disabled />}
                             disabled={this.props.count <= 0 ? true : ""}
+                            type="dashed"
+                            danger
                           >
                             Decreasec qty.
                           </Button>
@@ -238,11 +275,13 @@ class LoginHome extends React.Component {
                 })}
               </Carousel>
               <strong>Total: </strong>
-              {this.props.total}
+              {this.props.total} ₹.
             </Content>
           </Layout>
           {/* <Layout> */}
           <Footer style={{ textAlign: "center" }}>
+            {/* <HeartTwoTone twoToneColor="#eb2f96" /> */}
+            <HeartFilled />
             User Form Design ©2021.
           </Footer>
         </Layout>

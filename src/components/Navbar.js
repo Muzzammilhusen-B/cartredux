@@ -1,15 +1,13 @@
 import React from "react";
 import "antd/dist/antd.css";
+import { Layout, Menu, Image, Button, Badge, message } from "antd";
 import {
-  Layout,
-  Menu,
-  Image,
-  // Button,
-  Badge,
-} from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+  ShoppingCartOutlined,
+  HomeFilled,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import logo from "./logo.png";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 // import { addQuantity, subQuantity, remove, addToCart } from "../actions";
 
@@ -30,12 +28,15 @@ class Navbar extends React.Component {
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
-    console.log(
-      "logout state",
-      localStorage.setItem("cartState", JSON.stringify(this.props))
-    );
-    localStorage.setItem("cartState", JSON.stringify(this.props));
-
+    // console.log(
+    //   "logout state",
+    //   localStorage.setItem("cartState", JSON.stringify(this.props))
+    // );
+    // localStorage.setItem("cartState", JSON.stringify(this.props));
+    const success = () => {
+      message.success("Log out successfully");
+    };
+    success();
     const { history } = this.props;
     if (history) history.push("/");
   };
@@ -60,32 +61,68 @@ class Navbar extends React.Component {
   };
 
   render() {
+    const addedItems = this.props.addedItems.length;
     return (
       <div>
         <Layout className="layout">
           <Header
             className="header"
-            style={{ position: "fixed", zIndex: 1, width: "100%" }}
+            style={{
+              position: "fixed",
+              zIndex: 1,
+              width: "100%",
+              background: "white",
+            }}
           >
-            <div className="logo">
-              <Image src={logo} width={"250px"} />
+            <div
+              className="logo"
+              style={{
+                float: "left",
+                marginTop: "10px",
+                display: "inline-block",
+              }}
+            >
+              <Link to="/loginhome">
+                <Image src={logo} width={"150px"} preview={false} />
+              </Link>
             </div>
             <Menu
               theme="light"
               mode="horizontal"
-              style={{ background: "#7BFEDB" }}
+              style={{ background: "white", float: "right" }}
             >
-              <Menu.Item key="1" onClick={this.redirectLoginHome}>
+              <Menu.Item
+                key="1"
+                onClick={this.redirectLoginHome}
+                icon={<HomeFilled />}
+              >
                 Home
               </Menu.Item>
-              <Menu.Item key="2">
-                <ShoppingCartOutlined onClick={this.redirectToCart} />
+              <Menu.Item
+                key="2"
+                onClick={this.redirectToCart}
+                icon={<ShoppingCartOutlined />}
+              >
+                {/* <Button
+                  type="primary"
+                  onClick={this.redirectToCart}
+                  icon={<ShoppingCartOutlined />}
+                  // onChange={this.onChange}
+                  // disabled={this.state.count >= 5 ? true : ""}
+                > */}
                 <Badge
-                  count={this.props.count}
+                  count={this.props.count > 0 ? addedItems : ""}
                   className="head-example"
-                ></Badge>
+                >
+                  Cart{" "}
+                </Badge>
+                {/* </Button> */}
               </Menu.Item>
-              <Menu.Item key="3" onClick={this.redirectLogout}>
+              <Menu.Item
+                key="3"
+                onClick={this.redirectLogout}
+                icon={<LogoutOutlined />}
+              >
                 Log out
               </Menu.Item>
             </Menu>
@@ -99,6 +136,7 @@ const mapStateToProps = (state) => {
   console.log("navbar console state", state);
   return {
     count: state.count,
+    addedItems: state.addedItems,
   };
 };
 const mapDispatchToProps = () => {

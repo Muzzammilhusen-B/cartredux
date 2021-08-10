@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./login.css";
 import { Button, Form, Input } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 class Registration extends React.Component {
   state = {
@@ -198,6 +199,7 @@ class Registration extends React.Component {
             <label>
               Username*:
               <Input
+                prefix={<UserOutlined className="site-form-item-icon" />}
                 type="text"
                 name="username"
                 defaultalue={username}
@@ -232,6 +234,7 @@ class Registration extends React.Component {
             <label>
               Password*:
               <Input.Password
+                prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 name="password"
                 defaultValue={password}
@@ -248,15 +251,25 @@ class Registration extends React.Component {
           <div>
             <label>
               Confirm_Password*:
-              <Input.Password
-                type="password"
-                name="confirm_password"
-                defaultValue={confirm_password}
-                id="confirm_password"
-                placeholder="Enter password"
-                onChange={this.handleOnchange}
-                required
-              />
+              <Form.Item
+                hasFeedback
+                validateStatus={
+                  this.state.errors.confirm_password === ""
+                    ? "success"
+                    : "error"
+                }
+              >
+                <Input.Password
+                  id="sucess"
+                  type="password"
+                  name="confirm_password"
+                  defaultValue={confirm_password}
+                  // id="confirm_password"
+                  placeholder="Enter password"
+                  onChange={this.handleOnchange}
+                  required
+                />
+              </Form.Item>
             </label>
           </div>
           <br />

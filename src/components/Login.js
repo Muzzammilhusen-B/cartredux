@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import "./login.css";
 import { Link, withRouter } from "react-router-dom";
 import { saveToLocalStorage } from "../localStorage";
-import { Button, Input, Form } from "antd";
+import { Button, Input, Form, message } from "antd";
+import { UserOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons";
 
 class Login extends Component {
   state = {
@@ -90,14 +91,18 @@ class Login extends Component {
     const { remember } = this.state;
     // console.log(remember);
     // console.log(this.state);
-
+    const success = () => {
+      message.success("You are Logged in.");
+    };
     if (remember && this.handleValidation(this.state.errors)) {
       // console.log("Form submitted with stored data", this.state);
+      success();
       this.redirectLoginHome();
       localStorage.setItem("logindata", JSON.stringify(this.state));
       saveToLocalStorage();
     } else if (this.handleValidation(this.state.errors)) {
       // console.log("Form submitted without stored data", this.state);
+      success();
       this.redirectLoginHome();
       saveToLocalStorage();
     } else if (!this.handleValidation()) {
@@ -114,6 +119,7 @@ class Login extends Component {
           <label>
             Username :{""}
             <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
               type="text"
               name="username"
               value={this.state.username}
@@ -129,6 +135,7 @@ class Login extends Component {
           <label>
             Password : {""}
             <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               width={"100%"}
               value={this.state.password}
@@ -161,6 +168,7 @@ class Login extends Component {
             className="login-form-button"
             type="primary"
             onClick={this.handleSubmit}
+            icon={<LoginOutlined />}
             // style={{
             //   color: "white",
             //   backgroundColor: "blue",
