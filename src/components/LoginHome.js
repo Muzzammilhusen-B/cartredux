@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
+import "./loginhome.css";
 import {
   Layout,
   Menu,
@@ -9,9 +10,12 @@ import {
   Button,
   Badge,
   // InputNumber,
-  Descriptions,
-  Carousel,
+  // Descriptions,
+  // Carousel,
   message,
+  Row,
+  Col,
+  // Dropdown,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -21,6 +25,7 @@ import {
   // HeartTwoTone,
   HeartFilled,
   LogoutOutlined,
+  // DownOutlined,
   // CaretUpOutlined,
 } from "@ant-design/icons";
 import {
@@ -28,6 +33,10 @@ import {
   addQuantity,
   subQuantity,
   fetchData,
+  // general,
+  // sports,
+  // music,
+  allCategory,
 } from "../actions/index";
 import logo from "./logo.png";
 import { connect } from "react-redux";
@@ -36,6 +45,7 @@ import {
   //  loadFromLocalStorage,
   saveToLocalStorage,
 } from "../localStorage";
+// import SubMenu from "antd/lib/menu/SubMenu";
 // import { saveToLocalStorage } from "../localStorage";
 // import { withRouter } from "react-router-dom";
 
@@ -48,7 +58,7 @@ class LoginHome extends React.Component {
   componentDidMount() {
     // saveToLocalStorage();
     this.props.fetchData(saveToLocalStorage());
-    console.log("this porps mounted items", this.props.items);
+    // console.log("this porps mounted items", this.props.items);
   }
 
   redirectLoginHome = (e) => {
@@ -98,14 +108,46 @@ class LoginHome extends React.Component {
     this.props.subQuantity(id);
     this.setState({ count: this.props.items.quantity - 1 });
   };
+  //General category display
+  handleGeneral = (id) => {
+    console.log("id clicked", id);
+    // this.props.general(categoryId);
+  };
+  //Sports item dispay
+  handleSports = () => {
+    // const renderSports = this.props.items.map((item) =>
+    //   item.categoryId === 2 ? item : null
+    // );
+    // console.log(renderSports);
+    this.props.sports();
+  };
+  //Music item dispay
+
+  handleMusic = () => {
+    // const renderMusic = this.props.items.map((item) =>
+    //   item.categoryId === 3 ? item : null
+    // );
+    // console.log(renderMusic);
+    this.props.music();
+  };
+  handleAllCategory = (id) => {
+    console.log("Id clicked inall", id);
+    this.props.allCategory(id);
+  };
 
   render() {
     if (saveToLocalStorage()) return <div>Loading..</div>;
 
-    // console.log("this porps renderd items", this.props.items);
     const product = this.props.items;
+    const category = this.props.category;
+    // console.log(
+    //   "category name",
+    //   category.map((item) => item.cat_name)
+    // );
+
     const addedItems = this.props.addedItems.length;
-    console.log("added item length", addedItems);
+    // console.log("added item length", addedItems);
+
     return (
       <div>
         <Layout className="layout">
@@ -131,117 +173,136 @@ class LoginHome extends React.Component {
                 <Image preview={false} src={logo} width={"150px"} />
               </Link>
             </div>
-            <Menu theme="light" mode="horizontal" style={{ float: "right" }}>
+            <Menu mode="horizontal" style={{ float: "right" }}>
               <Menu.Item
-                key="1"
+                key="0"
                 onClick={this.redirectLoginHome}
                 icon={<HomeFilled />}
               >
                 Home
               </Menu.Item>
+              {category.map((item) => {
+                return (
+                  <Menu.Item
+                    key={item.cat_id}
+                    id={item.cat_id}
+                    onClick={() => this.handleAllCategory(item.cat_id)}
+                  >
+                    {item.cat_name}
+                  </Menu.Item>
+                );
+              })}
               <Menu.Item
-                key="2"
+                key="8"
                 onClick={this.redirectToCart}
                 icon={<ShoppingCartOutlined />}
                 style={{ float: "right" }}
               >
-                {/* <Button
-                  type="primary"
-                  onClick={this.redirectToCart}
-                  icon={<ShoppingCartOutlined />}
-                  // onChange={this.onChange}
-                  // disabled={this.state.count >= 5 ? true : ""}
-                > */}
                 <Badge
                   count={this.props.count > 0 ? addedItems : ""}
                   className="head-example"
                 >
                   Cart{" "}
                 </Badge>
-                {/* </Button> */}
               </Menu.Item>
               <Menu.Item
-                key="3"
+                key="9"
                 onClick={this.redirectLogout}
-                style={{ float: "right" }}
+                // style={{ float: "right" }}
                 icon={<LogoutOutlined />}
               >
                 Log out
               </Menu.Item>
             </Menu>
           </Header>
-          {/* </Layout> */}
-          {/* <Navbar /> */}
+
           <hr />
 
           <Layout
             className="content"
             style={{
-              background: "#c1e0f7",
+              background: "hsla(332, 53%, 82%, 1)",
+
+              background:
+                "linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+
+              background:
+                "-moz-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+
+              background:
+                "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+
+              filter:
+                "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
+              marginTop: "50px",
+              display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "row",
+              maxHeight: "auto",
+              maxWidth: "100%",
             }}
           >
-            <Content
-              className="site-layout-background"
-              style={{
-                justifyContent: "center",
-                padding: 24,
-                margin: 0,
-                minHeight: 710,
-              }}
-            >
-              <Carousel
-                style={{ marginTop: "30px" }}
-                autoplay
-                dotPosition="top"
-              >
-                {product.map((item) => {
-                  const addedItems = this.props.addedItems;
-                  console.log("Added item for quantity update", addedItems);
-                  return (
-                    // <ul key={item.id}>
-                    <div key={item.id}>
-                      {/* <li value={item}> */}
-                      <Card
-                        value={item}
-                        id={item.id}
-                        hoverable
-                        alt={item.name}
-                        style={{
-                          marginTop: "50px",
-                          width: "300px",
-                          alignContent: "inherit",
-                          display: "block",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                        }}
-                        cover={
-                          <Image
-                            id={item.id}
-                            alt={item.name}
-                            src={item.image}
-                            value={item}
-                          />
-                        }
-                      >
-                        <Meta
+            {product.map((item) => {
+              const addedItems = this.props.addedItems;
+              // console.log("Added item for quantity update", addedItems);
+              return (
+                <Content
+                  // className="flex-container"
+                  // style={{
+                  //   display: "flex",
+                  //   flexWrap: "wrap",
+                  //   flexDirection: "row",
+                  //   maxHeight: "100%",
+                  // }}
+                  key={item.id}
+                >
+                  <div
+                    key={item.id}
+                    style={
+                      {
+                        // maxHeight: "100%",
+                        // maxHeight: "350px",
+                        // display: "flex",
+                        // flexWrap: "wrap",
+                        // flexFlow: "row wrap",
+                        // flexDirection: "row",
+                      }
+                    }
+                  >
+                    {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col className="gutter-row" span={6}> */}
+                    <Card
+                      value={item}
+                      id={item.id}
+                      hoverable
+                      alt={item.name}
+                      style={{
+                        maxHeight: "450px",
+                        marginTop: "20px",
+                        width: "200px",
+                        // alignContent: "inherit",
+                        // display: "block",
+                        marginLeft: "20px",
+                        marginBottom: "10px",
+                      }}
+                      cover={
+                        <Image
                           id={item.id}
-                          title={item.company}
-                          description={`Price :${item.price} ₹.`}
-                          style={{ justifyContent: "center" }}
+                          alt={item.name}
+                          src={item.image}
+                          value={item}
                         />
-                      </Card>
-                      <Descriptions.Item>{item.description}</Descriptions.Item>
-                      {/* </li> */}
+                      }
+                    >
+                      <Meta
+                        id={item.id}
+                        title={`${item.name} (${item.company})`}
+                        description={`Price :${item.price} ₹.`}
+                        style={{ justifyContent: "center" }}
+                      />
                       <span>
                         <h3 style={{ marginTop: "10px" }}>
                           Quantity:
-                          {/* <CaretUpOutlined
-                        disabled={item.quantity >= 5 ? true : ""}
-                        onClick={() => {
-                          this.handleAddQunatity(item.id);
-                        }}
-                      /> */}
-                          {/* {item.quantity} */}
                           {` ${
                             addedItems === 0 || item.quantity === undefined
                               ? 0
@@ -267,16 +328,19 @@ class LoginHome extends React.Component {
                           onClick={this.redirectToCartDisplay(item.id)}
                           disabled={item.quantity >= 5 ? true : ""}
                         >
-                          Add {item.name} to Cart
+                          Add to Cart
                         </Button>
                       </span>
-                    </div>
-                  );
-                })}
-              </Carousel>
-              <strong>Total: </strong>
-              {this.props.total} ₹.
-            </Content>
+                    </Card>
+                    {/* </Col>
+                    </Row> */}
+                    {/* <Descriptions.Item>{item.description}</Descriptions.Item> */}
+                  </div>
+                </Content>
+              );
+            })}
+            <hr />
+            <strong>Total: {this.props.total} ₹. </strong>
           </Layout>
           {/* <Layout> */}
           <Footer style={{ textAlign: "center" }}>
@@ -293,6 +357,7 @@ class LoginHome extends React.Component {
 const mapStateToProps = (state) => {
   console.log("loginhome redux store state", state);
   return {
+    category: state.category,
     items: state.items,
     count: state.count,
     total: state.total,
@@ -313,6 +378,67 @@ const mapDispatchToProps = (dispatch) => {
     subQuantity: (id) => {
       dispatch(subQuantity(id));
     },
+
+    allCategory: (id) => {
+      dispatch(allCategory(id));
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LoginHome);
+
+// general: (id) => {
+//   dispatch(general(id));
+// },
+// sports: (id) => {
+//   dispatch(sports(id));
+// },
+// music: (id) => {
+//   dispatch(music(id));
+// },
+//sub menu down
+// {
+//   /* <SubMenu icon={<DownOutlined />} title="Category" key="3">
+//                 {/* <Menu.Item key="4" onClick={this.handleAllCategory}>
+//                   All
+//                 </Menu.Item> */
+// }
+// {
+//   /* {category.map((item) => {
+//                 return (
+//                   <Menu.Item
+//                     key={item.cat_id}
+//                     id={item.cat_id}
+//                     onClick={() => this.handleAllCategory(item.cat_id)}
+//                   >
+//                     {item.cat_name}
+//                   </Menu.Item>
+//                 );
+//               })} */
+// }
+// {
+/* <Menu.Item
+                  key="5"
+                  id={category.cat_name === "General" ? category.cat_id : ""}
+                  onClick={this.handleGeneral}
+                >
+                  General
+                </Menu.Item>
+                <Menu.Item key="6" onClick={this.handleSports}>
+                  Sports
+                </Menu.Item>
+                <Menu.Item key="7" onClick={this.handleMusic}>
+                  Music
+                </Menu.Item>
+                <Menu.Item key="8" onClick={this.handleMobile}>
+                  Mobile
+                </Menu.Item>
+                <Menu.Item key="9" onClick={this.handleTV}>
+                  TV
+                </Menu.Item>
+                <Menu.Item key="10" onClick={this.handleLaptop}>
+                  Laptop
+                </Menu.Item> */
+// }
+// {
+/* </SubMenu> */
+// }

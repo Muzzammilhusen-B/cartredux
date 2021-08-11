@@ -4,6 +4,10 @@ import {
   REMOVE_ITEM,
   SUB_QUANTITY,
   FETCH_DATA,
+  // GENERAL,
+  // SPORTS,
+  // MUSIC,
+  ALLCATEGORY,
 } from "./types";
 // import { loadFromLocalStorage } from "../localStorage";
 
@@ -35,4 +39,19 @@ export const addQuantity = (id) => {
 //subtract quan.
 export const subQuantity = (id) => {
   return { type: SUB_QUANTITY, id };
+};
+//display general
+// export const general = (id) => {
+//   return { type: GENERAL, id };
+// };
+// //display sports
+// export const sports = (id) => {
+//   return { type: SPORTS, id };
+// }; //display music
+// export const music = (id) => {
+//   return { type: MUSIC, id };
+// };
+//display All category
+export const allCategory = (id) => {
+  return { type: ALLCATEGORY, id };
 };

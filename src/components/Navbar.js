@@ -1,6 +1,13 @@
 import React from "react";
 import "antd/dist/antd.css";
-import { Layout, Menu, Image, Button, Badge, message } from "antd";
+import {
+  Layout,
+  Menu,
+  Image,
+  // Button,
+  Badge,
+  message,
+} from "antd";
 import {
   ShoppingCartOutlined,
   HomeFilled,
