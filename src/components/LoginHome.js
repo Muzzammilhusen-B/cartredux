@@ -1,7 +1,8 @@
 import React from "react";
+import Footerbar from "./Footer";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
-import "./loginhome.css";
+// import "./loginhome.css";
 import {
   Layout,
   Menu,
@@ -13,8 +14,8 @@ import {
   // Descriptions,
   // Carousel,
   message,
-  Row,
-  Col,
+  // Row,
+  // Col,
   // Dropdown,
 } from "antd";
 import {
@@ -23,7 +24,7 @@ import {
   CaretDownOutlined,
   HomeFilled,
   // HeartTwoTone,
-  HeartFilled,
+  // HeartFilled,
   LogoutOutlined,
   // DownOutlined,
   // CaretUpOutlined,
@@ -49,7 +50,7 @@ import {
 // import { saveToLocalStorage } from "../localStorage";
 // import { withRouter } from "react-router-dom";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 const { Meta } = Card;
 
 class LoginHome extends React.Component {
@@ -131,7 +132,7 @@ class LoginHome extends React.Component {
     this.props.music();
   };
   handleAllCategory = (id) => {
-    console.log("Id clicked inall", id);
+    console.log("Id clicked in all", id);
     this.props.allCategory(id);
   };
 
@@ -221,133 +222,102 @@ class LoginHome extends React.Component {
           <Layout
             className="content"
             style={{
-              background: "hsla(332, 53%, 82%, 1)",
-
-              background:
-                "linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
-
-              background:
-                "-moz-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
-
               background:
                 "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
-
               filter:
                 "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
               marginTop: "50px",
               display: "flex",
               flexWrap: "wrap",
               flexDirection: "row",
-              maxHeight: "auto",
+              maxHeight: "relative",
               maxWidth: "100%",
+              justifyContent: "space-around",
+              marginBottom: "10px",
             }}
           >
             {product.map((item) => {
               const addedItems = this.props.addedItems;
               // console.log("Added item for quantity update", addedItems);
               return (
-                <Content
-                  // className="flex-container"
-                  // style={{
-                  //   display: "flex",
-                  //   flexWrap: "wrap",
-                  //   flexDirection: "row",
-                  //   maxHeight: "100%",
-                  // }}
-                  key={item.id}
-                >
-                  <div
-                    key={item.id}
-                    style={
-                      {
-                        // maxHeight: "100%",
-                        // maxHeight: "350px",
-                        // display: "flex",
-                        // flexWrap: "wrap",
-                        // flexFlow: "row wrap",
-                        // flexDirection: "row",
-                      }
+                <Content key={item.id} style={{}}>
+                  {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                      <Col className="gutter-row" span={6}> */}
+                  <Card
+                    value={item}
+                    id={item.id}
+                    hoverable
+                    alt={item.name}
+                    style={{
+                      // maxHeight: "300px",
+                      padding: "2%",
+                      flex: "0 0 200px",
+                      // flexGrow: "1",
+                      // flexBasis: "16",
+                      marginTop: "20px",
+                      maxWidth: "200px",
+                      marginLeft: "20px",
+                      marginBottom: "10px",
+                    }}
+                    cover={
+                      <Image
+                        id={item.id}
+                        alt={item.name}
+                        src={item.image}
+                        value={item}
+                      />
                     }
                   >
-                    {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                      <Col className="gutter-row" span={6}> */}
-                    <Card
-                      value={item}
+                    <Meta
                       id={item.id}
-                      hoverable
-                      alt={item.name}
-                      style={{
-                        maxHeight: "450px",
-                        marginTop: "20px",
-                        width: "200px",
-                        // alignContent: "inherit",
-                        // display: "block",
-                        marginLeft: "20px",
-                        marginBottom: "10px",
-                      }}
-                      cover={
-                        <Image
-                          id={item.id}
-                          alt={item.name}
-                          src={item.image}
-                          value={item}
-                        />
-                      }
+                      title={`${item.name} (${item.company})`}
+                      description={`Price :${item.price} ₹.`}
+                      style={{ justifyContent: "center" }}
+                    />
+                    {/* <span> */}
+                    <h3>
+                      Quantity:
+                      {` ${
+                        addedItems === 0 || item.quantity === undefined
+                          ? 0
+                          : `${item.quantity}`
+                      }`}
+                      <Button
+                        onClick={() => {
+                          this.handleSubtractQunatity(item.id);
+                        }}
+                        icon={<CaretDownOutlined disabled />}
+                        disabled={this.props.count <= 0 ? true : ""}
+                        type="dashed"
+                        danger
+                      >
+                        Remove qty.
+                      </Button>
+                    </h3>
+                    <Button
+                      key={item.id}
+                      icon={<PlusCircleOutlined />}
+                      value={item.quantity}
+                      type="primary"
+                      onClick={this.redirectToCartDisplay(item.id)}
+                      disabled={item.quantity >= 5 ? true : ""}
                     >
-                      <Meta
-                        id={item.id}
-                        title={`${item.name} (${item.company})`}
-                        description={`Price :${item.price} ₹.`}
-                        style={{ justifyContent: "center" }}
-                      />
-                      <span>
-                        <h3 style={{ marginTop: "10px" }}>
-                          Quantity:
-                          {` ${
-                            addedItems === 0 || item.quantity === undefined
-                              ? 0
-                              : `${item.quantity}`
-                          }`}
-                          <Button
-                            onClick={() => {
-                              this.handleSubtractQunatity(item.id);
-                            }}
-                            icon={<CaretDownOutlined disabled />}
-                            disabled={this.props.count <= 0 ? true : ""}
-                            type="dashed"
-                            danger
-                          >
-                            Decreasec qty.
-                          </Button>
-                        </h3>
-                        <Button
-                          key={item.id}
-                          icon={<PlusCircleOutlined />}
-                          value={item.quantity}
-                          type="primary"
-                          onClick={this.redirectToCartDisplay(item.id)}
-                          disabled={item.quantity >= 5 ? true : ""}
-                        >
-                          Add to Cart
-                        </Button>
-                      </span>
-                    </Card>
-                    {/* </Col>
+                      Add to Cart
+                    </Button>
+                    {/* </span> */}
+                  </Card>
+                  {/* </Col>
                     </Row> */}
-                    {/* <Descriptions.Item>{item.description}</Descriptions.Item> */}
-                  </div>
+                  {/* <Descriptions.Item>{item.description}</Descriptions.Item> */}
                 </Content>
               );
             })}
             <hr />
-            <strong>Total: {this.props.total} ₹. </strong>
+            {/* <strong>Total: {this.props.total} ₹. </strong> */}
           </Layout>
-          {/* <Layout> */}
-          <Footer style={{ textAlign: "center" }}>
-            {/* <HeartTwoTone twoToneColor="#eb2f96" /> */}
-            <HeartFilled />
-            User Form Design ©2021.
-          </Footer>
+
+          {/* footer from resuable component footerbar */}
+          <Footerbar />
         </Layout>
       </div>
     );

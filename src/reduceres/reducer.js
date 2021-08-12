@@ -1,4 +1,4 @@
-// import _ from "lodash";
+import _ from "lodash";
 // import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 import {
@@ -12,7 +12,7 @@ import {
   // SPORTS,
   SUB_QUANTITY,
 } from "../actions/types";
-import { loadFromLocalStorage } from "../localStorage";
+import { loadFromLocalStorage, product } from "../localStorage";
 // import { product } from "../localStorage";
 // import { loadFromLocalStorage } from "../localStorage";
 
@@ -21,6 +21,7 @@ const initialState = {
   addedItems: [],
   count: 0,
   total: 0,
+  category: product.category,
 };
 
 const reducer = (state = initialState, action) => {
@@ -120,55 +121,33 @@ const reducer = (state = initialState, action) => {
 
   //for all category display
   if (action.type === ALLCATEGORY) {
-    let selectedCategory = state.category.find((item) => action.id === item.id);
+    let selectedCategory = state.category.find(
+      (item) => action.id === item.cat_id
+    );
     // console.log("selected category in reducer", selectedCategory);
+    let allItems = loadFromLocalStorage();
+    // console.log("all items", allItems.items);
+    let itemToDisplay = allItems.items.filter(
+      (item) => selectedCategory.cat_name === item.categoryName
+    );
 
-    return {
-      ...state,
-      items: state.items,
-      category: state.category,
-    };
+    console.log("Items to display particular category", itemToDisplay);
+
+    if (itemToDisplay.length > 0) {
+      return {
+        ...state,
+        items: itemToDisplay,
+
+        category: state.category,
+      };
+    } else {
+      return {
+        ...state,
+        items: allItems.items,
+        category: state.category,
+      };
+    }
   }
   return state;
 };
 export default reducer;
-
-//for general item
-// if (action.type === GENERAL) {
-//   let remainItems = state.items;
-//   console.log("remain items", remainItems);
-//   const renderGeneral = state.items.filter((item) => item.categoryId === 1);
-//   console.log("slice item", renderGeneral);
-//   // .map((item) =>
-//   //   item.categoryId === 1 ? item : undefined
-//   // );
-//   // const rend = _.compact(renderGeneral);
-//   // const rend = renderGeneral.filter((element) => element !== undefined);
-//   // console.log("GE", rend);
-//   return {
-//     ...state,
-//     items: renderGeneral,
-//   };
-// } //for sports item
-// if (action.type === SPORTS) {
-//   const renderSports = state.items.filter((item) => item.categoryId === 2);
-//   //   item.categoryId === 2 ? item : undefined
-//   // );
-//   // const rend = renderSports.filter((element) => element !== undefined);
-//   // console.log("SE", rend);
-//   return {
-//     ...state,
-//     items: renderSports,
-//   };
-// } //for music item
-// if (action.type === MUSIC) {
-//   const renderMusic = state.items.filter((item) => item.categoryId === 3);
-//   // item.categoryId === 3 ? item : undefined
-//   // );
-//   // const rend = renderMusic.filter((element) => element !== undefined);
-//   // console.log("ME", rend);
-//   return {
-//     ...state,
-//     items: renderMusic,
-//   };
-// }

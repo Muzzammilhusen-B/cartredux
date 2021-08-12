@@ -11,8 +11,9 @@ export const product = {
   items: [
     {
       // categoryId: 1,
-      // categoryName: "General",
+      categoryName: "General",
       id: 1,
+
       name: "Book",
       image:
         "https://api.time.com/wp-content/uploads/2015/06/521811839-copy.jpg?quality=85&w=507&h=338&crop=1",
@@ -24,7 +25,7 @@ export const product = {
     },
     {
       // categoryId: 1,
-      // // categoryName: "General",
+      categoryName: "General",
       id: 2,
       name: "Pen",
       image:
@@ -38,7 +39,7 @@ export const product = {
     },
     {
       // categoryId: 1,
-      // // categoryName: "General",
+      categoryName: "General",
       id: 3,
       name: "Laptop",
       image:
@@ -53,6 +54,7 @@ export const product = {
     {
       // categoryId: 2,?orts",
       id: 4,
+      categoryName: "Sports",
       name: "Tennis Ball",
       image:
         "https://shop.wimbledon.com/media/catalog/product/cache/547f30c8484c363d8725d9ba08f784c4/s/l/slazenger_giant_yellow_1_1000.jpg",
@@ -65,7 +67,7 @@ export const product = {
     },
     {
       // categoryId: 2,
-      // // categoryName: "Sports",
+      categoryName: "Sports",
       id: 5,
       name: "Bat",
       image:
@@ -79,7 +81,7 @@ export const product = {
     },
     {
       // categoryId: 2,
-      // categoryName: "Sports",
+      categoryName: "Sports",
       id: 6,
       name: "Helmet",
       image:
@@ -93,7 +95,7 @@ export const product = {
     },
     {
       // categoryId: 3,
-      // categoryName: "Music",
+      categoryName: "Music",
       id: 7,
       name: "Guitar",
       image:
@@ -107,7 +109,7 @@ export const product = {
     },
     {
       // categoryId: 3,
-      // categoryName: "Music",
+      categoryName: "Music",
       id: 8,
       name: "Harmonica",
       image:
@@ -121,7 +123,7 @@ export const product = {
     },
     {
       // categoryId: 3,
-      // categoryName: "Music",
+      categoryName: "Music",
       id: 9,
       name: "Violin",
       image:
@@ -135,6 +137,7 @@ export const product = {
     },
     {
       id: 10,
+      categoryName: "Mobile",
       name: "Samsung S21",
       image:
         "https://fdn.gsmarena.com/imgroot/reviews/21/samsung-galaxy-s21-ultra/lifestyle/-1200w5/gsmarena_003.jpg",
@@ -147,6 +150,7 @@ export const product = {
     },
     {
       id: 11,
+      categoryName: "Mobile",
       name: "Redmi 10i",
       image:
         "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1609753737.77488855.png",
@@ -159,6 +163,7 @@ export const product = {
     },
     {
       id: 12,
+      categoryName: "Mobile",
       name: "Iphone X",
       image:
         "https://drop.ndtv.com/TECH/product_database/images/913201720152AM_635_iphone_x.jpeg",
@@ -171,6 +176,7 @@ export const product = {
     },
     {
       id: 13,
+      categoryName: "TV",
       name: "Smart TV X65",
       image:
         "https://i.gadgets360cdn.com/products/large/redmi-smart-tv-x65-db-800x450-1615966045.jpg",
@@ -182,6 +188,7 @@ export const product = {
         "With over 85% of the NTSC color space and 92% DCI-P3 delivering more colors, get richer contrast bringing every element to life. With over 85% of the NTSC color space and 92% DCI-P3 delivering more colors, get richer contrast bringing every element to life.",
     },
     {
+      categoryName: "TV",
       id: 14,
       name: "Smart TV S10",
       image:
@@ -194,6 +201,7 @@ export const product = {
         "Samsung may at any time and in its sole discretion without prior warning or notice change the voice assistant services or suspend and/or cease providing the voice assistant services or any part of the voice assistant services. Content, TV services and capabilities pictured may not be available in all regions and territories.",
     },
     {
+      categoryName: "TV",
       id: 15,
       name: "LG Smart 32inch",
       image:
@@ -206,6 +214,7 @@ export const product = {
         "LG smart TVs are Internet-connected televisions that offer access to a world of entertainment. Enjoy movies, TV, games, videos and apps; LG's smart TVs make entertaining the family easier than ever.",
     },
     {
+      categoryName: "Laptop",
       id: 16,
       name: "Dell inspiron 15 Laptop",
       image:
@@ -218,6 +227,7 @@ export const product = {
         "Dell Inspiron 15 is a Windows 10 Home laptop with a 15.60-inch display that has a resolution of 1920x1080 pixels. It is powered by a Core i5 processor and it comes with 8GB of RAM. The Dell Inspiron 15 packs 1TB of HDD storage. Graphics are powered by AMD Radeon 530 Graphics.",
     },
     {
+      categoryName: "Laptop",
       id: 17,
       name: "Dell Vostro Laptop",
       image:
@@ -230,6 +240,7 @@ export const product = {
         "Dell Inspiron 15 is a Windows 10 Home laptop with a 15.60-inch display that has a resolution of 1920x1080 pixels. It is powered by a Core i5 processor and it comes with 8GB of RAM. The Dell Inspiron 15 packs 1TB of HDD storage. Graphics are powered by AMD Radeon 530 Graphics.",
     },
     {
+      categoryName: "Laptop",
       id: 18,
       name: "HP Pavilion",
       image:

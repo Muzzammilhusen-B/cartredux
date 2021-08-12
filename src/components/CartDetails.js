@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "./cartDetails.css";
 import "antd/dist/antd.css";
 import Navbar from "./Navbar";
+import Footerbar from "./Footer";
 import {
   Layout,
   //  Menu,
@@ -11,13 +12,15 @@ import {
   Button,
   message,
   Empty,
+  Row,
+  Col,
   // Badge
 } from "antd";
 import {
   // ShoppingCartOutlined,
   // PlusCircleOutlined,
   // MinusCircleOutlined,
-  HeartFilled,
+  // HeartFilled,
   DeleteOutlined,
 } from "@ant-design/icons";
 // import logo from "./logo.png";
@@ -28,7 +31,7 @@ import { addQuantity, addToCart, subQuantity, remove } from "../actions";
 const {
   //  Header,
   Content,
-  Footer,
+  // Footer,
 } = Layout;
 
 class CartDetails extends React.Component {
@@ -87,23 +90,33 @@ class CartDetails extends React.Component {
         return (
           <div
             key={item.id}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-            }}
+            style={
+              {
+                // display: "flex",
+                // flexWrap: "wrap",
+                // flexDirection: "row",
+              }
+            }
           >
             <Layout
               className="content"
-              style={{
-                background: "#c1e0f7",
-              }}
+              style={
+                {
+                  // display: "flex",
+                  // flexWrap: "wrap",
+                  // flexDirection: "row",
+                  // background: "#c1e0f7",
+                }
+              }
             >
               <Content
                 className="site-layout-background"
                 style={{
                   marginTop: ``,
                   justifyContent: "center",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  flexDirection: "row",
                   // background: "#acdee7",
                   // background: "#E1FCEC",
                 }}
@@ -191,14 +204,23 @@ class CartDetails extends React.Component {
         <Navbar />
         <Layout
           style={{
-            background: "#c1e0f7",
+            // background: "#c1e0f7",
+
+            background:
+              "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+
+            filter:
+              "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
+
             // background: "#acdee7",
             // background: "#E1FCEC",
           }}
         >
           <Content style={{ minHeight: "730px" }}>
             <h1 style={{ marginTop: "60px" }}>You have ordered</h1>
+
             {product}
+
             {this.props.items.quantity === 0 || total === 0 ? (
               ""
             ) : (
@@ -207,13 +229,9 @@ class CartDetails extends React.Component {
               </p>
             )}
           </Content>
-          {/* </Layout> */}
 
-          {/* <Layout> */}
-          <Footer style={{ textAlign: "center", alignContent: "end" }}>
-            <HeartFilled />
-            User Form Design ©2021.
-          </Footer>
+          {/* footer from reusable component */}
+          <Footerbar />
         </Layout>
       </div>
     );
