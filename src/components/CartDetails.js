@@ -12,8 +12,8 @@ import {
   Button,
   message,
   Empty,
-  Row,
-  Col,
+  // Row,
+  // Col,
   // Badge
 } from "antd";
 import {
@@ -85,83 +85,84 @@ class CartDetails extends React.Component {
   };
 
   render() {
-    let product = this.props.items.length ? (
-      this.props.items.map((item) => {
-        return (
-          <div
-            key={item.id}
-            style={
-              {
-                // display: "flex",
-                // flexWrap: "wrap",
-                // flexDirection: "row",
-              }
-            }
-          >
-            <Layout
-              className="content"
+    let product =
+      this.props.items.length && this.props.total !== 0 ? (
+        this.props.items.map((item) => {
+          return (
+            <div
+              key={item.id}
               style={
                 {
                   // display: "flex",
                   // flexWrap: "wrap",
                   // flexDirection: "row",
-                  // background: "#c1e0f7",
                 }
               }
             >
-              <Content
-                className="site-layout-background"
+              <Layout
+                className="content"
                 style={{
-                  marginTop: ``,
-                  justifyContent: "center",
-                  display: "flex",
-                  flexWrap: "wrap",
-                  flexDirection: "row",
-                  // background: "#acdee7",
-                  // background: "#E1FCEC",
+                  maxHeight: "relative",
+                  justifyContent: "space-around",
+                  alignContent: "space-around",
+
+                  // display: "flex",
+                  // flexWrap: "wrap",
+                  // flexDirection: "row",
+                  // background: "#c1e0f7",
                 }}
               >
-                {/* <li key={item.id}> */}
-                <div
+                <Content
                   className="site-layout-background"
-                  style={{ textAlign: "center" }}
+                  style={{
+                    justifyContent: "space-around",
+                    alignContent: "space-around",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    flexDirection: "row",
+                  }}
                 >
-                  <Descriptions
-                    title={`${item.quantity} nos. of ${item.company} ${item.name}`}
-                    layout="vertical"
-                    style={{ marginTop: "10px" }}
+                  {/* <li key={item.id}> */}
+                  <div
+                    className="site-layout-background"
+                    style={{ textAlign: "center" }}
                   >
-                    <Descriptions.Item>
-                      <div
-                        style={{
-                          display: "block",
-                          marginLeft: "auto",
-                          marginRight: "auto",
-                          width: "30%",
-                        }}
-                      >
-                        <Image
-                          alt={item.name}
-                          width={"250px"}
-                          height={"250px"}
-                          src={item.image}
-                        />
-                        <span>
-                          <p>Price: {item.price} ₹.</p>
-                          <p>Quantity: {item.quantity}</p>
-                        </span>{" "}
-                        {/* {item.description} */}
-                      </div>
-                    </Descriptions.Item>
-                  </Descriptions>
-                  {/* <Button
+                    <Descriptions
+                      title={`${item.quantity} nos. of ${item.company} ${item.name}`}
+                      layout="vertical"
+                      style={{ marginTop: "10px" }}
+                    >
+                      <Descriptions.Item>
+                        <div
+                          style={{
+                            display: "block",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            width: "30%",
+                          }}
+                        >
+                          <Image
+                            alt={item.name}
+                            width={"250px"}
+                            height={"250px"}
+                            src={item.image}
+                          />
+                          <span>
+                            <p>Price: {item.price} ₹.</p>
+                            <p>Quantity: {item.quantity}</p>
+                          </span>{" "}
+                          {/* {item.description} */}
+                        </div>
+                      </Descriptions.Item>
+                    </Descriptions>
+                    {/* <Button
                       type="primary"
                       // onClick={this.handleIncrease}
                       icon={<PlusCircleOutlined />}
                     >
                       Increase
                     </Button>{" "} */}
-                  {/* <Button
+                    {/* <Button
                       type="primary"
                       value={item.quantity}
                       disabled={item.quantity === 1 ? true : ""}
@@ -173,29 +174,29 @@ class CartDetails extends React.Component {
                     >
                       Decrease
                     </Button>{" "} */}
-                  <Button
-                    type="primary"
-                    value={this.props.product}
-                    onClick={() => {
-                      this.handleRemove(item.id);
-                    }}
-                    icon={<DeleteOutlined />}
-                  >
-                    Remove
-                  </Button>{" "}
-                </div>
-                {/* </li> */}
-              </Content>
-            </Layout>
-          </div>
-        );
-      })
-    ) : (
-      <>
-        <p>Nothing...! :(</p>
-        <Empty description={<span>Empty Cart! Add item from Home</span>} />
-      </>
-    );
+                    <Button
+                      type="primary"
+                      value={this.props.product}
+                      onClick={() => {
+                        this.handleRemove(item.id);
+                      }}
+                      icon={<DeleteOutlined />}
+                    >
+                      Remove
+                    </Button>{" "}
+                  </div>
+                  {/* </li> */}
+                </Content>
+              </Layout>
+            </div>
+          );
+        })
+      ) : (
+        <>
+          <p>Nothing...! :(</p>
+          <Empty description={<span>Empty Cart! Add item from Home</span>} />
+        </>
+      );
     let total = this.props.total;
 
     console.log("All total", total);
@@ -205,24 +206,31 @@ class CartDetails extends React.Component {
         <Layout
           style={{
             // background: "#c1e0f7",
-
+            minHeight: "relative",
             background:
               "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
 
             filter:
               "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-
-            // background: "#acdee7",
-            // background: "#E1FCEC",
+            justifyContent: "space-around",
+            alignContent: "space-around",
           }}
         >
-          <Content style={{ minHeight: "730px" }}>
-            <h1 style={{ marginTop: "60px" }}>You have ordered</h1>
+          <Content>
+            <h1
+              style={{
+                marginTop: "60px",
+                justifyContent: "space-around",
+                alignContent: "space-around",
+              }}
+            >
+              You have ordered
+            </h1>
 
             {product}
 
-            {this.props.items.quantity === 0 || total === 0 ? (
-              ""
+            {this.props.items.quantity === 0 || Math.sign(total) === -1 ? (
+              <strong>Total: "There is problem in reducer logic"</strong>
             ) : (
               <p>
                 <strong>Total amount:</strong> {total} ₹.

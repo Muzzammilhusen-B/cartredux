@@ -7,3 +7,4 @@ export const GENERAL = "GENERAL";
 export const SPORTS = "SPORTS";
 export const MUSIC = "MUSIC";
 export const ALLCATEGORY = "ALLCATEGORY";
+export const HOME = "HOME";

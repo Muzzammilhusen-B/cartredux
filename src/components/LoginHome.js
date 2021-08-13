@@ -8,35 +8,27 @@ import {
   Menu,
   Image,
   Card,
-  Button,
   Badge,
-  // InputNumber,
-  // Descriptions,
-  // Carousel,
   message,
-  // Row,
-  // Col,
-  // Dropdown,
+  Divider,
+  Space,
+  Popover,
+  Tag,
 } from "antd";
 import {
   ShoppingCartOutlined,
-  PlusCircleOutlined,
+  PlusCircleTwoTone,
   CaretDownOutlined,
   HomeFilled,
-  // HeartTwoTone,
-  // HeartFilled,
   LogoutOutlined,
-  // DownOutlined,
-  // CaretUpOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import {
   addToCart,
   addQuantity,
   subQuantity,
   fetchData,
-  // general,
-  // sports,
-  // music,
+  home,
   allCategory,
 } from "../actions/index";
 import logo from "./logo.png";
@@ -62,9 +54,9 @@ class LoginHome extends React.Component {
     // console.log("this porps mounted items", this.props.items);
   }
 
-  redirectLoginHome = (e) => {
+  redirectLoginHome = (e, data) => {
     // e.preventDefault();
-
+    this.props.home(data);
     const { history } = this.props;
     if (history) history.push("/loginhome");
   };
@@ -110,27 +102,7 @@ class LoginHome extends React.Component {
     this.setState({ count: this.props.items.quantity - 1 });
   };
   //General category display
-  handleGeneral = (id) => {
-    console.log("id clicked", id);
-    // this.props.general(categoryId);
-  };
-  //Sports item dispay
-  handleSports = () => {
-    // const renderSports = this.props.items.map((item) =>
-    //   item.categoryId === 2 ? item : null
-    // );
-    // console.log(renderSports);
-    this.props.sports();
-  };
-  //Music item dispay
 
-  handleMusic = () => {
-    // const renderMusic = this.props.items.map((item) =>
-    //   item.categoryId === 3 ? item : null
-    // );
-    // console.log(renderMusic);
-    this.props.music();
-  };
   handleAllCategory = (id) => {
     console.log("Id clicked in all", id);
     this.props.allCategory(id);
@@ -216,109 +188,115 @@ class LoginHome extends React.Component {
               </Menu.Item>
             </Menu>
           </Header>
+        </Layout>
+        <hr />
 
-          <hr />
+        <Layout
+          className="content"
+          style={{
+            background:
+              "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+            filter:
+              "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
+            marginTop: "50px",
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            height: "relative",
+            maxWidth: "100%",
+            justifyContent: "space-around",
+            alignContent: "space-around",
 
-          <Layout
-            className="content"
-            style={{
-              background:
-                "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
-              filter:
-                "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-              marginTop: "50px",
-              display: "flex",
-              flexWrap: "wrap",
-              flexDirection: "row",
-              maxHeight: "relative",
-              maxWidth: "100%",
-              justifyContent: "space-around",
-              marginBottom: "10px",
-            }}
-          >
-            {product.map((item) => {
-              const addedItems = this.props.addedItems;
-              // console.log("Added item for quantity update", addedItems);
-              return (
-                <Content key={item.id} style={{}}>
-                  {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            padding: "10px",
+            // marginBottom: "10px",
+          }}
+        >
+          {product.map((item) => {
+            const addedItems = this.props.addedItems;
+            // console.log("Added item for quantity update", addedItems);
+            return (
+              <Content key={item.id} style={{}}>
+                {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
                       <Col className="gutter-row" span={6}> */}
-                  <Card
-                    value={item}
-                    id={item.id}
-                    hoverable
-                    alt={item.name}
-                    style={{
-                      // maxHeight: "300px",
-                      padding: "2%",
-                      flex: "0 0 200px",
-                      // flexGrow: "1",
-                      // flexBasis: "16",
-                      marginTop: "20px",
-                      maxWidth: "200px",
-                      marginLeft: "20px",
-                      marginBottom: "10px",
-                    }}
-                    cover={
-                      <Image
-                        id={item.id}
-                        alt={item.name}
-                        src={item.image}
-                        value={item}
-                      />
-                    }
-                  >
-                    <Meta
+                <Card
+                  value={item}
+                  id={item.id}
+                  hoverable
+                  alt={item.name}
+                  style={{
+                    justifyContent: "space-around",
+                    maxHeight: "400px",
+                    padding: "2%",
+                    flex: "0 0 200px",
+                    marginTop: "20px",
+                    maxWidth: "200px",
+                    marginBottom: "10px",
+                  }}
+                  cover={
+                    <Image
                       id={item.id}
-                      title={`${item.name} (${item.company})`}
-                      description={`Price :${item.price} ₹.`}
-                      style={{ justifyContent: "center" }}
+                      alt={item.name}
+                      src={item.image}
+                      value={item}
+                      style={{ height: "200px" }}
                     />
-                    {/* <span> */}
-                    <h3>
-                      Quantity:
+                  }
+                >
+                  <Meta
+                    id={item.id}
+                    title={`${item.name} (${item.company})`}
+                    description={`Price :${item.price} ₹.`}
+                    style={{ justifyContent: "center" }}
+                  />
+
+                  <Divider orientation="center" style={{ color: "black" }}>
+                    <Space>
+                      <PlusCircleTwoTone
+                        disabled={item.quantity >= 5 ? true : ""}
+                        value={item.quantity}
+                        onClick={this.redirectToCartDisplay(item.id)}
+                        style={{ fontSize: "20px" }}
+                      />
                       {` ${
                         addedItems === 0 || item.quantity === undefined
                           ? 0
                           : `${item.quantity}`
                       }`}
-                      <Button
-                        onClick={() => {
-                          this.handleSubtractQunatity(item.id);
-                        }}
-                        icon={<CaretDownOutlined disabled />}
-                        disabled={this.props.count <= 0 ? true : ""}
-                        type="dashed"
-                        danger
-                      >
-                        Remove qty.
-                      </Button>
-                    </h3>
-                    <Button
-                      key={item.id}
-                      icon={<PlusCircleOutlined />}
-                      value={item.quantity}
-                      type="primary"
-                      onClick={this.redirectToCartDisplay(item.id)}
-                      disabled={item.quantity >= 5 ? true : ""}
-                    >
-                      Add to Cart
-                    </Button>
-                    {/* </span> */}
-                  </Card>
-                  {/* </Col>
-                    </Row> */}
-                  {/* <Descriptions.Item>{item.description}</Descriptions.Item> */}
-                </Content>
-              );
-            })}
-            <hr />
-            {/* <strong>Total: {this.props.total} ₹. </strong> */}
-          </Layout>
+                      {item.quantity === 0 ? (
+                        ""
+                      ) : (
+                        <CaretDownOutlined
+                          disabled
+                          // disabled={this.props.count <= 0 ? true : ""}
+                          onClick={() => {
+                            this.handleSubtractQunatity(item.id);
+                          }}
+                          style={{ fontSize: "20px" }}
+                        />
+                      )}
+                    </Space>{" "}
+                  </Divider>
 
-          {/* footer from resuable component footerbar */}
-          <Footerbar />
+                  <Popover
+                    placement="bottomRight"
+                    title={item.name}
+                    content={item.description}
+                  >
+                    <Tag color="blue" icon={<InfoCircleOutlined />}>
+                      Description
+                    </Tag>
+                  </Popover>
+                </Card>
+              </Content>
+            );
+          })}
+          <hr />
+          {/* <strong>Total: {this.props.total} ₹. </strong> */}
         </Layout>
+
+        {/* footer from resuable component footerbar */}
+        <Footerbar />
+        {/* </Layout> */}
       </div>
     );
   }
@@ -352,63 +330,9 @@ const mapDispatchToProps = (dispatch) => {
     allCategory: (id) => {
       dispatch(allCategory(id));
     },
+    home: (data) => {
+      dispatch(home(data));
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(LoginHome);
-
-// general: (id) => {
-//   dispatch(general(id));
-// },
-// sports: (id) => {
-//   dispatch(sports(id));
-// },
-// music: (id) => {
-//   dispatch(music(id));
-// },
-//sub menu down
-// {
-//   /* <SubMenu icon={<DownOutlined />} title="Category" key="3">
-//                 {/* <Menu.Item key="4" onClick={this.handleAllCategory}>
-//                   All
-//                 </Menu.Item> */
-// }
-// {
-//   /* {category.map((item) => {
-//                 return (
-//                   <Menu.Item
-//                     key={item.cat_id}
-//                     id={item.cat_id}
-//                     onClick={() => this.handleAllCategory(item.cat_id)}
-//                   >
-//                     {item.cat_name}
-//                   </Menu.Item>
-//                 );
-//               })} */
-// }
-// {
-/* <Menu.Item
-                  key="5"
-                  id={category.cat_name === "General" ? category.cat_id : ""}
-                  onClick={this.handleGeneral}
-                >
-                  General
-                </Menu.Item>
-                <Menu.Item key="6" onClick={this.handleSports}>
-                  Sports
-                </Menu.Item>
-                <Menu.Item key="7" onClick={this.handleMusic}>
-                  Music
-                </Menu.Item>
-                <Menu.Item key="8" onClick={this.handleMobile}>
-                  Mobile
-                </Menu.Item>
-                <Menu.Item key="9" onClick={this.handleTV}>
-                  TV
-                </Menu.Item>
-                <Menu.Item key="10" onClick={this.handleLaptop}>
-                  Laptop
-                </Menu.Item> */
-// }
-// {
-/* </SubMenu> */
-// }

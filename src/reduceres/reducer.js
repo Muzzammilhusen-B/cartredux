@@ -1,4 +1,4 @@
-import _ from "lodash";
+// import _ from "lodash";
 // import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 import {
@@ -6,6 +6,7 @@ import {
   ADD_TO_CART,
   ALLCATEGORY,
   FETCH_DATA,
+  HOME,
   // GENERAL,
   // MUSIC,
   REMOVE_ITEM,
@@ -96,7 +97,7 @@ const reducer = (state = initialState, action) => {
   if (action.type === SUB_QUANTITY) {
     let addedItem = state.items.find((item) => item.id === action.id);
 
-    //if quantity=0 then it should e removed
+    //if quantity=0 then it should be removed
     if (addedItem.quantity === 0) {
       let new_items = state.addedItems.filter((item) => item.id !== action.id);
       let newTotal = state.total - addedItem.price;
@@ -147,6 +148,14 @@ const reducer = (state = initialState, action) => {
         category: state.category,
       };
     }
+  }
+  //for home
+  if (action.type === HOME) {
+    let oldData = loadFromLocalStorage();
+    return {
+      ...state,
+      items: oldData.items,
+    };
   }
   return state;
 };

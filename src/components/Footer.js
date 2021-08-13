@@ -14,7 +14,7 @@ const Footerbar = () => {
           clear: "both",
           // marginTop: "20px",
           position: "relative",
-          bottom: "0",
+          // bottom: "0",
           width: "100%",
           height: "20px",
         }}
