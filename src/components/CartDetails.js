@@ -143,8 +143,8 @@ class CartDetails extends React.Component {
                         >
                           <Image
                             alt={item.name}
-                            width={"250px"}
-                            height={"250px"}
+                            width={"100px"}
+                            height={"100px"}
                             src={item.image}
                           />
                           <span>

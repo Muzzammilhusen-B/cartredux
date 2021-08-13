@@ -4,6 +4,7 @@ import Registration from "./Regitration";
 import Forgotpwd from "./Forgotpwd";
 import LoginHome from "./LoginHome";
 import Registered from "./Registered";
+import Product from "./Products";
 // import Cart from "./Cart";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import CartDetails from "./CartDetails";
@@ -23,6 +24,8 @@ const App = () => {
           <Route path="/loginhome" exact component={LoginHome} />
           <Route path="/registered" exact component={Registered} />
           <Route path="/loginhome/cart" exact component={CartDetails} />
+          <Route path="/loginhome/products" exact component={Product} />
+
           {/* <Route path="/loginhome/cart" exact component={Cart} /> */}
         </Switch>
       </BrowserRouter>

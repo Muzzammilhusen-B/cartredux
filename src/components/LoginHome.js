@@ -14,6 +14,7 @@ import {
   Space,
   Popover,
   Tag,
+  Button,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -178,8 +179,11 @@ class LoginHome extends React.Component {
                   Cart{" "}
                 </Badge>
               </Menu.Item>
+              <Menu.Item key="9">
+                <Link to="/loginhome/products">Products</Link>
+              </Menu.Item>
               <Menu.Item
-                key="9"
+                key="10"
                 onClick={this.redirectLogout}
                 // style={{ float: "right" }}
                 icon={<LogoutOutlined />}
@@ -251,12 +255,13 @@ class LoginHome extends React.Component {
 
                   <Divider orientation="center" style={{ color: "black" }}>
                     <Space>
-                      <PlusCircleTwoTone
-                        disabled={item.quantity >= 5 ? true : ""}
+                      <Button
                         value={item.quantity}
                         onClick={this.redirectToCartDisplay(item.id)}
-                        style={{ fontSize: "20px" }}
-                      />
+                        disabled={item.quantity === 5 ? true : ""}
+                      >
+                        <PlusCircleTwoTone style={{ fontSize: "20px" }} />
+                      </Button>
                       {` ${
                         addedItems === 0 || item.quantity === undefined
                           ? 0
@@ -265,14 +270,14 @@ class LoginHome extends React.Component {
                       {item.quantity === 0 ? (
                         ""
                       ) : (
-                        <CaretDownOutlined
-                          disabled
-                          // disabled={this.props.count <= 0 ? true : ""}
+                        <Button
+                          disabled={item.quantity === 0 ? true : ""}
                           onClick={() => {
                             this.handleSubtractQunatity(item.id);
                           }}
-                          style={{ fontSize: "20px" }}
-                        />
+                        >
+                          <CaretDownOutlined style={{ fontSize: "20px" }} />
+                        </Button>
                       )}
                     </Space>{" "}
                   </Divider>

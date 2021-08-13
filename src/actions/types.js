@@ -8,3 +8,5 @@ export const SPORTS = "SPORTS";
 export const MUSIC = "MUSIC";
 export const ALLCATEGORY = "ALLCATEGORY";
 export const HOME = "HOME";
+export const ADD_CATEGORY = "ADD_CATEGORY";
+export const ADD_PRODUCT = "ADD_PRODUCT";

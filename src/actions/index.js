@@ -9,6 +9,7 @@ import {
   // MUSIC,
   ALLCATEGORY,
   HOME,
+  ADD_CATEGORY,
 } from "./types";
 // import { loadFromLocalStorage } from "../localStorage";
 
@@ -49,4 +50,12 @@ export const allCategory = (id) => {
 //show home page
 export const home = (data) => {
   return { type: HOME, data };
+};
+//ADD CATEGORY
+export const addCategory = (id) => {
+  return { type: ADD_CATEGORY, id };
+};
+//ADD product
+export const addProduct = (id) => {
+  return { type: ADD_CATEGORY, id };
 };

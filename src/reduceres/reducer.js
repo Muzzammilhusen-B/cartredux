@@ -2,6 +2,7 @@
 // import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 import {
+  ADD_CATEGORY,
   ADD_QUANTITY,
   ADD_TO_CART,
   ALLCATEGORY,
@@ -64,13 +65,14 @@ const reducer = (state = initialState, action) => {
   if (action.type === REMOVE_ITEM) {
     // console.log("addeditems in remove action", state.addedItems);
     let itemToRemove = state.addedItems.find((item) => action.id === item.id);
-    console.log("item to remove", itemToRemove);
+    console.log("item to remove", itemToRemove.id);
 
     let new_items = state.addedItems.filter((item) => action.id !== item.id);
     let new_count = state.count - itemToRemove.quantity;
 
     //calculation of total
     let newTotal = state.total - itemToRemove.price * itemToRemove.quantity;
+
     return {
       ...state,
       addedItems: new_items,
@@ -156,6 +158,10 @@ const reducer = (state = initialState, action) => {
       ...state,
       items: oldData.items,
     };
+  }
+  if (action.type === ADD_CATEGORY) {
+    let addCategory = state.category;
+    return { ...state, category: addCategory };
   }
   return state;
 };
