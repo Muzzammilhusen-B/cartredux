@@ -1,5 +1,4 @@
 export const product = {
-  addedCategory: [],
   category: [
     { cat_id: 1, cat_name: "All" },
     { cat_id: 2, cat_name: "General" },

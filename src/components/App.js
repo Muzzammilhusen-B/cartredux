@@ -4,10 +4,12 @@ import Registration from "./Regitration";
 import Forgotpwd from "./Forgotpwd";
 import LoginHome from "./LoginHome";
 import Registered from "./Registered";
-import Product from "./Products";
+import Admin from "./Admin";
 // import Cart from "./Cart";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import CartDetails from "./CartDetails";
+import DisplayCategory from "./DisplayCategories";
+import DisplayProduct from "./DisplayProdutcs";
 // import history from "../history";
 
 const App = () => {
@@ -24,7 +26,17 @@ const App = () => {
           <Route path="/loginhome" exact component={LoginHome} />
           <Route path="/registered" exact component={Registered} />
           <Route path="/loginhome/cart" exact component={CartDetails} />
-          <Route path="/loginhome/products" exact component={Product} />
+          <Route path="/loginhome/admin" exact component={Admin} />
+          <Route
+            path="/loginhome/admin/category"
+            exact
+            component={DisplayCategory}
+          />
+          <Route
+            path="/loginhome/admin/product"
+            exact
+            component={DisplayProduct}
+          />
 
           {/* <Route path="/loginhome/cart" exact component={Cart} /> */}
         </Switch>

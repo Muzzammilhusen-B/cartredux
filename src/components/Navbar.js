@@ -35,11 +35,6 @@ class Navbar extends React.Component {
     if (history) history.push("/loginhome");
   };
   redirectLogout = () => {
-    // console.log(
-    //   "logout state",
-    //   localStorage.setItem("cartState", JSON.stringify(this.props))
-    // );
-    // localStorage.setItem("cartState", JSON.stringify(this.props));
     const success = () => {
       message.success("Log out successfully");
     };

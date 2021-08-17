@@ -10,6 +10,7 @@ import {
   ALLCATEGORY,
   HOME,
   ADD_CATEGORY,
+  ADD_PRODUCT,
 } from "./types";
 // import { loadFromLocalStorage } from "../localStorage";
 
@@ -52,10 +53,10 @@ export const home = (data) => {
   return { type: HOME, data };
 };
 //ADD CATEGORY
-export const addCategory = (id) => {
-  return { type: ADD_CATEGORY, id };
+export const addCategory = (data) => {
+  return { type: ADD_CATEGORY, payload: data };
 };
 //ADD product
-export const addProduct = (id) => {
-  return { type: ADD_CATEGORY, id };
+export const addProduct = (data) => {
+  return { type: ADD_PRODUCT, payload: data };
 };

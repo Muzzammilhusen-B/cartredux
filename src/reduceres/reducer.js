@@ -1,8 +1,9 @@
-// import _ from "lodash";
+import _ from "lodash";
 // import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 import {
   ADD_CATEGORY,
+  ADD_PRODUCT,
   ADD_QUANTITY,
   ADD_TO_CART,
   ALLCATEGORY,
@@ -14,7 +15,11 @@ import {
   // SPORTS,
   SUB_QUANTITY,
 } from "../actions/types";
-import { loadFromLocalStorage, product } from "../localStorage";
+import {
+  loadFromLocalStorage,
+  product,
+  // saveToLocalStorage,
+} from "../localStorage";
 // import { product } from "../localStorage";
 // import { loadFromLocalStorage } from "../localStorage";
 
@@ -29,7 +34,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   //data fetch
   if (action.type === FETCH_DATA) {
-    let data = loadFromLocalStorage();
+    let data = product;
     return {
       ...state,
       items: data.items,
@@ -127,9 +132,9 @@ const reducer = (state = initialState, action) => {
     let selectedCategory = state.category.find(
       (item) => action.id === item.cat_id
     );
-    // console.log("selected category in reducer", selectedCategory);
-    let allItems = loadFromLocalStorage();
-    // console.log("all items", allItems.items);
+    console.log("selected category in reducer", selectedCategory);
+    let allItems = product;
+    console.log("all items", allItems.items);
     let itemToDisplay = allItems.items.filter(
       (item) => selectedCategory.cat_name === item.categoryName
     );
@@ -153,15 +158,25 @@ const reducer = (state = initialState, action) => {
   }
   //for home
   if (action.type === HOME) {
-    let oldData = loadFromLocalStorage();
+    let oldData = product;
     return {
       ...state,
       items: oldData.items,
     };
   }
   if (action.type === ADD_CATEGORY) {
-    let addCategory = state.category;
-    return { ...state, category: addCategory };
+    let newCategory = state.category.map((item) => item);
+    // .find((item) => item.id !== action.id);
+    console.log("after add cat state", state);
+
+    return { ...state, category: newCategory };
+  }
+  if (action.type === ADD_PRODUCT) {
+    let newProduct = state.items.map((item) => item);
+    // .find((item) => item.id !== action.id);
+    console.log("after add cat state", state);
+
+    return { ...state, items: newProduct };
   }
   return state;
 };

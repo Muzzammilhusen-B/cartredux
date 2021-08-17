@@ -54,6 +54,9 @@ class LoginHome extends React.Component {
     this.props.fetchData(saveToLocalStorage());
     // console.log("this porps mounted items", this.props.items);
   }
+  componentDidUpdate() {
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
+  }
 
   redirectLoginHome = (e, data) => {
     // e.preventDefault();
@@ -101,6 +104,10 @@ class LoginHome extends React.Component {
   handleSubtractQunatity = (id) => {
     this.props.subQuantity(id);
     this.setState({ count: this.props.items.quantity - 1 });
+    const error = () => {
+      message.error("Item quantity decreased !");
+    };
+    error();
   };
   //General category display
 
@@ -167,7 +174,7 @@ class LoginHome extends React.Component {
                 );
               })}
               <Menu.Item
-                key="8"
+                key="1234"
                 onClick={this.redirectToCart}
                 icon={<ShoppingCartOutlined />}
                 style={{ float: "right" }}
@@ -179,11 +186,11 @@ class LoginHome extends React.Component {
                   Cart{" "}
                 </Badge>
               </Menu.Item>
-              <Menu.Item key="9">
-                <Link to="/loginhome/products">Products</Link>
+              <Menu.Item key="12345">
+                <Link to="/loginhome/admin">Admin</Link>
               </Menu.Item>
               <Menu.Item
-                key="10"
+                key="1123456"
                 onClick={this.redirectLogout}
                 // style={{ float: "right" }}
                 icon={<LogoutOutlined />}
@@ -310,6 +317,7 @@ class LoginHome extends React.Component {
 const mapStateToProps = (state) => {
   console.log("loginhome redux store state", state);
   return {
+    state: state,
     category: state.category,
     items: state.items,
     count: state.count,
