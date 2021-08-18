@@ -263,6 +263,7 @@ class LoginHome extends React.Component {
                   <Divider orientation="center" style={{ color: "black" }}>
                     <Space>
                       <Button
+                        style={{ float: "left" }}
                         value={item.quantity}
                         onClick={this.redirectToCartDisplay(item.id)}
                         disabled={item.quantity === 5 ? true : ""}
@@ -278,6 +279,7 @@ class LoginHome extends React.Component {
                         ""
                       ) : (
                         <Button
+                          style={{ float: "right" }}
                           disabled={item.quantity === 0 ? true : ""}
                           onClick={() => {
                             this.handleSubtractQunatity(item.id);

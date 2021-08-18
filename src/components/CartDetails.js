@@ -8,10 +8,13 @@ import {
   Layout,
   //  Menu,
   Image,
-  Descriptions,
+  // Descriptions,
   Button,
   message,
   Empty,
+  Card,
+  Divider,
+  // Space,
   // Row,
   // Col,
   // Badge
@@ -27,7 +30,7 @@ import {
 import { addQuantity, addToCart, subQuantity, remove } from "../actions";
 
 // import { withRouter } from "react-router-dom";
-
+const { Meta } = Card;
 const {
   //  Header,
   Content,
@@ -89,91 +92,56 @@ class CartDetails extends React.Component {
       this.props.items.length && this.props.total !== 0 ? (
         this.props.items.map((item) => {
           return (
-            <div
-              key={item.id}
-              style={
-                {
-                  // display: "flex",
-                  // flexWrap: "wrap",
-                  // flexDirection: "row",
-                }
-              }
+            <Layout
+            // style={{
+            //   display: "flex",
+            //   flexDirection: "row",
+            //   flexWrap: "wrap",
+            // }}
             >
-              <Layout
-                className="content"
+              <Content
                 style={{
-                  maxHeight: "relative",
-                  justifyContent: "space-around",
-                  alignContent: "space-around",
+                  background:
+                    "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
 
-                  // display: "flex",
-                  // flexWrap: "wrap",
-                  // flexDirection: "row",
-                  // background: "#c1e0f7",
+                  filter:
+                    "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
                 }}
               >
-                <Content
-                  className="site-layout-background"
+                <Card
+                  value={item}
+                  id={item.id}
+                  hoverable
+                  alt={item.name}
                   style={{
-                    justifyContent: "space-around",
-                    alignContent: "space-around",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    flexDirection: "row",
+                    // justifyContent: "left",
+                    maxHeight: "400px",
+                    padding: "2%",
+                    // flex: "0 0 200px",
+                    marginTop: "20px",
+                    maxWidth: "200px",
+                    marginBottom: "10px",
                   }}
+                  cover={
+                    <Image
+                      id={item.id}
+                      alt={item.name}
+                      src={item.image}
+                      value={item}
+                      style={{ height: "200px" }}
+                    />
+                  }
                 >
-                  {/* <li key={item.id}> */}
-                  <div
-                    className="site-layout-background"
-                    style={{ textAlign: "center" }}
-                  >
-                    <Descriptions
-                      title={`${item.quantity} nos. of ${item.company} ${item.name}`}
-                      layout="vertical"
-                      style={{ marginTop: "10px" }}
-                    >
-                      <Descriptions.Item>
-                        <div
-                          style={{
-                            display: "block",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            width: "30%",
-                          }}
-                        >
-                          <Image
-                            alt={item.name}
-                            width={"100px"}
-                            height={"100px"}
-                            src={item.image}
-                          />
-                          <span>
-                            <p>Price: {item.price} ₹.</p>
-                            <p>Quantity: {item.quantity}</p>
-                          </span>{" "}
-                          {/* {item.description} */}
-                        </div>
-                      </Descriptions.Item>
-                    </Descriptions>
-                    {/* <Button
-                      type="primary"
-                      // onClick={this.handleIncrease}
-                      icon={<PlusCircleOutlined />}
-                    >
-                      Increase
-                    </Button>{" "} */}
-                    {/* <Button
-                      type="primary"
-                      value={item.quantity}
-                      disabled={item.quantity === 1 ? true : ""}
-                      // onClick={this.handleDecrease}
-                      icon={<MinusCircleOutlined />}
-                      // onClick={(e) =>
-                      //   console.log("decrease button clicked", e.target.value)
-                      // }
-                    >
-                      Decrease
-                    </Button>{" "} */}
+                  <Meta
+                    id={item.id}
+                    title={`${item.name} (${item.company})`}
+                    description={`Price :${item.price} ₹. Qty ${item.quantity}`}
+                    style={{ justifyContent: "center" }}
+                  />
+                  <Divider orientation="center" style={{ color: "black" }}>
+                    {/* <Space> */}
+                    {/* <p>Price: {item.price} ₹.</p>
+                        <p>Quantity: {item.quantity}</p> */}
                     <Button
                       type="primary"
                       value={this.props.product}
@@ -184,18 +152,36 @@ class CartDetails extends React.Component {
                     >
                       Remove
                     </Button>{" "}
-                  </div>
-                  {/* </li> */}
-                </Content>
-              </Layout>
-            </div>
+                    {/* </Space> */}
+                  </Divider>
+                  {/* <div>
+                        <span>
+                          <p>Price: {item.price} ₹.</p>
+                          <p>Quantity: {item.quantity}</p>
+                        </span>{" "}
+                        <Button
+                          type="primary"
+                          value={this.props.product}
+                          onClick={() => {
+                            this.handleRemove(item.id);
+                          }}
+                          icon={<DeleteOutlined />}
+                        >
+                          Remove
+                        </Button>{" "}
+                      </div> */}
+                </Card>
+              </Content>
+            </Layout>
           );
         })
       ) : (
-        <>
-          <p>Nothing...! :(</p>
-          <Empty description={<span>Empty Cart! Add item from Home</span>} />
-        </>
+        <Content>
+          <div style={{ alignContent: "center" }}>
+            <p>Nothing...! :(</p>
+            <Empty description={<span>Empty Cart! Add item from Home</span>} />
+          </div>
+        </Content>
       );
     let total = this.props.total;
 
@@ -203,40 +189,55 @@ class CartDetails extends React.Component {
     return (
       <div>
         <Navbar />
+
         <Layout
+          className="content"
           style={{
             // background: "#c1e0f7",
-            minHeight: "relative",
+            maxHeight: "relative",
             background:
               "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
 
             filter:
               "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-            justifyContent: "space-around",
-            alignContent: "space-around",
+            // justifyContent: "space-around",
+            // alignContent: "space-around",
+            // display: "flex",
+            // flexDirection: "row",
+            // flexWrap: "wrap",
           }}
         >
-          <Content>
-            <h1
-              style={{
-                marginTop: "60px",
-                justifyContent: "space-around",
-                alignContent: "space-around",
-              }}
-            >
-              You have ordered
-            </h1>
+          <h1
+            style={{
+              marginTop: "60px",
+              alignContent: "center",
+            }}
+          >
+            You have ordered
+          </h1>
+          <Content
+            style={{
+              background:
+                "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+              filter:
+                "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
+              padding: "20px",
 
+              display: "flex",
+
+              flexWrap: "wrap",
+              flexDirection: "row",
+            }}
+          >
             {product}
-
-            {this.props.items.quantity === 0 || Math.sign(total) === -1 ? (
-              <strong>Total: "There is problem in reducer logic"</strong>
-            ) : (
-              <p>
-                <strong>Total amount:</strong> {total} ₹.
-              </p>
-            )}
           </Content>
+          {this.props.items.quantity === 0 || Math.sign(total) === -1 ? (
+            <strong>Total: "There is problem in reducer logic"</strong>
+          ) : (
+            <p>
+              <strong>Total amount:</strong> {total} ₹.
+            </p>
+          )}
 
           {/* footer from reusable component */}
           <Footerbar />

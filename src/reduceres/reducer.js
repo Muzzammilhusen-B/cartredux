@@ -1,4 +1,4 @@
-import _ from "lodash";
+// import _ from "lodash";
 // import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 import {
@@ -16,12 +16,10 @@ import {
   SUB_QUANTITY,
 } from "../actions/types";
 import {
-  loadFromLocalStorage,
+  // loadFromLocalStorage,
   product,
   // saveToLocalStorage,
 } from "../localStorage";
-// import { product } from "../localStorage";
-// import { loadFromLocalStorage } from "../localStorage";
 
 const initialState = {
   items: [],
@@ -134,10 +132,11 @@ const reducer = (state = initialState, action) => {
     );
     console.log("selected category in reducer", selectedCategory);
     let allItems = product;
-    console.log("all items", allItems.items);
+    console.log("all items", allItems);
     let itemToDisplay = allItems.items.filter(
       (item) => selectedCategory.cat_name === item.categoryName
     );
+    // let newItem = state.items.filter((item) => item !== itemToDisplay);
 
     console.log("Items to display particular category", itemToDisplay);
 

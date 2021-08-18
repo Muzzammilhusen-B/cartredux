@@ -35,11 +35,10 @@ class DisplayCategory extends React.Component {
   componentDidMount() {
     loadFromLocalStorage();
   }
-  componentDidUpdate() {
-    localStorage.setItem("cartState", JSON.stringify(this.props.state));
-  }
+  componentDidUpdate() {}
   redirectLoginHome = (e) => {
     // e.preventDefault();
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
     const { history } = this.props;
     if (history) history.push("/loginhome");
   };
@@ -88,15 +87,19 @@ class DisplayCategory extends React.Component {
   handleOk = (value) => {
     // console.log(" okvalue", value);
     // this.props.addCategory(value);
-    console.log("to send reducer", this.state);
+    // console.log("to send reducer", this.props.state);
     const data = this.state;
     const category = this.props.category;
     category.push(data);
+    // console.log("to send reducer after push", this.props.state);
+
     // loadFromLocalStorage();
     // saveToLocalStorage().category.push(data);
 
     // category.push(data);
     this.props.addCategory(data);
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
+
     this.setState({ isModalVisible: false });
   };
 
@@ -120,6 +123,12 @@ class DisplayCategory extends React.Component {
         title: "Category ID",
         key: "cat_id",
         dataIndex: "cat_id",
+      },
+      {
+        title: "Remove",
+        key: "remove",
+        dataIndex: "",
+        render: () => <a href>Remove</a>,
       },
     ];
     return (
@@ -155,17 +164,17 @@ class DisplayCategory extends React.Component {
               style={{ background: "white", float: "right" }}
             >
               <Menu.Item
-                key="1"
+                key="801"
                 onClick={this.redirectLoginHome}
                 icon={<HomeFilled />}
               >
                 Home
               </Menu.Item>
-              <Menu.Item key="2" onClick={this.redirectAdmin}>
+              <Menu.Item key="802" onClick={this.redirectAdmin}>
                 Admin
               </Menu.Item>
               <Menu.Item
-                key="3"
+                key="803"
                 onClick={this.redirectLogout}
                 icon={<LogoutOutlined />}
               >
@@ -196,7 +205,7 @@ class DisplayCategory extends React.Component {
             >
               <Menu theme="dark">
                 <Menu.Item
-                  key="1"
+                  key="901"
                   id={1}
                   icon={<AppstoreAddOutlined />}
                   onClick={this.redirecctCategory}
@@ -204,7 +213,7 @@ class DisplayCategory extends React.Component {
                   Categories
                 </Menu.Item>
                 <Menu.Item
-                  key="2"
+                  key="902"
                   id={2}
                   icon={<FileAddOutlined />}
                   onClick={this.redirecctProduct}

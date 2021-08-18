@@ -29,6 +29,7 @@ import Footerbar from "./Footer";
 import { connect } from "react-redux";
 import { loadFromLocalStorage } from "../localStorage";
 import { addProduct } from "../actions";
+import { Link } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Header, Content, Sider } = Layout;
@@ -49,14 +50,14 @@ class DisplayProduct extends React.Component {
   componentDidMount() {
     loadFromLocalStorage();
   }
-  componentDidUpdate() {
-    localStorage.setItem("cartState", JSON.stringify(this.props.state));
-  }
-  redirectLoginHome = (e) => {
-    // e.preventDefault();
-    const { history } = this.props;
-    if (history) history.push("/loginhome");
-  };
+  componentDidUpdate() {}
+  // redirectLoginHome = (e) => {
+  //   // e.preventDefault();
+  //   localStorage.setItem("cartState", JSON.stringify(this.props.state));
+
+  //   const { history } = this.props;
+  //   if (history) history.push("/loginhome");
+  // };
 
   redirectLogout = () => {
     const success = () => {
@@ -100,11 +101,20 @@ class DisplayProduct extends React.Component {
   handleOk = (value) => {
     console.log("value", value);
     const data = this.state;
-    console.log("to send reducer", data);
+    console.log("to send reducer product state", data);
+    console.log("to send reducer product store state", this.props.state);
+
     const items = this.props.items;
     console.log("items to be", items);
     items.push(data);
+    console.log(
+      "to send reducer product store state after push",
+      this.props.state
+    );
     this.props.addProduct(data);
+
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
+
     // this.props.addCategory(id);
     this.setState({ isModalVisible: false });
   };
@@ -174,11 +184,24 @@ class DisplayProduct extends React.Component {
           </Tooltip>
         ),
       },
-      // {
-      //   title: "Image",
-      //   key: "image",
-      //   dataIndex: "image",
-      // },
+      {
+        title: "Image",
+        key: "image",
+        dataIndex: "image",
+        width: 150,
+        ellipsis: { showTitle: false },
+        render: (image) => (
+          <Tooltip title={image} placement="topLeft">
+            {image}
+          </Tooltip>
+        ),
+      },
+      {
+        title: "Remove",
+        key: "remove",
+        dataIndex: "",
+        render: () => <a href>Remove</a>,
+      },
     ];
 
     return (
@@ -214,17 +237,17 @@ class DisplayProduct extends React.Component {
               style={{ background: "white", float: "right" }}
             >
               <Menu.Item
-                key="1"
-                onClick={this.redirectLoginHome}
+                key="701"
+                // onClick={this.redirectLoginHome}
                 icon={<HomeFilled />}
               >
-                Home
+                <Link to="/loginhome">Home</Link>
               </Menu.Item>
-              <Menu.Item key="2" onClick={this.redirectAdmin}>
+              <Menu.Item key="702" onClick={this.redirectAdmin}>
                 Admin
               </Menu.Item>
               <Menu.Item
-                key="3"
+                key="703"
                 onClick={this.redirectLogout}
                 icon={<LogoutOutlined />}
               >
@@ -255,7 +278,7 @@ class DisplayProduct extends React.Component {
           >
             <Menu theme="dark">
               <Menu.Item
-                key="1"
+                key="704"
                 id={1}
                 icon={<AppstoreAddOutlined />}
                 onClick={this.redirecctCategory}
@@ -263,7 +286,7 @@ class DisplayProduct extends React.Component {
                 Categories
               </Menu.Item>
               <Menu.Item
-                key="2"
+                key="705"
                 id={2}
                 icon={<FileAddOutlined />}
                 onClick={this.redirecctProduct}
@@ -285,53 +308,6 @@ class DisplayProduct extends React.Component {
                 Add Product
               </Button>
             </div>
-            <Table
-              // bordered
-              columns={columns}
-              dataSource={items}
-              style={{ overflowX: "auto" }}
-              pagination={{ defaultPageSize: 10 }}
-            />
-            {/* <Card
-                    value={item}
-                    id={item.id}
-                    hoverable
-                    alt={item.name}
-                    style={{
-                      justifyContent: "space-around",
-                      maxHeight: "400px",
-                      padding: "2%",
-                      flex: "0 0 200px",
-                      marginTop: "20px",
-                      maxWidth: "200px",
-                      marginBottom: "10px",
-                    }}
-                    cover={
-                      <Image
-                        id={item.id}
-                        alt={item.name}
-                        src={item.image}
-                        value={item}
-                        style={{ height: "200px" }}
-                      />
-                    }
-                  >
-                    <Meta
-                      id={item.id}
-                      title={`${item.name} (${item.company})`}
-                      description={`Price :${item.price} ₹.`}
-                      style={{ justifyContent: "center" }}
-                    />
-                    <Popover
-                      placement="bottomRight"
-                      title={item.name}
-                      content={item.description}
-                    >
-                      <Tag color="blue" icon={<InfoCircleOutlined />}>
-                        Description
-                      </Tag>
-                    </Popover>
-                  </Card> */}
 
             <Modal
               title="Add Product"
@@ -455,12 +431,25 @@ class DisplayProduct extends React.Component {
                     },
                   ]}
                 >
+                  <Input
+                    name="image"
+                    type="text"
+                    onChange={this.handleOnChange}
+                  />
+                  <p>Or</p>
                   <Upload name="image" onChange={this.handleOnChange}>
                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
                   </Upload>
                 </Form.Item>
               </Form>
             </Modal>
+            <Table
+              // bordered
+              columns={columns}
+              dataSource={items}
+              style={{ overflowX: "auto" }}
+              pagination={{ defaultPageSize: 10 }}
+            />
           </Content>
         </Layout>
         <Footerbar />
