@@ -1,12 +1,12 @@
 export const product = {
   category: [
     // { cat_id: 1, cat_name: "All" },
-    { cat_id: 1, cat_name: "General" },
-    { cat_id: 2, cat_name: "Sports" },
-    { cat_id: 3, cat_name: "Music" },
-    { cat_id: 4, cat_name: "Mobile" },
-    { cat_id: 5, cat_name: "TV" },
-    { cat_id: 6, cat_name: "Laptop" },
+    { cat_id: 2, cat_name: "General" },
+    { cat_id: 3, cat_name: "Sports" },
+    { cat_id: 4, cat_name: "Music" },
+    { cat_id: 5, cat_name: "Mobile" },
+    { cat_id: 6, cat_name: "TV" },
+    { cat_id: 7, cat_name: "Laptop" },
   ],
   items: [
     {

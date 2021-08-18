@@ -15,6 +15,7 @@ import {
   Popover,
   Tag,
   Button,
+  Dropdown,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -23,6 +24,7 @@ import {
   HomeFilled,
   LogoutOutlined,
   InfoCircleOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import {
   addToCart,
@@ -45,6 +47,7 @@ import {
 
 const { Header, Content } = Layout;
 const { Meta } = Card;
+const { SubMenu } = Menu;
 
 class LoginHome extends React.Component {
   state = { count: 0, product: [] };
@@ -128,7 +131,17 @@ class LoginHome extends React.Component {
 
     const addedItems = this.props.addedItems.length;
     // console.log("added item length", addedItems);
-
+    const menu = category.map((item) => {
+      return (
+        <Menu.Item
+          key={item.cat_id}
+          id={item.cat_id}
+          onClick={() => this.handleAllCategory(item.cat_id)}
+        >
+          {item.cat_name}
+        </Menu.Item>
+      );
+    });
     return (
       <div>
         <Layout className="layout">
@@ -162,7 +175,21 @@ class LoginHome extends React.Component {
               >
                 Home
               </Menu.Item>
-              {category.map((item) => {
+              <SubMenu key="cat1" title="Categories" icon={<DownOutlined />}>
+                {category.map((item) => {
+                  return (
+                    <Menu.Item
+                      key={item.cat_id}
+                      id={item.cat_id}
+                      onClick={() => this.handleAllCategory(item.cat_id)}
+                    >
+                      {item.cat_name}
+                    </Menu.Item>
+                  );
+                })}
+              </SubMenu>
+
+              {/* {category.map((item) => {
                 return (
                   <Menu.Item
                     key={item.cat_id}
@@ -172,7 +199,7 @@ class LoginHome extends React.Component {
                     {item.cat_name}
                   </Menu.Item>
                 );
-              })}
+              })} */}
               <Menu.Item
                 key="1234"
                 onClick={this.redirectToCart}
