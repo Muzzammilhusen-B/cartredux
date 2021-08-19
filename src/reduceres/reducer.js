@@ -145,7 +145,7 @@ const reducer = (state = initialState, action) => {
     if (itemToDisplay.length > 0) {
       return {
         ...state,
-        items: [itemToDisplay, ...state.items],
+        items: itemToDisplay,
 
         category: state.category,
       };
