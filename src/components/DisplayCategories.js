@@ -65,7 +65,7 @@ class DisplayCategory extends React.Component {
 
   handleOnChange = (e) => {
     // event.preventDefault();
-    console.log("event", e);
+    // console.log("event", e);
     const { name, value } = e.target;
     this.setState({ [name]: value });
 
@@ -128,7 +128,7 @@ class DisplayCategory extends React.Component {
         title: "Remove",
         key: "remove",
         dataIndex: "",
-        render: () => <a href>Remove</a>,
+        render: () => <a href="/loginhome/admin">Remove</a>,
       },
     ];
     return (

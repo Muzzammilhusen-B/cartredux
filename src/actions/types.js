@@ -10,3 +10,5 @@ export const ALLCATEGORY = "ALLCATEGORY";
 export const HOME = "HOME";
 export const ADD_CATEGORY = "ADD_CATEGORY";
 export const ADD_PRODUCT = "ADD_PRODUCT";
+export const SEARCH_ITEM = "SEARCH_ITEM";
+export const REMOVE_PRODUCT = "REMOVE_PRODUCT";

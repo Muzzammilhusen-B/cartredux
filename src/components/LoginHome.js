@@ -15,7 +15,8 @@ import {
   Popover,
   Tag,
   Button,
-  Dropdown,
+  Input,
+  Drawer,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -25,6 +26,8 @@ import {
   LogoutOutlined,
   InfoCircleOutlined,
   DownOutlined,
+  FilterTwoTone,
+  // FilterOutlined,
 } from "@ant-design/icons";
 import {
   addToCart,
@@ -33,6 +36,7 @@ import {
   fetchData,
   home,
   allCategory,
+  searchItem,
 } from "../actions/index";
 import logo from "./logo.png";
 import { connect } from "react-redux";
@@ -41,16 +45,16 @@ import {
   //  loadFromLocalStorage,
   saveToLocalStorage,
 } from "../localStorage";
-// import SubMenu from "antd/lib/menu/SubMenu";
 // import { saveToLocalStorage } from "../localStorage";
 // import { withRouter } from "react-router-dom";
 
 const { Header, Content } = Layout;
 const { Meta } = Card;
 const { SubMenu } = Menu;
+const { Search } = Input;
 
 class LoginHome extends React.Component {
-  state = { count: 0, product: [] };
+  state = { count: 0, product: [], visible: false, placement: "left" };
 
   componentDidMount() {
     // saveToLocalStorage();
@@ -117,6 +121,20 @@ class LoginHome extends React.Component {
   handleAllCategory = (id) => {
     console.log("Id clicked in all", id);
     this.props.allCategory(id);
+    this.setState({ visible: false });
+  };
+  //drawer
+  showDrawer = () => {
+    this.setState({ visible: true });
+  };
+  //on drawer close
+  onClose = () => {
+    this.setState({ visible: false });
+  };
+  //on serach bar
+  onSearch = (value) => {
+    console.log("search value", value);
+    this.props.searchItem(value);
   };
 
   render() {
@@ -124,6 +142,7 @@ class LoginHome extends React.Component {
 
     const product = this.props.items;
     const category = this.props.category;
+    const { placement, visible } = this.state;
     // console.log(
     //   "category name",
     //   category.map((item) => item.cat_name)
@@ -131,17 +150,7 @@ class LoginHome extends React.Component {
 
     const addedItems = this.props.addedItems.length;
     // console.log("added item length", addedItems);
-    const menu = category.map((item) => {
-      return (
-        <Menu.Item
-          key={item.cat_id}
-          id={item.cat_id}
-          onClick={() => this.handleAllCategory(item.cat_id)}
-        >
-          {item.cat_name}
-        </Menu.Item>
-      );
-    });
+
     return (
       <div>
         <Layout className="layout">
@@ -230,114 +239,160 @@ class LoginHome extends React.Component {
         <hr />
 
         <Layout
-          className="content"
+          // className="content"
           style={{
+            height: "relative",
             background:
               "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
             filter:
               "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-            marginTop: "50px",
-            display: "flex",
-            flexWrap: "wrap",
-            flexDirection: "row",
-            height: "relative",
-            maxWidth: "100%",
-            justifyContent: "space-around",
-            alignContent: "space-around",
-
-            padding: "10px",
-            // marginBottom: "10px",
           }}
         >
-          {product.map((item) => {
-            const addedItems = this.props.addedItems;
-            // console.log("Added item for quantity update", addedItems);
-            return (
-              <Content key={item.id} style={{}}>
-                {/* <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-                      <Col className="gutter-row" span={6}> */}
-                <Card
-                  value={item}
-                  id={item.id}
-                  hoverable
-                  alt={item.name}
-                  style={{
-                    justifyContent: "space-around",
-                    maxHeight: "400px",
-                    padding: "2%",
-                    flex: "0 0 200px",
-                    marginTop: "20px",
-                    maxWidth: "200px",
-                    marginBottom: "10px",
-                  }}
-                  cover={
-                    <Image
-                      id={item.id}
-                      alt={item.name}
-                      src={item.image}
-                      value={item}
-                      style={{ height: "200px" }}
-                    />
-                  }
-                >
-                  <Meta
-                    id={item.id}
-                    title={`${item.name} (${item.company})`}
-                    description={`Price :${item.price} ₹.`}
-                    style={{ justifyContent: "center" }}
-                  />
-
-                  <Divider orientation="center" style={{ color: "black" }}>
-                    <Space>
-                      <Button
-                        style={{ float: "left" }}
-                        value={item.quantity}
-                        onClick={this.redirectToCartDisplay(item.id)}
-                        disabled={item.quantity === 5 ? true : ""}
+          <div style={{ float: "right" }}>
+            <Space align="end" style={{ marginTop: "50px", padding: "20px" }}>
+              <Button
+                icon={<FilterTwoTone style={{ fontSize: "15px" }} />}
+                type="primary"
+                onClick={this.showDrawer}
+              >
+                Categories
+              </Button>
+              <Drawer
+                title="Filter Categories"
+                placement={placement}
+                key={placement}
+                visible={visible}
+                closable={false}
+                onClose={this.onClose}
+              >
+                {category.map((item) => {
+                  return (
+                    <Menu key={item.cat_id}>
+                      <Menu.Item
+                        key={item.cat_id}
+                        id={item.cat_id}
+                        onClick={() => this.handleAllCategory(item.cat_id)}
                       >
-                        <PlusCircleTwoTone style={{ fontSize: "20px" }} />
-                      </Button>
-                      {` ${
-                        addedItems === 0 || item.quantity === undefined
-                          ? 0
-                          : `${item.quantity}`
-                      }`}
-                      {item.quantity === 0 ? (
-                        ""
-                      ) : (
-                        <Button
-                          style={{ float: "right" }}
-                          disabled={item.quantity === 0 ? true : ""}
-                          onClick={() => {
-                            this.handleSubtractQunatity(item.id);
-                          }}
-                        >
-                          <CaretDownOutlined style={{ fontSize: "20px" }} />
-                        </Button>
-                      )}
-                    </Space>{" "}
-                  </Divider>
+                        {item.cat_name}
+                      </Menu.Item>
+                    </Menu>
+                  );
+                })}
+              </Drawer>
+              <Search
+                style={{
+                  width: "450px",
+                }}
+                maxLength={20}
+                placeholder="Input Search Item Name"
+                allowClear
+                enterButton="Search"
+                size="middle"
+                onSearch={this.onSearch}
+              />
+            </Space>
+          </div>
+          <div
+            style={{
+              // marginTop: "50px",
+              display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "row",
+              height: "relative",
+              maxWidth: "100%",
+              justifyContent: "space-around",
+              alignContent: "space-around",
 
-                  <Popover
-                    placement="bottomRight"
-                    title={item.name}
-                    content={item.description}
+              padding: "20px",
+              // marginBottom: "10px",
+            }}
+          >
+            {product.map((item) => {
+              const addedItems = this.props.addedItems;
+              // console.log("Added item for quantity update", addedItems);
+              return (
+                <Content key={item.id} style={{}}>
+                  <Card
+                    value={item}
+                    id={item.id}
+                    hoverable
+                    alt={item.name}
+                    style={{
+                      justifyContent: "space-around",
+                      maxHeight: "400px",
+                      padding: "2%",
+                      flex: "0 0 200px",
+                      marginTop: "10px",
+                      maxWidth: "200px",
+                      marginBottom: "10px",
+                    }}
+                    cover={
+                      <Image
+                        id={item.id}
+                        alt={item.name}
+                        src={item.image}
+                        value={item}
+                        style={{ height: "200px" }}
+                      />
+                    }
                   >
-                    <Tag color="blue" icon={<InfoCircleOutlined />}>
-                      Description
-                    </Tag>
-                  </Popover>
-                </Card>
-              </Content>
-            );
-          })}
+                    <Meta
+                      id={item.id}
+                      title={`${item.name} (${item.company})`}
+                      description={`Price :${item.price} ₹.`}
+                      style={{ justifyContent: "center" }}
+                    />
+
+                    <Divider orientation="center" style={{ color: "black" }}>
+                      <Space>
+                        <Button
+                          style={{ float: "left" }}
+                          value={item.quantity}
+                          onClick={this.redirectToCartDisplay(item.id)}
+                          disabled={item.quantity === 5 ? true : ""}
+                        >
+                          <PlusCircleTwoTone style={{ fontSize: "20px" }} />
+                        </Button>
+                        {` ${
+                          addedItems === 0 || item.quantity === undefined
+                            ? 0
+                            : `${item.quantity}`
+                        }`}
+                        {item.quantity === 0 ? (
+                          ""
+                        ) : (
+                          <Button
+                            style={{ float: "right" }}
+                            disabled={item.quantity === 0 ? true : ""}
+                            onClick={() => {
+                              this.handleSubtractQunatity(item.id);
+                            }}
+                          >
+                            <CaretDownOutlined style={{ fontSize: "20px" }} />
+                          </Button>
+                        )}
+                      </Space>{" "}
+                    </Divider>
+
+                    <Popover
+                      placement="bottomRight"
+                      title={item.name}
+                      content={item.description}
+                    >
+                      <Tag color="blue" icon={<InfoCircleOutlined />}>
+                        Description
+                      </Tag>
+                    </Popover>
+                  </Card>
+                </Content>
+              );
+            })}
+          </div>
           <hr />
-          {/* <strong>Total: {this.props.total} ₹. </strong> */}
         </Layout>
 
         {/* footer from resuable component footerbar */}
         <Footerbar />
-        {/* </Layout> */}
       </div>
     );
   }
@@ -374,6 +429,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     home: (data) => {
       dispatch(home(data));
+    },
+    searchItem: (value) => {
+      dispatch(searchItem(value));
     },
   };
 };

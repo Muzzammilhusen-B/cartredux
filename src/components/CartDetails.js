@@ -4,32 +4,11 @@ import "./cartDetails.css";
 import "antd/dist/antd.css";
 import Navbar from "./Navbar";
 import Footerbar from "./Footer";
-import {
-  Layout,
-  //  Menu,
-  Image,
-  // Descriptions,
-  Button,
-  message,
-  Empty,
-  Card,
-  Divider,
-  // Space,
-  // Row,
-  // Col,
-  // Badge
-} from "antd";
-import {
-  // ShoppingCartOutlined,
-  // PlusCircleOutlined,
-  // MinusCircleOutlined,
-  // HeartFilled,
-  DeleteOutlined,
-} from "@ant-design/icons";
-// import logo from "./logo.png";
+import { Layout, Image, Button, message, Empty, Card, Divider } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
+
 import { addQuantity, addToCart, subQuantity, remove } from "../actions";
 
-// import { withRouter } from "react-router-dom";
 const { Meta } = Card;
 const {
   //  Header,
@@ -76,9 +55,6 @@ class CartDetails extends React.Component {
     this.setState({ count: this.state.count - 1 });
   };
   handleRemove = (id) => {
-    // const { id } = this.props.state.addedItems;
-    // console.log("Selected remove item", this.props.state.addedItems);
-    // e.preventDefault();
     this.props.remove(id);
     const success = () => {
       message.success("Item removed from cart");
@@ -92,13 +68,7 @@ class CartDetails extends React.Component {
       this.props.items.length && this.props.total !== 0 ? (
         this.props.items.map((item) => {
           return (
-            <Layout
-            // style={{
-            //   display: "flex",
-            //   flexDirection: "row",
-            //   flexWrap: "wrap",
-            // }}
-            >
+            <Layout>
               <Content
                 style={{
                   background:
@@ -114,7 +84,6 @@ class CartDetails extends React.Component {
                   hoverable
                   alt={item.name}
                   style={{
-                    // justifyContent: "left",
                     maxHeight: "400px",
                     padding: "2%",
                     // flex: "0 0 200px",
@@ -139,9 +108,6 @@ class CartDetails extends React.Component {
                     style={{ justifyContent: "center" }}
                   />
                   <Divider orientation="center" style={{ color: "black" }}>
-                    {/* <Space> */}
-                    {/* <p>Price: {item.price} ₹.</p>
-                        <p>Quantity: {item.quantity}</p> */}
                     <Button
                       type="primary"
                       value={this.props.product}
@@ -152,24 +118,7 @@ class CartDetails extends React.Component {
                     >
                       Remove
                     </Button>{" "}
-                    {/* </Space> */}
                   </Divider>
-                  {/* <div>
-                        <span>
-                          <p>Price: {item.price} ₹.</p>
-                          <p>Quantity: {item.quantity}</p>
-                        </span>{" "}
-                        <Button
-                          type="primary"
-                          value={this.props.product}
-                          onClick={() => {
-                            this.handleRemove(item.id);
-                          }}
-                          icon={<DeleteOutlined />}
-                        >
-                          Remove
-                        </Button>{" "}
-                      </div> */}
                 </Card>
               </Content>
             </Layout>
@@ -193,18 +142,12 @@ class CartDetails extends React.Component {
         <Layout
           className="content"
           style={{
-            // background: "#c1e0f7",
-            maxHeight: "relative",
+            height: "relative",
             background:
               "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
 
             filter:
               "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-            // justifyContent: "space-around",
-            // alignContent: "space-around",
-            // display: "flex",
-            // flexDirection: "row",
-            // flexWrap: "wrap",
           }}
         >
           <h1

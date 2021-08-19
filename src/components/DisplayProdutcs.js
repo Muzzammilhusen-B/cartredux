@@ -28,7 +28,7 @@ import {
 import Footerbar from "./Footer";
 import { connect } from "react-redux";
 import { loadFromLocalStorage } from "../localStorage";
-import { addProduct } from "../actions";
+import { addProduct, removeProduct } from "../actions";
 import { Link } from "react-router-dom";
 
 const { TextArea } = Input;
@@ -122,6 +122,10 @@ class DisplayProduct extends React.Component {
   handleCancel = () => {
     this.setState({ isModalVisible: false });
   };
+  //remove product
+  handleRemove = (id) => {
+    this.props.removeProduct(id);
+  };
 
   render() {
     const {
@@ -197,10 +201,12 @@ class DisplayProduct extends React.Component {
         ),
       },
       {
-        title: "Remove",
+        title: "Action",
         key: "remove",
         dataIndex: "",
-        render: () => <a href>Remove</a>,
+        render: () => (
+          <Button onClick={() => this.handleRemove(id)}>Remove</Button>
+        ),
       },
     ];
 
@@ -465,6 +471,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addProduct: (data) => {
       dispatch(addProduct(data));
+    },
+    removeProduct: (id) => {
+      dispatch(removeProduct(id));
     },
   };
 };

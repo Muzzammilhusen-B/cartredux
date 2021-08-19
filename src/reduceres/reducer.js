@@ -12,6 +12,8 @@ import {
   // GENERAL,
   // MUSIC,
   REMOVE_ITEM,
+  REMOVE_PRODUCT,
+  SEARCH_ITEM,
   // SPORTS,
   SUB_QUANTITY,
 } from "../actions/types";
@@ -51,12 +53,12 @@ const reducer = (state = initialState, action) => {
       addedItem.quantity += 1;
       return {
         ...state,
-        total: state.total + addedItem.price,
+        total: parseInt(state.total) + parseInt(addedItem.price),
         count: newCount,
       };
     } else {
       addedItem.quantity = 1;
-      let newTotal = state.total + addedItem.price;
+      let newTotal = parseInt(state.total) + parseInt(addedItem.price);
       return {
         ...state,
         addedItems: [...state.addedItems, addedItem],
@@ -92,7 +94,7 @@ const reducer = (state = initialState, action) => {
     addedItem.quantity += 1;
 
     //calc total
-    let newTotal = state.total + addedItem.price;
+    let newTotal = parseInt(state.total) + parseInt(addedItem.price);
     return {
       ...state,
       total: newTotal,
@@ -105,7 +107,7 @@ const reducer = (state = initialState, action) => {
     //if quantity=0 then it should be removed
     if (addedItem.quantity === 0) {
       let new_items = state.addedItems.filter((item) => item.id !== action.id);
-      let newTotal = state.total - addedItem.price;
+      let newTotal = parseInt(state.total) - parseInt(addedItem.price);
       let new_count = state.count - addedItem.amount;
       return {
         ...state,
@@ -115,7 +117,7 @@ const reducer = (state = initialState, action) => {
       };
     } else {
       addedItem.quantity -= 1;
-      let newTotal = state.total - addedItem.price;
+      let newTotal = parseInt(state.total) - parseInt(addedItem.price);
       let new_count = state.count - addedItem.amount;
       return {
         ...state,
@@ -143,7 +145,7 @@ const reducer = (state = initialState, action) => {
     if (itemToDisplay.length > 0) {
       return {
         ...state,
-        items: itemToDisplay,
+        items: [itemToDisplay, ...state.items],
 
         category: state.category,
       };
@@ -176,6 +178,32 @@ const reducer = (state = initialState, action) => {
     console.log("after add cat state", state);
 
     return { ...state, items: newProduct };
+  }
+  if (action.type === SEARCH_ITEM) {
+    let allItems = product;
+    const searchedItems = allItems.items.filter(
+      (item) => item.name === action.payload
+    );
+    console.log("searched item by reduer", searchedItems);
+    if (searchedItems) {
+      return { ...state, items: searchedItems };
+    }
+    return { ...state, items: state.items };
+  }
+  if (action.type === REMOVE_PRODUCT) {
+    const selectedProduct = state.items.find((item) => item.id === action.id);
+    console.log("selected product re", selectedProduct);
+    const removeProduct = state.items.filter(
+      (item) => item.id !== selectedProduct
+    );
+    console.log("remove product re", removeProduct);
+    if (selectedProduct) {
+      return {
+        ...state,
+        items: removeProduct,
+      };
+    }
+    return { ...state, items: state.items };
   }
   return state;
 };
