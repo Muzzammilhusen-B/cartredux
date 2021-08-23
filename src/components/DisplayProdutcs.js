@@ -50,7 +50,9 @@ class DisplayProduct extends React.Component {
   componentDidMount() {
     loadFromLocalStorage();
   }
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    // localStorage.setItem("cartState", JSON.stringify(this.props.state));
+  }
   // redirectLoginHome = (e) => {
   //   // e.preventDefault();
   //   localStorage.setItem("cartState", JSON.stringify(this.props.state));
@@ -124,6 +126,7 @@ class DisplayProduct extends React.Component {
   };
   //remove product
   handleRemove = (id) => {
+    console.log("product id to remove", id);
     this.props.removeProduct(id);
   };
 
@@ -204,8 +207,8 @@ class DisplayProduct extends React.Component {
         title: "Action",
         key: "remove",
         dataIndex: "",
-        render: () => (
-          <Button onClick={() => this.handleRemove(id)}>Remove</Button>
+        render: (items) => (
+          <Button onClick={() => this.handleRemove(items.id)}>Remove</Button>
         ),
       },
     ];

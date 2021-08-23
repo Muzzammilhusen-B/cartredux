@@ -9,6 +9,7 @@ import {
   ALLCATEGORY,
   FETCH_DATA,
   HOME,
+  REMOVE_CATEGORY,
   // GENERAL,
   // MUSIC,
   REMOVE_ITEM,
@@ -18,6 +19,7 @@ import {
   SUB_QUANTITY,
 } from "../actions/types";
 import {
+  loadFromLocalStorage,
   // loadFromLocalStorage,
   product,
   // saveToLocalStorage,
@@ -159,7 +161,7 @@ const reducer = (state = initialState, action) => {
   }
   //for home
   if (action.type === HOME) {
-    let oldData = product;
+    let oldData = loadFromLocalStorage();
     return {
       ...state,
       items: oldData.items,
@@ -194,7 +196,7 @@ const reducer = (state = initialState, action) => {
     const selectedProduct = state.items.find((item) => item.id === action.id);
     console.log("selected product re", selectedProduct);
     const removeProduct = state.items.filter(
-      (item) => item.id !== selectedProduct
+      (item) => item.id !== selectedProduct.id
     );
     console.log("remove product re", removeProduct);
     if (selectedProduct) {
@@ -204,6 +206,20 @@ const reducer = (state = initialState, action) => {
       };
     }
     return { ...state, items: state.items };
+  }
+  if (action.type === REMOVE_CATEGORY) {
+    let categoryToRmove = state.category.find(
+      (item) => action.id === item.cat_id
+    );
+    console.log("cat to remove", categoryToRmove);
+    let newCategory = state.category.filter(
+      (item) => item.cat_id !== categoryToRmove.cat_id
+    );
+    console.log("remains cat", newCategory);
+    return {
+      ...state,
+      category: newCategory,
+    };
   }
   return state;
 };

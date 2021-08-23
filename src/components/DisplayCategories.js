@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import Footerbar from "./Footer";
 import { connect } from "react-redux";
-import { addCategory } from "../actions";
+import { addCategory, removeCategory } from "../actions";
 import { loadFromLocalStorage } from "../localStorage";
 
 const { Header, Content, Sider } = Layout;
@@ -106,6 +106,10 @@ class DisplayCategory extends React.Component {
   handleCancel = () => {
     this.setState({ isModalVisible: false });
   };
+  handleRemove = (id) => {
+    console.log("click for remove", id);
+    this.props.removeCategory(id);
+  };
   render() {
     const collapsed = this.state.collapsed;
     const category = this.props.category;
@@ -125,10 +129,14 @@ class DisplayCategory extends React.Component {
         dataIndex: "cat_id",
       },
       {
-        title: "Remove",
+        title: "Action",
         key: "remove",
         dataIndex: "",
-        render: () => <a href="/loginhome/admin">Remove</a>,
+        render: (category) => (
+          <Button onClick={() => this.handleRemove(category.cat_id)}>
+            Remove
+          </Button>
+        ),
       },
     ];
     return (
@@ -280,7 +288,7 @@ class DisplayCategory extends React.Component {
                 </Form>
               </Modal>
               <Table
-                // key={category.map((item) => item.cat_id)}
+                key={1}
                 columns={columns}
                 dataSource={category}
                 style={{ overflowX: "auto" }}
@@ -302,6 +310,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addCategory: (data) => {
       dispatch(addCategory(data));
+    },
+    removeCategory: (id) => {
+      dispatch(removeCategory(id));
     },
   };
 };

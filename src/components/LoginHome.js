@@ -42,6 +42,7 @@ import logo from "./logo.png";
 import { connect } from "react-redux";
 // import Navbar from "./Navbar";
 import {
+  loadFromLocalStorage,
   //  loadFromLocalStorage,
   saveToLocalStorage,
 } from "../localStorage";
@@ -58,7 +59,7 @@ class LoginHome extends React.Component {
 
   componentDidMount() {
     // saveToLocalStorage();
-    this.props.fetchData(saveToLocalStorage());
+    this.props.fetchData(loadFromLocalStorage());
     // console.log("this porps mounted items", this.props.items);
   }
   componentDidUpdate() {

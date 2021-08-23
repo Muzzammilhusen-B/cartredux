@@ -13,6 +13,7 @@ import {
   ADD_PRODUCT,
   SEARCH_ITEM,
   REMOVE_PRODUCT,
+  REMOVE_CATEGORY,
 } from "./types";
 // import { loadFromLocalStorage } from "../localStorage";
 
@@ -68,5 +69,9 @@ export const searchItem = (value) => {
 };
 //remove product
 export const removeProduct = (id) => {
-  return { type: REMOVE_PRODUCT, payload: id };
+  return { type: REMOVE_PRODUCT, id };
+};
+//remove category
+export const removeCategory = (id) => {
+  return { type: REMOVE_CATEGORY, id };
 };
