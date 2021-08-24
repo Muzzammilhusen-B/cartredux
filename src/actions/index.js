@@ -4,9 +4,6 @@ import {
   REMOVE_ITEM,
   SUB_QUANTITY,
   FETCH_DATA,
-  // GENERAL,
-  // SPORTS,
-  // MUSIC,
   ALLCATEGORY,
   HOME,
   ADD_CATEGORY,
@@ -15,9 +12,6 @@ import {
   REMOVE_PRODUCT,
   REMOVE_CATEGORY,
 } from "./types";
-// import { loadFromLocalStorage } from "../localStorage";
-
-// const data = loadFromLocalStorage();
 
 //fetch data
 export const fetchData = (data) => {

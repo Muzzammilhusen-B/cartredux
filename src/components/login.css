@@ -1,4 +1,4 @@
-body {
+/* body {
   display: block;
   text-align: center;
 }
@@ -9,11 +9,29 @@ body {
   margin-top: auto;
   margin-left: auto;
   margin-right: auto;
-}
+} */
 .login-form-forgot {
   float: right;
 }
 
 .login-form-button {
   width: 100%;
+}
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+.login-form {
+  font-family: "Montserrat", sans-serif;
+  font-size: larger;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: -webkit-linear-gradient(
+    90deg,
+    hsla(332, 53%, 82%, 1) 0%,
+    hsla(176, 57%, 89%, 1) 100%
+  );
+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 );
 }

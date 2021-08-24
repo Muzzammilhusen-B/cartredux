@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import "./cartDetails.css";
 import "antd/dist/antd.css";
 import Navbar from "./Navbar";
 import Footerbar from "./Footer";

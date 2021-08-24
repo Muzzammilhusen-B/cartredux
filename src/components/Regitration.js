@@ -297,12 +297,12 @@ class Registration extends React.Component {
           >
             Register
           </Button>
-          <div>
-            <Link to="/" style={{ marginTop: "8px" }}>
-              Log in
-            </Link>
-          </div>
         </Form>
+        <div>
+          <Link to="/" style={{ marginTop: "8px", fontSize: "20px" }}>
+            Log in
+          </Link>
+        </div>
       </div>
     );
   }

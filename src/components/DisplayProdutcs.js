@@ -4,9 +4,6 @@ import {
   Menu,
   Image,
   message,
-  // Card,
-  // Tag,
-  // Popover,
   Button,
   Modal,
   Form,
@@ -14,6 +11,7 @@ import {
   Upload,
   Table,
   Tooltip,
+  Popconfirm,
 } from "antd";
 import logo from "./logo.png";
 // import { Link } from "react-router-dom";
@@ -51,7 +49,8 @@ class DisplayProduct extends React.Component {
     loadFromLocalStorage();
   }
   componentDidUpdate() {
-    // localStorage.setItem("cartState", JSON.stringify(this.props.state));
+    console.log("delete stat", this.props.state);
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
   }
   // redirectLoginHome = (e) => {
   //   // e.preventDefault();
@@ -128,6 +127,7 @@ class DisplayProduct extends React.Component {
   handleRemove = (id) => {
     console.log("product id to remove", id);
     this.props.removeProduct(id);
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
   };
 
   render() {
@@ -208,7 +208,13 @@ class DisplayProduct extends React.Component {
         key: "remove",
         dataIndex: "",
         render: (items) => (
-          <Button onClick={() => this.handleRemove(items.id)}>Remove</Button>
+          <Popconfirm
+            title="Sure to remove?"
+            onConfirm={() => this.handleRemove(items.id)}
+          >
+            <Button danger>Remove</Button>
+          </Popconfirm>
+          // <Button onClick={() => this.handleRemove(items.id)}>Remove</Button>
         ),
       },
     ];

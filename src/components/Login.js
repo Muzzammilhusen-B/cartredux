@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./login.css";
 import { Link, withRouter } from "react-router-dom";
 import { saveToLocalStorage } from "../localStorage";
-import { Button, Input, Form, message } from "antd";
+import { Button, Input, Form, message, Space, Layout } from "antd";
 import { UserOutlined, LockOutlined, LoginOutlined } from "@ant-design/icons";
 
+const { Content } = Layout;
 class Login extends Component {
   state = {
     username: "",
@@ -114,72 +115,72 @@ class Login extends Component {
     const { errors } = this.state;
     return (
       <div>
-        <Form className="login-form">
-          <h1 style={{ color: "blue" }}>Login Form</h1>
-          <label>
-            Username :{""}
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              type="text"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
-              placeholder="Username"
-              style={{ marginTop: "10px", marginLeft: "8px" }}
-              required
-            />
-          </label>
-          <br />
-          <span style={{ color: "red" }}>{errors["username"]}</span>
-          <br />
-          <label>
-            Password : {""}
-            <Input.Password
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              width={"100%"}
-              value={this.state.password}
-              name="password"
-              onChange={this.handleChange}
-              placeholder="Password"
-              style={{ marginTop: "10px", marginLeft: "8px" }}
-              required
-            />
-          </label>
-          <br />
-          <span style={{ color: "red" }}>{errors["password"]}</span>
-          <br />
-          <label>
-            <input
-              type="checkbox"
-              width={"100%"}
-              id="remember"
-              name="remember"
-              defaultChecked={this.state.remember}
-              onChange={this.handleChange}
-              style={{ marginTop: "10px" }}
-            />
-            {""} Remember Me
-          </label>
-          <Link className="login-form-forgot" to="/forgotpwd">
-            Forgot passwod
-          </Link>
-          <Button
-            className="login-form-button"
-            type="primary"
-            onClick={this.handleSubmit}
-            icon={<LoginOutlined />}
-            // style={{
-            //   color: "white",
-            //   backgroundColor: "blue",
-            //   marginRight: "8px",
-            //   marginTop: "10px",
-            // }}
-          >
-            Log in
-          </Button>
-          or <Link to="/registration">Register Now</Link>
-        </Form>
+        <Layout>
+          <Content className="login-form">
+            <h1 style={{ color: "blue" }}>Login Form</h1>
+            <Form>
+              <label>
+                Username :{""}
+                <Input
+                  prefix={<UserOutlined className="site-form-item-icon" />}
+                  type="text"
+                  name="username"
+                  value={this.state.username}
+                  onChange={this.handleChange}
+                  placeholder="Username"
+                  // style={{ marginTop: "10px", marginLeft: "8px" }}
+                  required
+                />
+              </label>
+              <br />
+              <span style={{ color: "red" }}>{errors["username"]}</span>
+              <br />
+              <label>
+                Password : {""}
+                <Input.Password
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  width={"100%"}
+                  value={this.state.password}
+                  name="password"
+                  onChange={this.handleChange}
+                  placeholder="Password"
+                  // style={{ marginTop: "10px", marginLeft: "8px" }}
+                  required
+                />
+              </label>
+              <br />
+              <span style={{ color: "red" }}>{errors["password"]}</span>
+              <br />
+              <label>
+                <input
+                  type="checkbox"
+                  width={"100%"}
+                  id="remember"
+                  name="remember"
+                  defaultChecked={this.state.remember}
+                  onChange={this.handleChange}
+                  // style={{ marginTop: "10px" }}
+                />
+                {""} Remember Me
+              </label>
+              <Link className="login-form-forgot" to="/forgotpwd">
+                Forgot passwod
+              </Link>
+              <Button
+                className="login-form-button"
+                type="primary"
+                onClick={this.handleSubmit}
+                icon={<LoginOutlined />}
+              >
+                Log in
+              </Button>
+              <Space>
+                New user? <Link to="/registration">Register Now</Link>
+              </Space>
+            </Form>
+          </Content>
+        </Layout>
       </div>
     );
   }

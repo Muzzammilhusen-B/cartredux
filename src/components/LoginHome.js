@@ -2,7 +2,6 @@ import React from "react";
 import Footerbar from "./Footer";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
-// import "./loginhome.css";
 import {
   Layout,
   Menu,
@@ -27,7 +26,6 @@ import {
   InfoCircleOutlined,
   DownOutlined,
   FilterTwoTone,
-  // FilterOutlined,
 } from "@ant-design/icons";
 import {
   addToCart,
@@ -41,12 +39,9 @@ import {
 import logo from "./logo.png";
 import { connect } from "react-redux";
 // import Navbar from "./Navbar";
-import {
-  loadFromLocalStorage,
-  //  loadFromLocalStorage,
-  saveToLocalStorage,
-} from "../localStorage";
-// import { saveToLocalStorage } from "../localStorage";
+import // loadFromLocalStorage,
+//  saveToLocalStorage
+"../localStorage";
 // import { withRouter } from "react-router-dom";
 
 const { Header, Content } = Layout;
@@ -59,15 +54,16 @@ class LoginHome extends React.Component {
 
   componentDidMount() {
     // saveToLocalStorage();
-    this.props.fetchData(loadFromLocalStorage());
-    // console.log("this porps mounted items", this.props.items);
+    this.props.fetchData(this.props.state);
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
   }
   componentDidUpdate() {
-    localStorage.setItem("cartState", JSON.stringify(this.props.state));
+    // localStorage.setItem("cartState", JSON.stringify(this.props.state));
   }
 
   redirectLoginHome = (e, data) => {
     // e.preventDefault();
+
     this.props.home(data);
     const { history } = this.props;
     if (history) history.push("/loginhome");
@@ -106,9 +102,6 @@ class LoginHome extends React.Component {
     this.setState({ count: this.state.count + 1 });
   };
 
-  // handleAddQunatity = (id) => {
-  //   this.props.addQuantity(id);
-  // };
   handleSubtractQunatity = (id) => {
     this.props.subQuantity(id);
     this.setState({ count: this.props.items.quantity - 1 });
@@ -121,7 +114,10 @@ class LoginHome extends React.Component {
 
   handleAllCategory = (id) => {
     console.log("Id clicked in all", id);
+    console.log("BEFORE STATE", this.props.state);
     this.props.allCategory(id);
+    localStorage.setItem("cartState", JSON.stringify(this.props.state));
+
     this.setState({ visible: false });
   };
   //drawer
@@ -139,15 +135,11 @@ class LoginHome extends React.Component {
   };
 
   render() {
-    if (saveToLocalStorage()) return <div>Loading..</div>;
+    // if (saveToLocalStorage()) return <div>Loading..</div>;
 
     const product = this.props.items;
     const category = this.props.category;
     const { placement, visible } = this.state;
-    // console.log(
-    //   "category name",
-    //   category.map((item) => item.cat_name)
-    // );
 
     const addedItems = this.props.addedItems.length;
     // console.log("added item length", addedItems);
@@ -199,17 +191,6 @@ class LoginHome extends React.Component {
                 })}
               </SubMenu>
 
-              {/* {category.map((item) => {
-                return (
-                  <Menu.Item
-                    key={item.cat_id}
-                    id={item.cat_id}
-                    onClick={() => this.handleAllCategory(item.cat_id)}
-                  >
-                    {item.cat_name}
-                  </Menu.Item>
-                );
-              })} */}
               <Menu.Item
                 key="1234"
                 onClick={this.redirectToCart}
@@ -229,7 +210,6 @@ class LoginHome extends React.Component {
               <Menu.Item
                 key="1123456"
                 onClick={this.redirectLogout}
-                // style={{ float: "right" }}
                 icon={<LogoutOutlined />}
               >
                 Log out
@@ -343,7 +323,6 @@ class LoginHome extends React.Component {
                       description={`Price :${item.price} ₹.`}
                       style={{ justifyContent: "center" }}
                     />
-
                     <Divider orientation="center" style={{ color: "black" }}>
                       <Space>
                         <Button
@@ -359,6 +338,7 @@ class LoginHome extends React.Component {
                             ? 0
                             : `${item.quantity}`
                         }`}
+
                         {item.quantity === 0 ? (
                           ""
                         ) : (

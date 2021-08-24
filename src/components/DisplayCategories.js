@@ -9,6 +9,7 @@ import {
   Input,
   Modal,
   Form,
+  Popconfirm,
 } from "antd";
 import logo from "./logo.png";
 // import { Link } from "react-router-dom";
@@ -133,9 +134,15 @@ class DisplayCategory extends React.Component {
         key: "remove",
         dataIndex: "",
         render: (category) => (
-          <Button onClick={() => this.handleRemove(category.cat_id)}>
-            Remove
-          </Button>
+          <Popconfirm
+            title="Sure to remove?"
+            onConfirm={() => this.handleRemove(category.cat_id)}
+          >
+            <Button danger>Remove</Button>
+          </Popconfirm>
+          // <Button onClick={() => this.handleRemove(category.cat_id)}>
+          //   Remove
+          // </Button>
         ),
       },
     ];

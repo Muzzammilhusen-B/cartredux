@@ -1,5 +1,4 @@
 // import _ from "lodash";
-// import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 import {
   ADD_CATEGORY,
@@ -10,12 +9,9 @@ import {
   FETCH_DATA,
   HOME,
   REMOVE_CATEGORY,
-  // GENERAL,
-  // MUSIC,
   REMOVE_ITEM,
   REMOVE_PRODUCT,
   SEARCH_ITEM,
-  // SPORTS,
   SUB_QUANTITY,
 } from "../actions/types";
 import {
@@ -36,7 +32,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   //data fetch
   if (action.type === FETCH_DATA) {
-    let data = product;
+    let data = loadFromLocalStorage();
     return {
       ...state,
       items: data.items,
@@ -135,7 +131,7 @@ const reducer = (state = initialState, action) => {
       (item) => action.id === item.cat_id
     );
     console.log("selected category in reducer", selectedCategory);
-    let allItems = product;
+    let allItems = loadFromLocalStorage();
     console.log("all items", allItems);
     let itemToDisplay = allItems.items.filter(
       (item) => selectedCategory.cat_name === item.categoryName
@@ -145,12 +141,13 @@ const reducer = (state = initialState, action) => {
     console.log("Items to display particular category", itemToDisplay);
 
     if (itemToDisplay.length > 0) {
-      return {
-        ...state,
-        items: itemToDisplay,
+      return Object.assign({}, state, { items: itemToDisplay });
+      // {
+      //   ...state,
+      //   items: itemToDisplay,
 
-        category: state.category,
-      };
+      //   category: state.category,
+      // };
     } else {
       return {
         ...state,
@@ -184,11 +181,12 @@ const reducer = (state = initialState, action) => {
   if (action.type === SEARCH_ITEM) {
     let allItems = product;
     const searchedItems = allItems.items.filter(
-      (item) => item.name === action.payload
+      (item) => item.name.toUpperCase() === action.payload.toUpperCase()
     );
     console.log("searched item by reduer", searchedItems);
     if (searchedItems) {
-      return { ...state, items: searchedItems };
+      return Object.assign({}, state, { items: searchedItems });
+      // { ...state, items: searchedItems };
     }
     return { ...state, items: state.items };
   }
@@ -205,7 +203,7 @@ const reducer = (state = initialState, action) => {
         items: removeProduct,
       };
     }
-    return { ...state, items: state.items };
+    // return { ...state, items: state.items };
   }
   if (action.type === REMOVE_CATEGORY) {
     let categoryToRmove = state.category.find(
@@ -221,6 +219,7 @@ const reducer = (state = initialState, action) => {
       category: newCategory,
     };
   }
+  //default state return
   return state;
 };
 export default reducer;
