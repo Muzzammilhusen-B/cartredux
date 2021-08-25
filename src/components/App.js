@@ -10,6 +10,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import CartDetails from "./CartDetails";
 import DisplayCategory from "./DisplayCategories";
 import DisplayProduct from "./DisplayProdutcs";
+import Checkout from "./Checkout";
 // import history from "../history";
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
             exact
             component={DisplayProduct}
           />
+          <Route path="/loginhome/checkout" exact component={Checkout} />
 
           {/* <Route path="/loginhome/cart" exact component={Cart} /> */}
         </Switch>

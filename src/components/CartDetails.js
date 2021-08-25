@@ -7,6 +7,7 @@ import { Layout, Image, Button, message, Empty, Card, Divider } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 import { addQuantity, addToCart, subQuantity, remove } from "../actions";
+import { Link } from "react-router-dom";
 
 const { Meta } = Card;
 const {
@@ -67,69 +68,71 @@ class CartDetails extends React.Component {
       this.props.items.length && this.props.total !== 0 ? (
         this.props.items.map((item) => {
           return (
-            <Layout>
-              <Content
-                style={{
-                  background:
-                    "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
+            // <Layout>
+            //   <Content
+            //     style={{
+            //       background:
+            //         "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
 
-                  filter:
-                    "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-                }}
-              >
-                <Card
-                  value={item}
+            //       filter:
+            //         "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
+            //     }}
+            //   >
+            <Card
+              key={item.id}
+              value={item}
+              id={item.id}
+              hoverable
+              alt={item.name}
+              style={{
+                alignContent: "space-between",
+                maxHeight: "400px",
+                // padding: "2%",
+                // flex: "0 0 200px",
+                marginTop: "20px",
+                maxWidth: "200px",
+                // marginBottom: "10px",
+              }}
+              cover={
+                <Image
                   id={item.id}
-                  hoverable
                   alt={item.name}
-                  style={{
-                    maxHeight: "400px",
-                    padding: "2%",
-                    // flex: "0 0 200px",
-                    marginTop: "20px",
-                    maxWidth: "200px",
-                    marginBottom: "10px",
+                  src={item.image}
+                  value={item}
+                  style={{ height: "200px" }}
+                />
+              }
+            >
+              <Meta
+                id={item.id}
+                title={`${item.name} (${item.company})`}
+                description={`Price :${item.price} ₹. Qty ${item.quantity}`}
+                style={{ justifyContent: "center" }}
+              />
+              <Divider orientation="center" style={{ color: "black" }}>
+                <Button
+                  type="primary"
+                  value={this.props.product}
+                  onClick={() => {
+                    this.handleRemove(item.id);
                   }}
-                  cover={
-                    <Image
-                      id={item.id}
-                      alt={item.name}
-                      src={item.image}
-                      value={item}
-                      style={{ height: "200px" }}
-                    />
-                  }
+                  icon={<DeleteOutlined />}
                 >
-                  <Meta
-                    id={item.id}
-                    title={`${item.name} (${item.company})`}
-                    description={`Price :${item.price} ₹. Qty ${item.quantity}`}
-                    style={{ justifyContent: "center" }}
-                  />
-                  <Divider orientation="center" style={{ color: "black" }}>
-                    <Button
-                      type="primary"
-                      value={this.props.product}
-                      onClick={() => {
-                        this.handleRemove(item.id);
-                      }}
-                      icon={<DeleteOutlined />}
-                    >
-                      Remove
-                    </Button>{" "}
-                  </Divider>
-                </Card>
-              </Content>
-            </Layout>
+                  Remove
+                </Button>{" "}
+              </Divider>
+            </Card>
+            //   </Content>
+            // </Layout>
           );
         })
       ) : (
-        <Content>
-          <div style={{ alignContent: "center" }}>
-            <p>Nothing...! :(</p>
-            <Empty description={<span>Empty Cart! Add item from Home</span>} />
-          </div>
-        </Content>
+        // <Content>
+        //   <div style={{ alignContent: "center" }}>
+        //     <p>Nothing...! :(</p>
+        <Empty description={<span>Empty Cart! Add item from Home</span>} />
+        //   </div>
+        // </Content>
       );
     let total = this.props.total;
 
@@ -137,14 +140,14 @@ class CartDetails extends React.Component {
     return (
       <div>
         <Navbar />
-
         <Layout
           className="content"
           style={{
             height: "relative",
+            // alignItems: "center",
+            padding: "10px",
             background:
               "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
-
             filter:
               "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
           }}
@@ -157,33 +160,68 @@ class CartDetails extends React.Component {
           >
             You have ordered
           </h1>
+          <div>
+            {this.props.count === 0 ? (
+              ""
+            ) : this.props.items.quantity === 0 || Math.sign(total) === -1 ? (
+              <strong>Total: "There is problem in reducer logic"</strong>
+            ) : (
+              <p>
+                <strong>Total amount:</strong> {total} ₹.
+                {this.props.count === 0 ? (
+                  ""
+                ) : (
+                  <Link to="/loginhome/checkout/">
+                    <Button type="primary" style={{ float: "right" }}>
+                      Place Order
+                    </Button>
+                  </Link>
+                )}
+              </p>
+            )}
+          </div>
           <Content
-            style={{
-              background:
-                "-webkit-linear-gradient(90deg, hsla(332, 53%, 82%, 1) 0%, hsla(176, 57%, 89%, 1) 100%)",
-              filter:
-                "progid:DXImageTransform.Microsoft.gradient( startColorstr=#E9B7CE, endColorstr=#D3F3F1, GradientType=1 )",
-              padding: "20px",
-
-              display: "flex",
-
-              flexWrap: "wrap",
-              flexDirection: "row",
-            }}
+          // style={{
+          //   padding: "20px",
+          //   display: "flex",
+          //   flexWrap: "wrap",
+          //   flexDirection: "row",
+          //   alignItems: "center",
+          // }}
           >
-            {product}
+            <div
+              style={{
+                padding: "20px",
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+              }}
+            >
+              {product}
+            </div>
           </Content>
-          {this.props.items.quantity === 0 || Math.sign(total) === -1 ? (
-            <strong>Total: "There is problem in reducer logic"</strong>
-          ) : (
-            <p>
-              <strong>Total amount:</strong> {total} ₹.
-            </p>
-          )}
+          <div>
+            {this.props.count === 0 ? (
+              ""
+            ) : this.props.items.quantity === 0 || Math.sign(total) === -1 ? (
+              <strong>Total: "There is problem in reducer logic"</strong>
+            ) : (
+              <p>
+                <strong>Total amount:</strong> {total} ₹.
+                {this.props.count === 0 ? (
+                  ""
+                ) : (
+                  <div style={{ float: "right" }}>
+                    <Button type="primary">Place Order</Button>
+                  </div>
+                )}
+              </p>
+            )}
+          </div>
 
           {/* footer from reusable component */}
-          <Footerbar />
         </Layout>
+        <Footerbar />
       </div>
     );
   }

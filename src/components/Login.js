@@ -92,16 +92,20 @@ class Login extends Component {
     const { remember } = this.state;
     // console.log(remember);
     // console.log(this.state);
-    const success = () => {
-      message.success("You are Logged in.");
-    };
+
     if (remember && this.handleValidation(this.state.errors)) {
+      const success = () => {
+        message.success("You are Logged in.");
+      };
       // console.log("Form submitted with stored data", this.state);
       success();
       this.redirectLoginHome();
       localStorage.setItem("logindata", JSON.stringify(this.state));
       saveToLocalStorage();
     } else if (this.handleValidation(this.state.errors)) {
+      const success = () => {
+        message.success("You are Logged in.");
+      };
       // console.log("Form submitted without stored data", this.state);
       success();
       this.redirectLoginHome();
@@ -112,7 +116,7 @@ class Login extends Component {
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors, username, password } = this.state;
     return (
       <div>
         <Layout>
@@ -168,6 +172,7 @@ class Login extends Component {
                 Forgot passwod
               </Link>
               <Button
+                disabled={username && password !== "" ? "" : true}
                 className="login-form-button"
                 type="primary"
                 onClick={this.handleSubmit}

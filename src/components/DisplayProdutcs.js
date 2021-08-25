@@ -149,6 +149,7 @@ class DisplayProduct extends React.Component {
         key: "categoryName",
         dataIndex: "categoryName",
         width: 100,
+        fixed: "left",
       },
       {
         title: "ID",
@@ -183,6 +184,8 @@ class DisplayProduct extends React.Component {
       {
         title: "Description",
         key: "description",
+        width: 200,
+
         dataIndex: "description",
         ellipsis: { showTitle: false },
         render: (description) => (
@@ -206,6 +209,8 @@ class DisplayProduct extends React.Component {
       {
         title: "Action",
         key: "remove",
+        width: 100,
+
         dataIndex: "",
         render: (items) => (
           <Popconfirm
@@ -460,6 +465,7 @@ class DisplayProduct extends React.Component {
             </Modal>
             <Table
               // bordered
+              // scroll={{ x: 1500, y: 300 }}
               columns={columns}
               dataSource={items}
               style={{ overflowX: "auto" }}
