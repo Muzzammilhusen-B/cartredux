@@ -11,6 +11,7 @@ import {
   SEARCH_ITEM,
   REMOVE_PRODUCT,
   REMOVE_CATEGORY,
+  CHECKOUT,
 } from "./types";
 
 //fetch data
@@ -68,4 +69,8 @@ export const removeProduct = (id) => {
 //remove category
 export const removeCategory = (id) => {
   return { type: REMOVE_CATEGORY, id };
+};
+//CHECKOOUT
+export const checkout = () => {
+  return { type: CHECKOUT };
 };

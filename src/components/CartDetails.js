@@ -26,6 +26,10 @@ class CartDetails extends React.Component {
     if (e) e.preventDefault();
     const product = this.props.items;
     console.log(" mounted added items", product);
+    if (this.props.count === 0) {
+      const deliveryState = [];
+      localStorage.setItem("deliveryState", deliveryState);
+    }
   }
   redirectLoginHome = (e) => {
     e.preventDefault();
@@ -211,9 +215,9 @@ class CartDetails extends React.Component {
                 {this.props.count === 0 ? (
                   ""
                 ) : (
-                  <div style={{ float: "right" }}>
-                    <Button type="primary">Place Order</Button>
-                  </div>
+                  <Button type="primary" style={{ float: "right" }}>
+                    Place Order
+                  </Button>
                 )}
               </p>
             )}

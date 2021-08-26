@@ -11,6 +11,7 @@ import CartDetails from "./CartDetails";
 import DisplayCategory from "./DisplayCategories";
 import DisplayProduct from "./DisplayProdutcs";
 import Checkout from "./Checkout";
+import Success from "./Success";
 // import history from "../history";
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
             component={DisplayProduct}
           />
           <Route path="/loginhome/checkout" exact component={Checkout} />
+          <Route path="/successpage" exact component={Success} />
 
           {/* <Route path="/loginhome/cart" exact component={Cart} /> */}
         </Switch>

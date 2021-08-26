@@ -4,12 +4,15 @@ import {
   Modal,
   Form,
   Input,
-  Space,
+  // Space,
   Row,
   Col,
   Button,
   DatePicker,
-  InputNumber,
+  Image,
+  Card,
+  Popconfirm,
+  // InputNumber,
 } from "antd";
 import {
   PlusCircleOutlined,
@@ -19,6 +22,8 @@ import {
 import React from "react";
 import Footerbar from "./Footer";
 import Navbar from "./Navbar";
+import { connect } from "react-redux";
+import { checkout } from "../actions";
 
 const { Panel } = Collapse;
 const { Content } = Layout;
@@ -29,23 +34,35 @@ class Checkout extends React.Component {
     pincode: null,
     address: "",
     landmark: "",
-    country: "India",
+    country: "",
     phone: null,
     isDelModalvisible: false,
     isShipModalvisible: false,
     isPayModalvisible: false,
     checkboxState: [],
+    details: [],
   };
   //   useEffect(() => {
   //     handleOnChange();
   //   });
   //for delivery modal
+  componentDidMount() {
+    // const details = JSON.parse(localStorage.getItem("deliveryState"));
+    // console.log("mounted details", details);
+    // this.setState({ details: details });
+    if (this.props.count === 0) {
+      const details = [];
+      this.setState({ details: details });
+      const { history } = this.props;
+      if (history) history.push("/loginhome");
+      // localStorage.setItem("deliveryState", JSON.parse(details));
+    }
+  }
   handleDeliveyAdd = () => {
     console.log("clicked");
     this.setState({ isDelModalvisible: true });
   };
   handleOk = () => {
-    this.setState({ isDelModalvisible: false });
     const { fullname, Address, Landmark, phone, country, pincode } = this.state;
 
     this.setState({
@@ -58,6 +75,8 @@ class Checkout extends React.Component {
       country: country,
     });
     console.log("delivey detail", this.state);
+    localStorage.setItem("deliveryState", JSON.stringify(this.state));
+    this.setState({ isDelModalvisible: false });
   };
   handleCancel = () => {
     this.setState({ isDelModalvisible: false });
@@ -86,14 +105,22 @@ class Checkout extends React.Component {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
-  //checkbox
-  handleCheckbox = (e) => {
-    console.log("checkebox:", e.target.checked);
-    // const checked = e.target.checked;
-    // const data = checked ? this.setState({ checkboxState: this.state }) : "";
+  //checkout process
+  handleCheckout = () => {
+    this.props.checkout();
+    const { history } = this.props;
+    if (history) history.push("/successpage");
   };
   render() {
+    const addedItems = this.props.addedItems;
+    console.log("checkout addeditems", addedItems);
+    const total = this.props.total;
+    console.log("checkout total", total);
+    const count = this.props.count;
+    console.log("checkout count", count);
+
     const {
+      details,
       isDelModalvisible,
       //   isPayModalvisible,
       //   isShipModalvisible,
@@ -104,6 +131,8 @@ class Checkout extends React.Component {
       country,
       phone,
     } = this.state;
+    console.log("checkout details", details);
+
     return (
       <div>
         <Navbar />
@@ -120,134 +149,137 @@ class Checkout extends React.Component {
         >
           <Content style={{ padding: "20px", marginTop: "50px" }}>
             <div>
-              <div>
-                <h1>Summary</h1>
-              </div>
-              <div style={{ width: "50%" }}>
-                <Collapse>
-                  <Panel header="Delivry Address" key="1">
-                    <PlusCircleOutlined
-                      style={{ fontSize: "20px" }}
-                      onClick={this.handleDeliveyAdd}
-                    />
-                    {fullname &&
-                    address &&
-                    pincode &&
-                    phone &&
-                    landmark &&
-                    country === "" ? null : (
-                      <ul>
-                        <p>Name: {fullname}</p>
-                        <p>Pincode: {pincode}</p>
-                        <p>Address: {address}</p>
-                        <p>Landmark: {landmark}</p>
-                        <p>
-                          Country: <strong>{country}</strong>(Service available
-                          only in india)
-                        </p>
-                        <p>Phone: {phone}</p>
-                      </ul>
-                    )}
-                    <Modal
-                      visible={isDelModalvisible}
-                      title="Add Delivery Address"
-                      onOk={this.handleOk}
-                      onCancel={this.handleCancel}
-                    >
-                      <Form>
-                        <Form.Item
-                          label="Full Name"
-                          name="fullname"
-                          value={fullname}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input Full name!",
-                            },
-                          ]}
+              <Row>
+                <Col span={10}>
+                  <div>
+                    <h1>Details</h1>
+                  </div>
+                  <div>
+                    <Collapse>
+                      <Panel header="Delivry Address" key="1">
+                        <PlusCircleOutlined
+                          style={{ fontSize: "20px" }}
+                          onClick={this.handleDeliveyAdd}
+                        />
+                        {fullname &&
+                        address &&
+                        pincode &&
+                        phone &&
+                        landmark &&
+                        country === "" ? null : (
+                          <ul>
+                            <p>Name: {fullname}</p>
+                            <p>Pincode: {pincode}</p>
+                            <p>Address: {address}</p>
+                            <p>Landmark: {landmark}</p>
+                            <p>
+                              Country: <strong>{country}</strong>(Service
+                              available only in india)
+                            </p>
+                            <p>Phone: {phone}</p>
+                          </ul>
+                        )}
+                        <Modal
+                          visible={isDelModalvisible}
+                          title="Add Delivery Address"
+                          onOk={this.handleOk}
+                          onCancel={this.handleCancel}
                         >
-                          <Input
-                            name="fullname"
-                            type="text"
-                            onChange={this.handleOnChange}
-                          />
-                        </Form.Item>
-                        <Form.Item
-                          label="Pincode"
-                          //   name="pincode"
-                          value={pincode}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input pincode",
-                            },
-                          ]}
-                        >
-                          <Input
-                            maxLength={6}
-                            name="pincode"
-                            type="number"
-                            onChange={this.handleOnChange}
-                          />
-                        </Form.Item>{" "}
-                        <Form.Item
-                          label="Address"
-                          //   name="address"
-                          value={address}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input Address!",
-                            },
-                          ]}
-                        >
-                          <TextArea
-                            name="address"
-                            type="text"
-                            onChange={this.handleOnChange}
-                          />
-                        </Form.Item>{" "}
-                        <Form.Item
-                          label="Landmark"
-                          //   name="landmark"
-                          value={landmark}
-                        >
-                          <Input
-                            placeholder="(Optional)"
-                            name="landmark"
-                            type="text"
-                            onChange={this.handleOnChange}
-                          />
-                        </Form.Item>{" "}
-                        <Form.Item
-                          label="Country"
-                          //   name="country"
-                          value={country}
-                        >
-                          <strong>India</strong>(Service availble only in india)
-                        </Form.Item>{" "}
-                        <Form.Item
-                          label="Phone"
-                          //   name="phone"
-                          value={phone}
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input phone number!",
-                            },
-                          ]}
-                        >
-                          <Input
-                            addonBefore="+91"
-                            name="phone"
-                            type="number"
-                            onChange={this.handleOnChange}
-                          />
-                        </Form.Item>
-                      </Form>
-                    </Modal>
-                  </Panel>
-                  {/* <Panel header="Shipping Address" key="2">
+                          <Form>
+                            <Form.Item
+                              label="Full Name"
+                              name="fullname"
+                              value={fullname}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input Full name!",
+                                },
+                              ]}
+                            >
+                              <Input
+                                name="fullname"
+                                type="text"
+                                onChange={this.handleOnChange}
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="Pincode"
+                              //   name="pincode"
+                              value={pincode}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input pincode",
+                                },
+                              ]}
+                            >
+                              <Input
+                                maxLength={6}
+                                name="pincode"
+                                type="number"
+                                onChange={this.handleOnChange}
+                              />
+                            </Form.Item>{" "}
+                            <Form.Item
+                              label="Address"
+                              //   name="address"
+                              value={address}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input Address!",
+                                },
+                              ]}
+                            >
+                              <TextArea
+                                name="address"
+                                type="text"
+                                onChange={this.handleOnChange}
+                              />
+                            </Form.Item>{" "}
+                            <Form.Item
+                              label="Landmark"
+                              //   name="landmark"
+                              value={landmark}
+                            >
+                              <Input
+                                placeholder="(Optional)"
+                                name="landmark"
+                                type="text"
+                                onChange={this.handleOnChange}
+                              />
+                            </Form.Item>{" "}
+                            <Form.Item
+                              label="Country"
+                              //   name="country"
+                              value={country}
+                            >
+                              <strong>India</strong>(Service availble only in
+                              india)
+                            </Form.Item>{" "}
+                            <Form.Item
+                              label="Phone"
+                              //   name="phone"
+                              value={phone}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input phone number!",
+                                },
+                              ]}
+                            >
+                              <Input
+                                addonBefore="+91"
+                                name="phone"
+                                type="number"
+                                onChange={this.handleOnChange}
+                              />
+                            </Form.Item>
+                          </Form>
+                        </Modal>
+                      </Panel>
+                      {/* <Panel header="Shipping Address" key="2">
                     <Space>
                       <PlusCircleOutlined
                         style={{ fontSize: "20px" }}
@@ -264,56 +296,68 @@ class Checkout extends React.Component {
                       onCancel={this.handleShipCancel}
                     ></Modal>
                   </Panel> */}
-                  <Panel header="Payment Details" key="3">
-                    <Row>
-                      <Col span={24}>
-                        Name On Card
-                        <Input
-                          maxLength={16}
-                          onChange={this.handleCardNumber}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24}>
-                        Card Number
-                        <Input
-                          maxLength={16}
-                          onChange={this.handleCardNumber}
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={6}>
-                        Month
-                        <DatePicker picker="month" />
-                      </Col>
-                      <Col span={4} offset={2}>
-                        Year
-                        <DatePicker picker="year" />
-                      </Col>
-                      <Col offset={2} span={10}>
-                        CVV
-                        <Input.Password
-                          maxLength={3}
-                          placeholder="input cvv"
-                          iconRender={(visible) =>
-                            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                          }
-                        />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col span={24}>
-                        <Button
-                          type="primary"
-                          style={{ marginTop: "10px", width: "100%" }}
-                        >
-                          Pay and Checkout
-                        </Button>
-                      </Col>
-                    </Row>
-                    {/* <PlusCircleOutlined
+                      <Panel header="Payment Details" key="3">
+                        <Card>
+                          <Row>
+                            <Col span={24}>
+                              Name On Card
+                              <Input
+                                onChange={this.handleCardNumber}
+                                required
+                              />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col span={24}>
+                              Card Number
+                              <Input
+                                maxLength={16}
+                                onChange={this.handleCardNumber}
+                                required
+                              />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col span={6}>
+                              Month
+                              <DatePicker picker="month" />
+                            </Col>
+                            <Col span={6} offset={2}>
+                              Year
+                              <DatePicker picker="year" />
+                            </Col>
+                            <Col offset={4} span={6}>
+                              CVV
+                              <Input.Password
+                                maxLength={3}
+                                placeholder="Input cvv"
+                                iconRender={(visible) =>
+                                  visible ? (
+                                    <EyeTwoTone />
+                                  ) : (
+                                    <EyeInvisibleOutlined />
+                                  )
+                                }
+                              />
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col span={24}>
+                              <Popconfirm
+                                title="Delivry and Card details are ok?"
+                                onConfirm={this.handleCheckout}
+                              >
+                                <Button
+                                  type="primary"
+                                  style={{ marginTop: "10px", width: "100%" }}
+                                >
+                                  Pay and Checkout
+                                </Button>
+                              </Popconfirm>
+                            </Col>
+                          </Row>
+                        </Card>
+                        {/* <PlusCircleOutlined
                       style={{ fontSize: "20px" }}
                       onClick={this.handlePaymentDetails}
                     />
@@ -323,9 +367,51 @@ class Checkout extends React.Component {
                       onOk={this.handlePayOk}
                       onCancel={this.handlePayCancel}
                     ></Modal> */}
-                  </Panel>
-                </Collapse>
-              </div>
+                      </Panel>
+                    </Collapse>
+                  </div>
+                </Col>
+                <Col span={12} offset={2}>
+                  <div>
+                    <div>
+                      <h1>CheckOut Summary</h1>
+                    </div>
+                    <div>
+                      <ul>
+                        {addedItems.map((item) => {
+                          return (
+                            <div key={item.id}>
+                              <Row>
+                                <Col span={6}>
+                                  <Image
+                                    src={item.image}
+                                    style={{ width: "100px" }}
+                                  />
+                                </Col>
+                                <Col span={4}>{item.name}</Col>
+                                <Col span={6}>Price: {item.price}</Col>
+
+                                <Col span={8}>Quantity: {item.quantity}</Col>
+                              </Row>
+                            </div>
+                          );
+                        })}
+
+                        <div style={{ fontSize: "20px" }}>
+                          <strong>Total: {total}</strong>
+                          <Card title={fullname}>
+                            <p>{pincode}</p>
+                            <p>{address}</p>
+                            <p>{landmark}</p>
+                            <p>{country}</p>
+                            <p>{phone}</p>
+                          </Card>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
             </div>
           </Content>
         </Layout>
@@ -335,4 +421,18 @@ class Checkout extends React.Component {
   }
 }
 
-export default Checkout;
+const mapStateToProps = (state) => {
+  return {
+    count: state.count,
+    total: state.total,
+    addedItems: state.addedItems,
+  };
+};
+const mapStateToDispatch = (dispatch) => {
+  return {
+    checkout: () => {
+      dispatch(checkout());
+    },
+  };
+};
+export default connect(mapStateToProps, mapStateToDispatch)(Checkout);

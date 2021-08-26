@@ -6,6 +6,7 @@ import {
   ADD_QUANTITY,
   ADD_TO_CART,
   ALLCATEGORY,
+  CHECKOUT,
   FETCH_DATA,
   HOME,
   REMOVE_CATEGORY,
@@ -219,6 +220,19 @@ const reducer = (state = initialState, action) => {
       category: newCategory,
     };
   }
+  //checout process
+  if (action.type === CHECKOUT) {
+    let newCount = 0;
+    let newItem = [];
+    let newTotal = 0;
+    return {
+      ...state,
+      count: newCount,
+      addedItems: newItem,
+      total: newTotal,
+    };
+  }
+
   //default state return
   return state;
 };
