@@ -171,7 +171,7 @@ class CartDetails extends React.Component {
               <strong>Total: "There is problem in reducer logic"</strong>
             ) : (
               <p>
-                <strong>Total amount:</strong> {total} ₹.
+                <strong>Total price:</strong> {total} ₹.
                 {this.props.count === 0 ? (
                   ""
                 ) : (
@@ -211,13 +211,15 @@ class CartDetails extends React.Component {
               <strong>Total: "There is problem in reducer logic"</strong>
             ) : (
               <p>
-                <strong>Total amount:</strong> {total} ₹.
+                <strong>Total price:</strong> {total} ₹.
                 {this.props.count === 0 ? (
                   ""
                 ) : (
-                  <Button type="primary" style={{ float: "right" }}>
-                    Place Order
-                  </Button>
+                  <Link to="/loginhome/checkout/">
+                    <Button type="primary" style={{ float: "right" }}>
+                      Place Order
+                    </Button>
+                  </Link>
                 )}
               </p>
             )}

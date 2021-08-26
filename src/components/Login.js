@@ -121,7 +121,9 @@ class Login extends Component {
       <div>
         <Layout>
           <Content className="login-form">
-            <h1 style={{ color: "blue" }}>Login Form</h1>
+            <h1 style={{ color: "blue", fontSize: "40px" }}>
+              <strong>Login</strong>
+            </h1>
             <Form>
               <label>
                 Username :{""}

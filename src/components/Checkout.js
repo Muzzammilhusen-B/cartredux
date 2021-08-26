@@ -12,12 +12,18 @@ import {
   Image,
   Card,
   Popconfirm,
+  Space,
   // InputNumber,
 } from "antd";
 import {
   PlusCircleOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
+  CreditCardOutlined,
+  PhoneTwoTone,
+  UserOutlined,
+  HomeTwoTone,
+  PushpinTwoTone,
 } from "@ant-design/icons";
 import React from "react";
 import Footerbar from "./Footer";
@@ -34,13 +40,15 @@ class Checkout extends React.Component {
     pincode: null,
     address: "",
     landmark: "",
-    country: "",
+    country: "India",
     phone: null,
     isDelModalvisible: false,
     isShipModalvisible: false,
     isPayModalvisible: false,
     checkboxState: [],
     details: [],
+    nameoncard: "",
+    cardnumber: "",
   };
   //   useEffect(() => {
   //     handleOnChange();
@@ -50,6 +58,7 @@ class Checkout extends React.Component {
     // const details = JSON.parse(localStorage.getItem("deliveryState"));
     // console.log("mounted details", details);
     // this.setState({ details: details });
+
     if (this.props.count === 0) {
       const details = [];
       this.setState({ details: details });
@@ -58,6 +67,7 @@ class Checkout extends React.Component {
       // localStorage.setItem("deliveryState", JSON.parse(details));
     }
   }
+
   handleDeliveyAdd = () => {
     console.log("clicked");
     this.setState({ isDelModalvisible: true });
@@ -81,23 +91,13 @@ class Checkout extends React.Component {
   handleCancel = () => {
     this.setState({ isDelModalvisible: false });
   };
-  //for shipping address
-  handleShippingAdd = () => {
-    this.setState({ isShipModalvisible: true });
-  };
-  handleShipOk = () => {
-    this.setState({ isShipModalvisible: false });
-  };
-  handleShipCancel = () => {
-    this.setState({ isShipModalvisible: false });
-  };
-  //for payment details
-  handlePaymentDetails = () => {
-    this.setState({ isPayModalvisible: true });
-  };
-  handlePayOk = () => {};
-  handlePayCancel = () => {
-    this.setState({ isPayModalvisible: false });
+  //handle card
+  handleCardNumber = (e) => {
+    const { value } = e.target;
+    this.setState({
+      // nameoncard: value,
+      cardnumber: value,
+    });
   };
   //onchange
   handleOnChange = (e) => {
@@ -130,6 +130,8 @@ class Checkout extends React.Component {
       pincode,
       country,
       phone,
+      nameoncard,
+      cardnumber,
     } = this.state;
     console.log("checkout details", details);
 
@@ -138,7 +140,7 @@ class Checkout extends React.Component {
         <Navbar />
         <Layout
           style={{
-            height: "94vh",
+            height: "relative",
             // alignItems: "center",
             padding: "10px",
             background:
@@ -205,7 +207,7 @@ class Checkout extends React.Component {
                             </Form.Item>
                             <Form.Item
                               label="Pincode"
-                              //   name="pincode"
+                              name="pincode"
                               value={pincode}
                               rules={[
                                 {
@@ -217,13 +219,12 @@ class Checkout extends React.Component {
                               <Input
                                 maxLength={6}
                                 name="pincode"
-                                type="number"
                                 onChange={this.handleOnChange}
                               />
                             </Form.Item>{" "}
                             <Form.Item
                               label="Address"
-                              //   name="address"
+                              name="address"
                               value={address}
                               rules={[
                                 {
@@ -233,8 +234,8 @@ class Checkout extends React.Component {
                               ]}
                             >
                               <TextArea
-                                name="address"
                                 type="text"
+                                name="address"
                                 onChange={this.handleOnChange}
                               />
                             </Form.Item>{" "}
@@ -252,7 +253,7 @@ class Checkout extends React.Component {
                             </Form.Item>{" "}
                             <Form.Item
                               label="Country"
-                              //   name="country"
+                              // name="country"
                               value={country}
                             >
                               <strong>India</strong>(Service availble only in
@@ -260,7 +261,7 @@ class Checkout extends React.Component {
                             </Form.Item>{" "}
                             <Form.Item
                               label="Phone"
-                              //   name="phone"
+                              name="phone"
                               value={phone}
                               rules={[
                                 {
@@ -272,7 +273,7 @@ class Checkout extends React.Component {
                               <Input
                                 addonBefore="+91"
                                 name="phone"
-                                type="number"
+                                maxLength={10}
                                 onChange={this.handleOnChange}
                               />
                             </Form.Item>
@@ -298,64 +299,127 @@ class Checkout extends React.Component {
                   </Panel> */}
                       <Panel header="Payment Details" key="3">
                         <Card>
-                          <Row>
-                            <Col span={24}>
-                              Name On Card
-                              <Input
-                                onChange={this.handleCardNumber}
-                                required
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={24}>
-                              Card Number
-                              <Input
-                                maxLength={16}
-                                onChange={this.handleCardNumber}
-                                required
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={6}>
-                              Month
-                              <DatePicker picker="month" />
-                            </Col>
-                            <Col span={6} offset={2}>
-                              Year
-                              <DatePicker picker="year" />
-                            </Col>
-                            <Col offset={4} span={6}>
-                              CVV
-                              <Input.Password
-                                maxLength={3}
-                                placeholder="Input cvv"
-                                iconRender={(visible) =>
-                                  visible ? (
-                                    <EyeTwoTone />
-                                  ) : (
-                                    <EyeInvisibleOutlined />
-                                  )
-                                }
-                              />
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col span={24}>
-                              <Popconfirm
-                                title="Delivry and Card details are ok?"
-                                onConfirm={this.handleCheckout}
-                              >
-                                <Button
-                                  type="primary"
-                                  style={{ marginTop: "10px", width: "100%" }}
+                          <Form layout="vertical">
+                            <Row>
+                              <Col span={24}>
+                                <Form.Item
+                                  label="Name On Card"
+                                  name="nameoncard"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please input name as on card!",
+                                    },
+                                  ]}
                                 >
-                                  Pay and Checkout
-                                </Button>
-                              </Popconfirm>
-                            </Col>
-                          </Row>
+                                  <Input
+                                    type="text"
+                                    value={nameoncard}
+                                    // onChange={this.handleCardNumber}
+                                    placeholder="Name on card"
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col span={24}>
+                                <Form.Item
+                                  label="Card Number"
+                                  name="cardnumber"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message:
+                                        "Please input number as on card!",
+                                    },
+                                  ]}
+                                >
+                                  <Input
+                                    maxLength={16}
+                                    onChange={this.handleCardNumber}
+                                    value={cardnumber}
+                                    placeholder="4354 3435 2344 3454"
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col span={6}>
+                                <Form.Item
+                                  label="Month"
+                                  name="month"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please select month!",
+                                    },
+                                  ]}
+                                >
+                                  <DatePicker picker="month" />
+                                </Form.Item>
+                              </Col>
+                              <Col span={6} offset={2}>
+                                <Form.Item
+                                  label="Year"
+                                  name="year"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please select Year!",
+                                    },
+                                  ]}
+                                >
+                                  <DatePicker picker="year" />
+                                </Form.Item>
+                              </Col>
+                              <Col offset={4} span={6}>
+                                <Form.Item
+                                  label="CVV"
+                                  name="cvv"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message:
+                                        "Please input cvv number as on behind card!",
+                                    },
+                                  ]}
+                                >
+                                  <Input.Password
+                                    maxLength={3}
+                                    placeholder="Input cvv"
+                                    iconRender={(visible) =>
+                                      visible ? (
+                                        <EyeTwoTone />
+                                      ) : (
+                                        <EyeInvisibleOutlined />
+                                      )
+                                    }
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col span={24}>
+                                <Popconfirm
+                                  title="Delivry and Card details are ok?"
+                                  onConfirm={this.handleCheckout}
+                                >
+                                  <Button
+                                    icon={
+                                      <CreditCardOutlined
+                                        style={{ fontSize: "20px" }}
+                                      />
+                                    }
+                                    disabled={cardnumber === "" ? true : ""}
+                                    type="primary"
+                                    style={{ marginTop: "10px", width: "100%" }}
+                                  >
+                                    Pay ₹. {total}
+                                  </Button>
+                                </Popconfirm>
+                              </Col>
+                            </Row>
+                          </Form>
                         </Card>
                         {/* <PlusCircleOutlined
                       style={{ fontSize: "20px" }}
@@ -385,28 +449,52 @@ class Checkout extends React.Component {
                                 <Col span={6}>
                                   <Image
                                     src={item.image}
-                                    style={{ width: "100px" }}
+                                    style={{ width: "100px", height: "100px" }}
                                   />
                                 </Col>
                                 <Col span={4}>{item.name}</Col>
-                                <Col span={6}>Price: {item.price}</Col>
+                                <Col span={6}>Price: ₹. {item.price}</Col>
 
                                 <Col span={8}>Quantity: {item.quantity}</Col>
                               </Row>
                             </div>
                           );
                         })}
+                        <strong style={{ fontSize: "20px" }}>
+                          To Pay: ₹. {total}
+                        </strong>
 
-                        <div style={{ fontSize: "20px" }}>
-                          <strong>Total: {total}</strong>
-                          <Card title={fullname}>
-                            <p>{pincode}</p>
-                            <p>{address}</p>
-                            <p>{landmark}</p>
-                            <p>{country}</p>
-                            <p>{phone}</p>
-                          </Card>
-                        </div>
+                        {fullname === "" ? (
+                          ""
+                        ) : (
+                          <div style={{ fontSize: "20px" }}>
+                            <Card title={fullname} extra={<UserOutlined />}>
+                              <div>
+                                <Space>
+                                  <HomeTwoTone />
+                                  {address}-{pincode}
+                                </Space>
+                              </div>
+                              <div>
+                                <Space>
+                                  <PushpinTwoTone />
+                                  {landmark}
+                                </Space>
+                              </div>
+                              <div>
+                                <strong>{country}</strong>(Service available
+                                only in india)
+                              </div>
+                              <div>
+                                <Space>
+                                  {" "}
+                                  <PhoneTwoTone />
+                                  {phone}
+                                </Space>
+                              </div>
+                            </Card>
+                          </div>
+                        )}
                       </ul>
                     </div>
                   </div>
